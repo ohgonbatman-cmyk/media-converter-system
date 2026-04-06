@@ -52,8 +52,8 @@ export const ConverterLayout: React.FC<ConverterLayoutProps> = ({
         </header>
 
         {/* Workspace */}
-        <section className="flex-1 overflow-y-auto p-8 scrollbar-hide">
-          <div className="max-w-5xl mx-auto w-full h-full pb-20">
+        <section className="flex-1 overflow-y-auto p-8">
+          <div className="max-w-5xl mx-auto w-full pb-20">
             {children}
           </div>
         </section>
