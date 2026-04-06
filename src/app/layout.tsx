@@ -12,6 +12,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+import Script from "next/script";
+
 export const metadata: Metadata = {
   title: "Media Converter | Browser Based Tool",
   description: "Secure, client-side media converter for images, videos, and audio. No server uploads.",
@@ -27,6 +29,21 @@ export default function RootLayout({
       lang="ja"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-CG090GPJ03"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-CG090GPJ03');
+          `}
+        </Script>
+      </head>
       <body className="h-full bg-background text-foreground overflow-hidden">
         {children}
       </body>
