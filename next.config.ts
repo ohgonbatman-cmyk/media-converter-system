@@ -1,6 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  transpilePackages: ['pdfjs-dist'],
+  webpack: (config) => {
+    config.experiments = { 
+      ...config.experiments, 
+      topLevelAwait: true 
+    };
+    return config;
+  },
   async headers() {
     return [
       {

@@ -58,7 +58,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({ onFileSelect, accept
         multiple
         className="hidden"
       />
-      
+
       <div className={`w-16 h-16 ${color.replace('bg-', 'bg-')} bg-opacity-90 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 group-hover:shadow-xl transition-all shadow-md`}>
         <Upload className="text-white w-8 h-8" />
       </div>

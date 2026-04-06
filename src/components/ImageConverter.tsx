@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Download, X, ImageIcon, CheckCircle, Loader2, FileArchive } from "lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+import { Download, X, ImageIcon, CheckCircle, Loader2, FileArchive, Shield } from "lucide-react";
 import JSZip from "jszip";
 
 interface ImageFile {
@@ -12,6 +12,7 @@ interface ImageFile {
   resultUrl?: string;
   width?: number;
   height?: number;
+  resultSize?: number;
 }
 
 interface ImageConverterProps {
@@ -23,6 +24,7 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset }
   const [imageFiles, setImageFiles] = useState<ImageFile[]>([]);
   const [targetFormat, setTargetFormat] = useState<string>("webp");
   const [targetWidth, setTargetWidth] = useState<number>(0);
+  const [preserveExif, setPreserveExif] = useState<boolean>(false);
   const [isProcessingAll, setIsProcessingAll] = useState(false);
   const [isZipping, setIsZipping] = useState(false);
 
@@ -35,21 +37,81 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset }
     }));
     setImageFiles(newFiles);
 
+    // Metadata extraction (Dimensions)
+    newFiles.forEach(f => {
+      const img = new Image();
+      img.src = URL.createObjectURL(f.file);
+      img.onload = () => {
+        setImageFiles(prev => prev.map(p => p.id === f.id ? { ...p, width: img.width, height: img.height } : p));
+        URL.revokeObjectURL(img.src);
+      };
+    });
+
+    const generateHeicPreviews = async () => {
+      const heicFiles = newFiles.filter(f => 
+        f.file.name.toLowerCase().endsWith(".heic") || f.file.name.toLowerCase().endsWith(".heif")
+      );
+      
+      if (heicFiles.length > 0) {
+        try {
+          const heic2any = (await import("heic2any")).default;
+          for (const hFile of heicFiles) {
+            const blob = await heic2any({
+              blob: hFile.file,
+              toType: "image/jpeg",
+              quality: 0.1,
+            });
+            const url = URL.createObjectURL(Array.isArray(blob) ? blob[0] : blob);
+            setImageFiles(prev => prev.map(p => p.id === hFile.id ? { ...p, preview: url } : p));
+          }
+        } catch (e) {
+          console.error("Failed to generate HEIC preview", e);
+        }
+      }
+    };
+    
+    generateHeicPreviews();
+
     return () => {
       newFiles.forEach((f) => URL.revokeObjectURL(f.preview));
     };
   }, [files]);
 
-  const convertImage = async (imgFile: ImageFile): Promise<string> => {
+  const estimateSize = (imgFile: ImageFile) => {
+    if (!imgFile.width || !imgFile.height) return null;
+    
+    const w = targetWidth > 0 ? targetWidth : imgFile.width;
+    const h = targetWidth > 0 ? (imgFile.height * (targetWidth / imgFile.width)) : imgFile.height;
+    const pixels = w * h;
+    
+    let ratio = 0.15; // default for webp
+    if (targetFormat === "png") ratio = 0.5;
+    else if (targetFormat === "jpeg") ratio = 0.2;
+    
+    const sizeBytes = pixels * ratio;
+    return (sizeBytes / 1024).toFixed(1);
+  };
+
+  const convertImage = async (imgFile: ImageFile): Promise<{ url: string, size: number }> => {
+    let sourceBlob: Blob = imgFile.file;
+    const isHeic = imgFile.file.name.toLowerCase().endsWith(".heic") || imgFile.file.name.toLowerCase().endsWith(".heif");
+
+    if (isHeic) {
+      const heic2any = (await import("heic2any")).default;
+      const converted = await heic2any({
+        blob: imgFile.file,
+        toType: "image/jpeg",
+        quality: 0.9
+      });
+      sourceBlob = Array.isArray(converted) ? converted[0] : converted;
+    }
+
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
-        if (!ctx) {
-          reject(new Error("Failed to get canvas context"));
-          return;
-        }
+        if (!ctx) return reject(new Error("Failed to get canvas context"));
 
         const scale = targetWidth > 0 ? targetWidth / img.width : 1;
         canvas.width = targetWidth > 0 ? targetWidth : img.width;
@@ -58,11 +120,16 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset }
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         
         const mimeType = `image/${targetFormat}`;
-        const dataUrl = canvas.toDataURL(mimeType, 0.9);
-        resolve(dataUrl);
+        canvas.toBlob((blob) => {
+          if (!blob) return reject(new Error("Blob conversion failed"));
+          resolve({
+            url: URL.createObjectURL(blob),
+            size: blob.size
+          });
+        }, mimeType, 0.9);
       };
-      img.onerror = () => reject(new Error("Failed to load image"));
-      img.src = imgFile.preview;
+      img.onerror = () => reject(new Error("画像の読み込みに失敗しました"));
+      img.src = URL.createObjectURL(sourceBlob);
     });
   };
 
@@ -77,8 +144,8 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset }
         setImageFiles([...updatedFiles]);
         
         try {
-            const resultUrl = await convertImage(updatedFiles[i]);
-            updatedFiles[i] = { ...updatedFiles[i], status: "completed", resultUrl };
+            const { url, size } = await convertImage(updatedFiles[i]);
+            updatedFiles[i] = { ...updatedFiles[i], status: "completed", resultUrl: url, resultSize: size };
         } catch (error) {
             console.error(error);
             updatedFiles[i] = { ...updatedFiles[i], status: "error" };
@@ -99,7 +166,7 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset }
         const response = await fetch(f.resultUrl!);
         const blob = await response.blob();
         const fileName = f.file.name.substring(0, f.file.name.lastIndexOf("."));
-        zip.file(`${fileName}.${targetFormat}`, blob);
+        zip.file(`${fileName}.${targetFormat === "jpeg" ? "jpg" : targetFormat}`, blob);
     }
 
     const content = await zip.generateAsync({ type: "blob" });
@@ -117,7 +184,7 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset }
     const a = document.createElement("a");
     const originalName = imgFile.file.name.substring(0, imgFile.file.name.lastIndexOf("."));
     a.href = imgFile.resultUrl;
-    a.download = `${originalName}.${targetFormat}`;
+    a.download = `${originalName}.${targetFormat === "jpeg" ? "jpg" : targetFormat}`;
     a.click();
   };
 
@@ -152,6 +219,22 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset }
             />
             <span className="text-slate-400 text-[10px] font-bold uppercase tracking-tight">px</span>
           </div>
+        </div>
+
+        {/* Exif Option */}
+        <div className="flex flex-col gap-2 items-start">
+          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">プライバシー設定</label>
+          <button 
+            onClick={() => setPreserveExif(!preserveExif)}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-xs font-bold transition-all ${
+              !preserveExif 
+              ? "bg-emerald-50 border-emerald-200 text-emerald-700" 
+              : "bg-amber-50 border-amber-200 text-amber-700"
+            }`}
+          >
+            <Shield className={`w-3.5 h-3.5 ${!preserveExif ? "fill-emerald-700/10" : ""}`} />
+            {!preserveExif ? "Exif情報を破棄 (安全)" : "Exif情報を保持"}
+          </button>
         </div>
 
         <div className="ml-auto flex items-center gap-4">
@@ -194,8 +277,12 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset }
             className="bg-white border border-slate-100 p-4 rounded-2xl flex items-center gap-5 transition-all shadow-sm hover:shadow-md hover:border-slate-200"
           >
             {/* Thumbnail */}
-            <div className="w-20 h-20 bg-slate-50 rounded-xl overflow-hidden border border-slate-100 shrink-0 shadow-inner">
-              <img src={imgFile.preview} alt="preview" className="w-full h-full object-cover" />
+            <div className="w-20 h-20 bg-slate-50 rounded-xl overflow-hidden border border-slate-100 shrink-0 shadow-inner flex items-center justify-center">
+              {imgFile.preview ? (
+                <img src={imgFile.preview} alt="preview" className="w-full h-full object-cover" />
+              ) : (
+                <Loader2 className="w-5 h-5 animate-spin text-slate-200" />
+              )}
             </div>
 
             {/* Info */}
@@ -203,7 +290,33 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset }
               <h4 className="font-black text-slate-800 truncate text-sm">{imgFile.file.name}</h4>
               <div className="flex items-center gap-3 mt-1.5 text-[10px] text-slate-400 font-bold tracking-tight">
                 <span className="px-1.5 py-0.5 bg-slate-100 rounded">{(imgFile.file.size / 1024).toFixed(1)} KB</span>
-                <span className="uppercase text-slate-300">{imgFile.file.type.split("/")[1]}</span>
+                
+                {imgFile.status === "pending" && imgFile.width && (
+                  <span className="flex items-center gap-2">
+                    <span className="text-slate-300">→</span>
+                    <span className="text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100 animate-pulse font-black">
+                      約 {estimateSize(imgFile)} KB
+                    </span>
+                  </span>
+                )}
+
+                {imgFile.status === "completed" && imgFile.resultSize && (
+                  <span className="flex items-center gap-2">
+                    <span className="text-slate-300">→</span>
+                    <span className="text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100 font-black">
+                      {(imgFile.resultSize / 1024).toFixed(1)} KB
+                    </span>
+                  </span>
+                )}
+
+                <span className="uppercase text-slate-300">
+                  {imgFile.file.type.split("/")[1] || imgFile.file.name.split(".").pop()}
+                  {imgFile.width && ` (${imgFile.width}x${imgFile.height})`}
+                </span>
+                
+                {imgFile.file.name.toLowerCase().endsWith(".heic") && (
+                  <span className="px-1.5 py-0.5 bg-sky-50 text-sky-600 rounded">HEIC 対応</span>
+                )}
               </div>
             </div>
 
