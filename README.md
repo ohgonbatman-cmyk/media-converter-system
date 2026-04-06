@@ -16,9 +16,11 @@
 
 詳細なデプロップ手順や技術的制約については、[DEPLOYMENT.md](./DEPLOYMENT.md) を参照してください。
 
-### 必須の環境変数 (Cloudflare)
-- `NODE_VERSION`: `20`
-- `NPM_FLAGS`: `--legacy-peer-deps`
+## 🛠️ 開用フローとブランチ
+本プロジェクトは、安全なデプロイを維持するために **develop/main 方式** を採用しています。
+
+- **`develop`**: 開発およびテスト用。プッシュすると Cloudflare でプレビューが生成されます。
+- **`main`**: 本番環境。`develop` でのテスト完了後にマージしてください。
 
 ## 🛠️ 技術スタック
 - **Framework**: Next.js 15.5.2 (App Router)
