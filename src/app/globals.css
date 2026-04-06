@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --border: #e2e8f0;
+  --panel: #f8fafc;
+  
+  /* Accent Colors (Slightly adjusted for light background) */
+  --color-image: #059669;
+  --color-video: #0284c7;
+  --color-audio: #4f46e5;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-border: var(--border);
+  --color-panel: var(--panel);
+  --color-accent-image: var(--color-image);
+  --color-accent-video: var(--color-video);
+  --color-accent-audio: var(--color-audio);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow: hidden;
+}
+
+/* Scrollbar styling for Flat UI */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
