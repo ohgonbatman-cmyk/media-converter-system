@@ -1,6 +1,5 @@
 import { Metadata } from "next";
-import dynamic from "next/dynamic";
-const HomeClient = dynamic(() => import("@/components/HomeClient"), { ssr: false });
+import HomeClient from "@/components/HomeClient";
 import { getDictionary, Locale } from "@/lib/get-dictionary";
 import { getAlternates } from "@/lib/seo";
 

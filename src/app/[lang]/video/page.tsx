@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
-const VideoClient = dynamic(() => import("./VideoClient"), { ssr: false });
+import VideoClient from "./VideoClient";
 import { getDictionary, Locale } from "@/lib/get-dictionary";
 import { getAlternates } from "@/lib/seo";
 

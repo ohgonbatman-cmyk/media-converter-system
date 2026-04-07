@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
-const PdfClient = dynamic(() => import("./PdfClient"), { ssr: false });
+import PdfClient from "./PdfClient";
 import { getDictionary, Locale } from "@/lib/get-dictionary";
 import { getAlternates } from "@/lib/seo";
 

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
-const AudioClient = dynamic(() => import("./AudioClient"), { ssr: false });
+import AudioClient from "./AudioClient";
 import { getDictionary, Locale } from "@/lib/get-dictionary";
 import { getAlternates } from "@/lib/seo";
 

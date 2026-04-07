@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
-const ImageClient = dynamic(() => import("./ImageClient"), { ssr: false });
+import ImageClient from "./ImageClient";
 import { getDictionary, Locale } from "@/lib/get-dictionary";
 import { getAlternates } from "@/lib/seo";
 
