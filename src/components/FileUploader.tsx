@@ -44,7 +44,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({ onFileSelect, accept
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
       onClick={() => fileInputRef.current?.click()}
-      className={`relative flex-1 min-h-[300px] border-2 border-dashed rounded-3xl flex flex-col items-center justify-center p-12 transition-all cursor-pointer group ${
+      className={`relative flex-1 min-h-[220px] sm:min-h-[300px] border-2 border-dashed rounded-3xl flex flex-col items-center justify-center p-6 sm:p-12 transition-all cursor-pointer group ${
         isDragging 
           ? "border-slate-400 bg-slate-50 scale-[0.98] shadow-inner" 
           : "border-slate-200 bg-white hover:bg-slate-50/50 hover:border-slate-300 shadow-sm"

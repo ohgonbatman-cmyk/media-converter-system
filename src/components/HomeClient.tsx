@@ -14,6 +14,7 @@ import {
   ArrowRight,
   Cpu
 } from "lucide-react";
+import { HomeStats } from "@/components/HomeStats";
 
 interface HomeClientProps {
   lang: string;
@@ -72,29 +73,29 @@ export default function HomeClient({ lang, dict }: HomeClientProps) {
       <div className="flex flex-col gap-16 pb-20">
         
         {/* Hero Section */}
-        <section className="relative min-h-[520px] rounded-[3rem] overflow-hidden shadow-2xl group border border-white/20">
+        <section className="relative min-h-[400px] md:min-h-[520px] rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl group border border-white/20">
           <div 
             className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105"
             style={{ backgroundImage: "url('/hero-bg.png')" }}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-900/40 to-transparent" />
           
-          <div className="relative h-full flex flex-col justify-center p-12 md:p-20 md:pb-24 max-w-2xl">
+          <div className="relative h-full flex flex-col justify-center p-8 md:p-20 md:pb-24 max-w-2xl">
             <div className="flex items-center gap-2 mb-6 animate-in fade-in slide-in-from-left-4 duration-700">
                <span className="px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-[10px] font-black text-white uppercase tracking-[0.2em]">
                  {dict.home.hero_badge}
                </span>
             </div>
-            <h2 className="text-3xl md:text-5xl font-black text-white leading-tight tracking-tight mb-8 animate-in fade-in slide-in-from-left-6 duration-1000 max-w-lg whitespace-pre-line">
+            <h2 className="text-2xl md:text-5xl font-black text-white leading-tight tracking-tight mb-6 md:mb-8 animate-in fade-in slide-in-from-left-6 duration-1000 max-w-lg whitespace-pre-line">
               {dict.home.hero_title}
             </h2>
-            <p className="text-base md:text-lg text-slate-200/80 font-medium leading-relaxed mb-10 animate-in fade-in slide-in-from-left-8 duration-1000 max-w-md">
+            <p className="text-sm md:text-lg text-slate-200/80 font-medium leading-relaxed mb-8 md:mb-10 animate-in fade-in slide-in-from-left-8 duration-1000 max-w-md">
               {dict.home.hero_description}
             </p>
             <div className="flex items-center gap-6 animate-in fade-in slide-in-from-left-10 duration-1000">
                <Link 
                 href={`/${lang}/image`} 
-                className="bg-sky-500 hover:bg-sky-400 text-white font-black px-10 py-4 rounded-2xl shadow-xl hover:shadow-sky-500/20 hover:-translate-y-0.5 transition-all flex items-center gap-2 text-sm"
+                className="bg-sky-500 hover:bg-sky-400 text-white font-black px-8 md:px-10 py-3 md:py-4 rounded-2xl shadow-xl hover:shadow-sky-500/20 hover:-translate-y-0.5 transition-all flex items-center gap-2 text-xs md:text-sm"
                >
                  {dict.home.hero_button}
                  <ArrowRight className="w-4 h-4" />
@@ -104,12 +105,12 @@ export default function HomeClient({ lang, dict }: HomeClientProps) {
         </section>
 
         {/* Feature Grid */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-8">
           {tools.map((tool, idx) => (
             <Link 
               key={tool.title} 
               href={tool.href}
-              className="group bg-white border border-slate-100 p-8 rounded-[2.5rem] shadow-sm hover:shadow-xl hover:border-slate-200 transition-all duration-500 flex flex-col items-start gap-6 relative overflow-hidden"
+              className="group bg-white border border-slate-100 p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] shadow-sm hover:shadow-xl hover:border-slate-200 transition-all duration-500 flex flex-col items-start gap-4 md:gap-6 relative overflow-hidden"
               style={{ animationDelay: `${idx * 150}ms` }}
             >
               <div className={`p-4 ${tool.bg} rounded-2xl group-hover:scale-110 transition-transform duration-500`}>
@@ -135,7 +136,7 @@ export default function HomeClient({ lang, dict }: HomeClientProps) {
         </section>
 
         {/* Security Section */}
-        <section className="bg-slate-900 rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl">
+        <section className="bg-slate-900 rounded-[2rem] md:rounded-[3rem] p-8 md:p-20 text-center relative overflow-hidden shadow-2xl">
           <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.2)_0,transparent_100%)] animate-pulse" />
           </div>
@@ -146,10 +147,10 @@ export default function HomeClient({ lang, dict }: HomeClientProps) {
                   <ShieldCheck className="w-8 h-8 text-sky-400" />
                </div>
             </div>
-            <h2 className="text-3xl font-black text-white mb-6 uppercase tracking-wider">
+            <h2 className="text-2xl md:text-3xl font-black text-white mb-4 md:mb-6 uppercase tracking-wider">
               {dict.home.security_title}
             </h2>
-            <p className="text-slate-400 text-lg leading-relaxed font-medium mb-12">
+            <p className="text-slate-400 text-sm md:text-lg leading-relaxed font-medium mb-8 md:mb-12">
               {dict.home.security_description}
             </p>
             
@@ -169,6 +170,9 @@ export default function HomeClient({ lang, dict }: HomeClientProps) {
             </div>
           </div>
         </section>
+
+        {/* Stats Section */}
+        <HomeStats lang={lang} dict={dict} />
       </div>
     </ConverterLayout>
   );

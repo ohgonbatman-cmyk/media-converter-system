@@ -31,7 +31,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ lang, dict }) => {
   ] as const;
 
   return (
-    <aside className="w-64 h-screen bg-[#FDFDFD] border-r border-slate-100 flex flex-col shrink-0">
+    <aside className="w-64 h-screen bg-[#FDFDFD] border-r border-slate-100 hidden lg:flex flex-col shrink-0">
       {/* Header */}
       <div className="p-6 border-b border-slate-50 bg-white/50">
         <Link href={`/${lang}`} className="flex items-center gap-3 group">

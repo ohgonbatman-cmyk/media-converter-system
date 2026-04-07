@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Download, X, FileText, CheckCircle, Loader2, PlayCircle, FileArchive, Play, FileDigit } from "lucide-react";
+import { reportConversionScale } from "@/lib/stats";
 
 // pdfjs-dist and docx are loaded dynamically inside the conversion function
 // to avoid Edge Runtime / SSR errors (document is not defined).
@@ -13,6 +14,7 @@ interface MediaFile {
   status: "pending" | "processing" | "completed" | "error";
   resultUrl?: string;
   progress: number;
+  resultSize?: number;
 }
 
 interface PdfConverterProps {
@@ -25,6 +27,7 @@ interface PdfConverterProps {
 export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang, dict }) => {
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isProcessingAll, setIsProcessingAll] = useState(false);
   const [overallProgress, setOverallProgress] = useState(0);
 
   useEffect(() => {
@@ -175,8 +178,14 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
 
       const blob = await Packer.toBlob(doc);
       const url = URL.createObjectURL(blob);
+      const size = blob.size;
 
-      setMediaFiles(prev => prev.map(f => f.id === mediaFile.id ? { ...f, status: "completed", resultUrl: url, progress: 100 } : f));
+      setMediaFiles(prev => prev.map(f => f.id === mediaFile.id ? { ...f, status: "completed", resultUrl: url, progress: 100, resultSize: size } : f));
+      
+      // 個別報告
+      if (!isProcessingAll) {
+        reportConversionScale(1, size);
+      }
     } catch (error) {
       console.error(error);
       setMediaFiles(prev => prev.map(f => f.id === mediaFile.id ? { ...f, status: "error" } : f));
@@ -188,9 +197,26 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
 
   const handleProcessAll = async () => {
     const pendingFiles = mediaFiles.filter(f => f.status === "pending");
+    if (pendingFiles.length === 0) return;
+
+    setIsProcessingAll(true);
     for (const mFile of pendingFiles) {
       await convertPdfToDocx(mFile);
     }
+
+    // まとめて統計報告
+    const results = await new Promise<MediaFile[]>(resolve => {
+      setMediaFiles(prev => {
+        resolve(prev);
+        return prev;
+      });
+    });
+    const newlyDone = results.filter(f => pendingFiles.some(p => p.id === f.id) && f.status === "completed" && f.resultSize);
+    if (newlyDone.length > 0) {
+      const totalSize = newlyDone.reduce((acc, curr) => acc + (curr.resultSize || 0), 0);
+      reportConversionScale(newlyDone.length, totalSize);
+    }
+    setIsProcessingAll(false);
   };
 
   const handleDownload = (mFile: MediaFile) => {
@@ -208,7 +234,7 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
   return (
     <div className="flex flex-col gap-8 h-full">
       {/* Options Bar */}
-      <div className="bg-white border border-slate-200 p-6 rounded-3xl flex flex-wrap items-center gap-6 shadow-sm ring-1 ring-slate-100">
+      <div className="bg-white border border-slate-200 p-4 md:p-6 rounded-[2rem] md:rounded-3xl grid grid-cols-1 md:flex md:flex-row md:items-center gap-4 md:gap-6 shadow-sm ring-1 ring-slate-100">
         <div className="flex flex-col gap-2">
           <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left leading-none">{dict.pdf.format_label}</label>
           <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 overflow-hidden">
@@ -217,8 +243,8 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
           </div>
         </div>
 
-        <div className="ml-auto flex items-center gap-4">
-          <button onClick={onReset} className="text-slate-400 hover:text-slate-600 text-sm font-bold px-4 transition-colors">
+        <div className="flex flex-col sm:flex-row md:ml-auto items-stretch sm:items-center gap-3 sm:gap-4 w-full md:w-auto mt-2 md:mt-0">
+          <button onClick={onReset} className="text-slate-400 hover:text-slate-600 text-xs sm:text-sm font-bold px-4 py-2 transition-colors text-center">
             {dict.common.cancel}
           </button>
           
@@ -226,9 +252,9 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
             <button 
                 onClick={handleProcessAll}
                 disabled={isProcessing || mediaFiles.length === 0}
-                className="bg-accent-video hover:bg-sky-700 text-white font-black px-10 py-3.5 rounded-2xl transition-all shadow-lg hover:shadow-xl flex items-center gap-2 text-sm"
+                className="bg-accent-video hover:bg-sky-700 text-white font-black px-6 sm:px-10 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-xs sm:text-sm flex-1 md:flex-none"
             >
-                {isProcessing ? <Loader2 className="w-5 h-5 animate-spin" /> : <Play className="w-5 h-5" />}
+                {isProcessing ? <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" /> : <Play className="w-4 h-4 sm:w-5 sm:h-5" />}
                 {dict.pdf.process_all}
             </button>
           )}
@@ -237,13 +263,13 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
 
       {/* Progress */}
       {isProcessing && (
-        <div className="bg-white border border-slate-100 p-8 rounded-3xl flex flex-col gap-5 shadow-lg animate-in fade-in slide-in-from-bottom-2">
+        <div className="bg-white border border-slate-100 p-6 md:p-8 rounded-[2rem] md:rounded-3xl flex flex-col gap-5 shadow-lg animate-in fade-in slide-in-from-bottom-2">
           <div className="flex items-center justify-between">
-            <h4 className="font-bold flex items-center gap-3 text-slate-800">
-              <Loader2 className="w-5 h-5 animate-spin text-sky-500" />
+            <h4 className="font-bold flex items-center gap-3 text-slate-800 text-sm md:text-base">
+              <Loader2 className="w-4 h-4 md:w-5 md:h-5 animate-spin text-sky-500" />
               {dict.pdf.processing_label}
             </h4>
-            <span className="text-sm font-black font-mono text-sky-500">{overallProgress}%</span>
+            <span className="text-xs md:text-sm font-black font-mono text-sky-500">{overallProgress}%</span>
           </div>
           <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden border border-slate-50">
             <div 
@@ -262,17 +288,17 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
         {mediaFiles.map((mFile) => (
           <div 
             key={mFile.id}
-            className="bg-white border border-slate-100 p-5 rounded-2xl flex items-center gap-5 group hover:shadow-md hover:border-slate-200 transition-all shadow-sm"
+            className="bg-white border border-slate-100 p-4 md:p-5 rounded-2xl flex flex-col sm:flex-row items-center gap-4 md:gap-5 group hover:shadow-md hover:border-slate-200 transition-all shadow-sm"
           >
-            <div className="w-14 h-14 bg-slate-50 rounded-xl flex items-center justify-center border border-slate-100 shrink-0 shadow-inner">
-              <FileDigit className="w-6 h-6 text-sky-400" />
+            <div className="w-12 h-12 md:w-14 md:h-14 bg-slate-50 rounded-xl flex items-center justify-center border border-slate-100 shrink-0 shadow-inner">
+              <FileDigit className="w-5 h-5 md:w-6 md:h-6 text-sky-400" />
             </div>
 
-            <div className="flex-1 min-w-0 text-left">
-              <h4 className="font-black text-slate-800 truncate text-sm">{mFile.file.name}</h4>
-              <div className="flex items-center gap-3 mt-1.5 text-[10px] text-slate-400 font-bold font-mono">
+            <div className="flex-1 min-w-0 text-center sm:text-left w-full">
+              <h4 className="font-black text-slate-800 truncate text-xs md:text-sm">{mFile.file.name}</h4>
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 md:gap-3 mt-1.5 text-[9px] md:text-[10px] text-slate-400 font-bold font-mono">
                 <span className="px-1.5 py-0.5 bg-slate-100 rounded">{(mFile.file.size / 1024 / 1024).toFixed(2)} MB</span>
-                <span className="uppercase text-slate-300 px-1.5 py-0.5 border border-slate-50 rounded">PDF DOCUMENT</span>
+                <span className="uppercase text-slate-300 px-1.5 py-0.5 border border-slate-50 rounded text-[8px] md:text-[9px]">PDF DOCUMENT</span>
               </div>
             </div>
 

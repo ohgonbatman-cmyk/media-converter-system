@@ -65,6 +65,12 @@
         "title": "PDF to Word",
         "description": "Convert PDF to editable Word. Maintain business document layouts securely and fast."
       }
+    },
+    "stats_section": {
+      "label": "Statistics",
+      "today": "Today",
+      "total": "Total",
+      "files": "Files"
     }
   },
   "image": {

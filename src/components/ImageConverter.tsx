@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Download, X, ImageIcon, CheckCircle, Loader2, FileArchive, Shield } from "lucide-react";
 import JSZip from "jszip";
+import { reportConversionScale } from "@/lib/stats";
 
 interface ImageFile {
   file: File;
@@ -156,6 +157,14 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset, 
         }
         setImageFiles([...updatedFiles]);
     }
+
+    // 統計を報告
+    const newlyCompleted = updatedFiles.filter(f => f.status === "completed" && f.resultSize);
+    if (newlyCompleted.length > 0) {
+      const totalBytes = newlyCompleted.reduce((acc, curr) => acc + (curr.resultSize || 0), 0);
+      reportConversionScale(newlyCompleted.length, totalBytes);
+    }
+
     setIsProcessingAll(false);
   };
 
@@ -200,7 +209,7 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset, 
   return (
     <div className="flex flex-col gap-8 h-full bg-transparent">
       {/* Options Bar */}
-      <div className="bg-white border border-slate-200 p-6 rounded-3xl flex flex-wrap items-center gap-6 shadow-sm ring-1 ring-slate-100">
+      <div className="bg-white border border-slate-200 p-4 md:p-6 rounded-[2rem] md:rounded-3xl grid grid-cols-1 md:flex md:flex-row md:items-center gap-4 md:gap-6 shadow-sm ring-1 ring-slate-100">
         <div className="flex flex-col gap-2">
           <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">{dict.image.format_label}</label>
           <select 
@@ -243,10 +252,10 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset, 
           </button>
         </div>
 
-        <div className="ml-auto flex items-center gap-4">
+        <div className="flex flex-col sm:flex-row md:ml-auto items-stretch sm:items-center gap-3 sm:gap-4 w-full md:w-auto mt-2 md:mt-0">
           <button 
             onClick={onReset}
-            className="text-slate-400 hover:text-slate-600 text-sm font-bold transition-colors px-4"
+            className="text-slate-400 hover:text-slate-600 text-xs sm:text-sm font-bold transition-colors px-4 py-2 text-center"
           >
             {dict.common.cancel}
           </button>
@@ -255,9 +264,9 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset, 
             <button 
               onClick={handleDownloadAll}
               disabled={isZipping}
-              className="bg-slate-900 hover:bg-slate-800 text-white font-black px-6 py-3.5 rounded-2xl transition-all shadow-lg flex items-center gap-2 text-sm"
+              className="bg-slate-900 hover:bg-slate-800 text-white font-black px-4 sm:px-6 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2 text-xs sm:text-sm flex-1 md:flex-none"
             >
-              {isZipping ? <Loader2 className="w-5 h-5 animate-spin" /> : <FileArchive className="w-5 h-5" />}
+              {isZipping ? <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" /> : <FileArchive className="w-4 h-4 sm:w-5 sm:h-5" />}
               {dict.image.download_all}
             </button>
           )}
@@ -266,9 +275,9 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset, 
             <button 
               onClick={handleProcessAll}
               disabled={isProcessingAll || imageFiles.length === 0}
-              className="bg-accent-image hover:bg-emerald-700 text-white font-black px-10 py-3.5 rounded-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl flex items-center gap-2 text-sm"
+              className="bg-accent-image hover:bg-emerald-700 text-white font-black px-6 sm:px-10 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-xs sm:text-sm flex-1 md:flex-none"
             >
-              {isProcessingAll ? <Loader2 className="w-5 h-5 animate-spin" /> : <ImageIcon className="w-5 h-5" />}
+              {isProcessingAll ? <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" /> : <ImageIcon className="w-4 h-4 sm:w-5 sm:h-5" />}
               {dict.image.process_all}
             </button>
           )}
@@ -280,7 +289,7 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset, 
         {imageFiles.map((imgFile) => (
           <div 
             key={imgFile.id}
-            className="bg-white border border-slate-100 p-4 rounded-2xl flex items-center gap-5 transition-all shadow-sm hover:shadow-md hover:border-slate-200"
+            className="bg-white border border-slate-100 p-4 md:p-5 rounded-2xl flex flex-col sm:flex-row items-center gap-4 md:gap-5 group hover:shadow-md hover:border-slate-200 transition-all shadow-sm"
           >
             {/* Thumbnail */}
             <div className="w-20 h-20 bg-slate-50 rounded-xl overflow-hidden border border-slate-100 shrink-0 shadow-inner flex items-center justify-center">
@@ -292,9 +301,9 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset, 
             </div>
 
             {/* Info */}
-            <div className="flex-1 min-w-0">
-              <h4 className="font-black text-slate-800 truncate text-sm">{imgFile.file.name}</h4>
-              <div className="flex items-center gap-3 mt-1.5 text-[10px] text-slate-400 font-bold tracking-tight">
+            <div className="flex-1 min-w-0 text-center sm:text-left w-full">
+              <h4 className="font-black text-slate-800 truncate text-xs md:text-sm">{imgFile.file.name}</h4>
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 md:gap-3 mt-1.5 text-[9px] md:text-[10px] text-slate-400 font-bold tracking-tight">
                 <span className="px-1.5 py-0.5 bg-slate-100 rounded">{(imgFile.file.size / 1024).toFixed(1)} KB</span>
                 
                 {imgFile.status === "pending" && imgFile.width && (
@@ -327,30 +336,30 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset, 
             </div>
 
             {/* Status & Actions */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 md:gap-4 w-full sm:w-auto justify-center sm:justify-end border-t sm:border-t-0 border-slate-50 pt-3 sm:pt-0 mt-2 sm:mt-0">
               {imgFile.status === "completed" && (
-                <div className="flex items-center gap-1.5 text-accent-image bg-emerald-50 px-3 py-2 rounded-xl border border-emerald-100">
-                  <CheckCircle className="w-4 h-4" />
-                  <span className="text-[10px] font-black uppercase tracking-widest">{dict.image.success}</span>
+                <div className="flex items-center gap-1.5 text-accent-image bg-emerald-50 px-3 md:px-4 py-1.5 md:py-2 rounded-lg md:rounded-xl border border-emerald-100">
+                  <CheckCircle className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                  <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest">{dict.image.success}</span>
                 </div>
               )}
               {imgFile.status === "processing" && (
                 <div className="flex items-center gap-2 text-accent-video">
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-3.5 h-3.5 md:w-4 md:h-4 animate-spin" />
                 </div>
               )}
               
               {imgFile.status === "completed" ? (
                 <button 
                   onClick={() => handleDownload(imgFile)}
-                  className="bg-slate-900 hover:bg-slate-800 text-white p-3 rounded-xl border border-slate-800 transition-all shadow-md active:scale-95 group/dl"
+                  className="bg-slate-900 hover:bg-slate-800 text-white p-2.5 md:p-3 rounded-lg md:rounded-xl border border-slate-800 transition-all shadow-md active:scale-95 group/dl"
                   title="Download"
                 >
-                  <Download className="w-5 h-5 group-hover/dl:scale-110 transition-transform" />
+                  <Download className="w-4 h-4 md:w-5 md:h-5 group-hover/dl:scale-110 transition-transform" />
                 </button>
               ) : (
-                <div className="p-3 opacity-10">
-                   <Download className="w-5 h-5" />
+                <div className="p-2.5 md:p-3 opacity-10">
+                   <Download className="w-4 h-4 md:w-5 md:h-5" />
                 </div>
               )}
               

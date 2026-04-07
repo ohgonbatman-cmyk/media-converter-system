@@ -65,6 +65,12 @@
         "title": "PDF → Word 変換",
         "description": "PDFを編集可能なWord形式へ。ビジネス文書のレイアウトを維持したまま、安全に変換を行います。"
       }
+    },
+    "stats_section": {
+      "label": "統計",
+      "today": "今日",
+      "total": "合計",
+      "files": "ファイル数"
     }
   },
   "image": {

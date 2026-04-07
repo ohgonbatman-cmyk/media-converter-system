@@ -65,6 +65,12 @@
         "title": "PDF a Word",
         "description": "Convierta PDF a Word editable. Mantenga los diseños de documentos comerciales de forma segura y rápida."
       }
+    },
+    "stats_section": {
+      "label": "Estadísticas",
+      "today": "Hoy",
+      "total": "Total",
+      "files": "Archivos"
     }
   },
   "image": {
