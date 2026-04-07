@@ -5,22 +5,36 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Image as ImageIcon, Video, Music, FileText, Settings, Info, ExternalLink, LayoutGrid } from "lucide-react";
 
-export const Sidebar: React.FC = () => {
+interface SidebarProps {
+  lang: string;
+  dict: {
+    sidebar: {
+      home: string;
+      image: string;
+      video: string;
+      audio: string;
+      pdf: string;
+      sponsored: string;
+    };
+  };
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ lang, dict }) => {
   const pathname = usePathname();
   
   const menuItems = [
-    { id: "home", href: "/", icon: LayoutGrid, label: "ホーム", color: "text-slate-900", bg: "bg-slate-900/10" },
-    { id: "image", href: "/image", icon: ImageIcon, label: "画像変換", color: "text-emerald-500", bg: "bg-emerald-500/10" },
-    { id: "video", href: "/video", icon: Video, label: "動画・動画圧縮", color: "text-sky-500", bg: "bg-sky-500/10" },
-    { id: "audio", href: "/audio", icon: Music, label: "音声変換", color: "text-indigo-500", bg: "bg-indigo-500/10" },
-    { id: "pdf", href: "/pdf", icon: FileText, label: "PDF → Word", color: "text-sky-500", bg: "bg-sky-500/10" },
+    { id: "home", href: `/${lang}`, icon: LayoutGrid, label: dict.sidebar.home, color: "text-slate-900", bg: "bg-slate-900/10" },
+    { id: "image", href: `/${lang}/image`, icon: ImageIcon, label: dict.sidebar.image, color: "text-emerald-500", bg: "bg-emerald-500/10" },
+    { id: "video", href: `/${lang}/video`, icon: Video, label: dict.sidebar.video, color: "text-sky-500", bg: "bg-sky-500/10" },
+    { id: "audio", href: `/${lang}/audio`, icon: Music, label: dict.sidebar.audio, color: "text-indigo-500", bg: "bg-indigo-500/10" },
+    { id: "pdf", href: `/${lang}/pdf`, icon: FileText, label: dict.sidebar.pdf, color: "text-sky-500", bg: "bg-sky-500/10" },
   ] as const;
 
   return (
     <aside className="w-64 h-screen bg-[#FDFDFD] border-r border-slate-100 flex flex-col shrink-0">
       {/* Header */}
       <div className="p-6 border-b border-slate-50 bg-white/50">
-        <Link href="/" className="flex items-center gap-3 group">
+        <Link href={`/${lang}`} className="flex items-center gap-3 group">
           <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
             <Settings className="text-white w-4 h-4" />
           </div>
@@ -68,7 +82,7 @@ export const Sidebar: React.FC = () => {
       <div className="p-4 border-t border-slate-50 mt-auto bg-white/30">
         <div className="bg-white border border-slate-100 rounded-[2rem] p-5 flex flex-col gap-4 shadow-sm">
           <div className="flex items-center justify-between px-1">
-            <span className="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em] leading-none">Sponsored</span>
+            <span className="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em] leading-none">{dict.sidebar.sponsored}</span>
             <ExternalLink className="w-3 h-3 text-slate-200" />
           </div>
           <div className="w-full h-32 bg-slate-50 rounded-2xl flex flex-col items-center justify-center border border-dashed border-slate-200 group hover:bg-slate-100/50 transition-colors cursor-pointer">

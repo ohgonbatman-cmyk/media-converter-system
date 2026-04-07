@@ -18,9 +18,11 @@ interface MediaFile {
 interface AudioConverterProps {
   files: File[];
   onReset: () => void;
+  lang: string;
+  dict: any;
 }
 
-export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset }) => {
+export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset, lang, dict }) => {
   const { load, progress, resetProgress } = useFFmpeg();
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
   const [targetFormat, setTargetFormat] = useState<string>("mp3");
@@ -65,7 +67,8 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset }
     }
     
     const sizeBytes = (bps * mFile.duration) / 8;
-    return (sizeBytes / (1024 * 1024)).toFixed(2);
+    const sizeMb = (sizeBytes / (1024 * 1024)).toFixed(2);
+    return dict.audio.est_size.replace("{size}", sizeMb);
   };
 
   const convertAudio = async (mediaFile: MediaFile) => {
@@ -159,7 +162,7 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset }
       {/* Options Bar */}
       <div className="bg-white border border-slate-200 p-6 rounded-3xl flex flex-wrap items-center gap-6 shadow-sm ring-1 ring-slate-100">
         <div className="flex flex-col gap-2">
-          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left leading-none">出力形式</label>
+          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left leading-none">{dict.audio.format_label}</label>
           <select 
             value={targetFormat}
             onChange={(e) => setTargetFormat(e.target.value)}
@@ -176,7 +179,7 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset }
 
         {["mp3", "aac", "ogg"].includes(targetFormat) && (
           <div className="flex flex-col gap-2">
-            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left leading-none">ビットレート</label>
+            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left leading-none">{dict.audio.bitrate_label}</label>
             <select 
               value={targetBitrate}
               onChange={(e) => setTargetBitrate(e.target.value)}
@@ -192,7 +195,7 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset }
         )}
 
         <div className="flex flex-col gap-2">
-          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left leading-none">サンプリングレート</label>
+          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left leading-none">{dict.audio.samplerate_label}</label>
           <select 
             value={targetSampleRate}
             onChange={(e) => setTargetSampleRate(e.target.value)}
@@ -206,7 +209,7 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset }
 
         <div className="ml-auto flex items-center gap-4">
           <button onClick={onReset} className="text-slate-400 hover:text-slate-600 text-sm font-bold px-4 transition-colors">
-            キャンセル
+            {dict.common.cancel}
           </button>
           
           {anyCompleted && (
@@ -216,7 +219,7 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset }
               className="bg-slate-900 hover:bg-slate-800 text-white font-black px-6 py-3.5 rounded-2xl transition-all shadow-lg flex items-center gap-2 text-sm"
             >
               {isZipping ? <Loader2 className="w-5 h-5 animate-spin" /> : <FileArchive className="w-5 h-5" />}
-              すべて保存 (ZIP)
+              {dict.audio.download_all}
             </button>
           )}
 
@@ -227,7 +230,7 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset }
                 className="bg-accent-audio hover:bg-indigo-700 text-white font-black px-10 py-3.5 rounded-2xl transition-all shadow-lg hover:shadow-xl flex items-center gap-2 text-sm"
             >
                 {isProcessing ? <Loader2 className="w-5 h-5 animate-spin" /> : <Play className="w-5 h-5" />}
-                一括変換を実行
+                {dict.audio.process_all}
             </button>
           )}
         </div>
@@ -239,7 +242,7 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset }
           <div className="flex items-center justify-between">
             <h4 className="font-bold flex items-center gap-3 text-slate-800">
               <Loader2 className="w-5 h-5 animate-spin text-accent-audio" />
-              音声を処理中...
+              {dict.audio.processing_label}
             </h4>
             <span className="text-sm font-black font-mono text-accent-audio">{progress}%</span>
           </div>
@@ -250,7 +253,7 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset }
             />
           </div>
           <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest text-center mt-1 scale-90 opacity-70">
-            ブラウザ内で安全に処理しています。外部送信は行われません。
+            {dict.audio.security_notice}
           </p>
         </div>
       )}
@@ -275,7 +278,7 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset }
                   <span className="flex items-center gap-2">
                     <span className="text-slate-300">→</span>
                     <span className="text-accent-audio bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-100 animate-pulse">
-                      約 {estimateSize(mFile)} MB
+                      {estimateSize(mFile)}
                     </span>
                   </span>
                 )}
@@ -300,7 +303,7 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset }
               {mFile.status === "completed" && (
                 <div className="flex items-center gap-1.5 text-accent-audio bg-indigo-50 px-4 py-2 rounded-xl border border-indigo-100 shadow-sm animate-in zoom-in-95">
                   <CheckCircle className="w-4 h-4" />
-                  <span className="text-[10px] font-black uppercase tracking-widest leading-none">SUCCESS</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest leading-none">{dict.audio.success}</span>
                 </div>
               )}
               {mFile.status === "processing" && <Loader2 className="w-4 h-4 animate-spin text-accent-audio" />}

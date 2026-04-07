@@ -6,7 +6,12 @@ import { FileUploader } from "@/components/FileUploader";
 import { VideoConverter } from "@/components/VideoConverter";
 import { Zap, Music, Smartphone, Info } from "lucide-react";
 
-export default function VideoClient() {
+interface VideoClientProps {
+  lang: string;
+  dict: any;
+}
+
+export default function VideoClient({ lang, dict }: VideoClientProps) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const handleFileSelect = (files: File[]) => {
@@ -20,20 +25,22 @@ export default function VideoClient() {
   return (
     <ConverterLayout 
       category="Video Converter"
-      title="動画コンバーター & 高速圧縮"
-      description="MP4, WebM への変換と、デバイス別の最適化プリセット。ブラウザ上で動作するため、大容量動画のアップロード不要。"
+      title={dict.video_page.title}
+      description={dict.video_page.description}
       color="bg-sky-500"
+      lang={lang}
+      dict={dict}
     >
       <div className="flex flex-col gap-12 h-full">
         {selectedFiles.length > 0 ? (
-          <VideoConverter files={selectedFiles} onReset={handleReset} />
+          <VideoConverter files={selectedFiles} onReset={handleReset} lang={lang} dict={dict} />
         ) : (
           <>
             <FileUploader 
               onFileSelect={handleFileSelect} 
               accept=".mp4,.webm,.mov,.avi" 
               color="bg-sky-500" 
-              label="動画変換を開始" 
+              label={dict.common.launch_tool} 
             />
 
             {/* SEO & Feature Sections */}
@@ -45,10 +52,10 @@ export default function VideoClient() {
                   </div>
                   <div>
                     <h2 className="font-black text-slate-900 mb-3 text-xl tracking-tight">
-                      デバイス別プリセット設定
+                      {dict.video_page.preset_title}
                     </h2>
                     <p className="text-sm text-slate-500 leading-relaxed font-medium">
-                      「iPhone用」「YouTube用」「TikTok用」など、投稿先に最適な解像度やビットレートを自動で選択。専門知識がなくても、最高品質の動画を手軽に作成できます。
+                      {dict.video_page.preset_desc}
                     </p>
                   </div>
                 </div>
@@ -61,10 +68,10 @@ export default function VideoClient() {
                   </div>
                   <div>
                     <h2 className="font-black text-slate-900 mb-3 text-xl tracking-tight">
-                      動画から音声（MP3）を抽出
+                      {dict.video_page.audio_title}
                     </h2>
                     <p className="text-sm text-slate-500 leading-relaxed font-medium">
-                      「動画 音声 抜き出し」機能により、動画から音声トラックを高品質に抽出。ポッドキャスト作成や音楽制作の素材作りにも最適です。ワンクリックでMP3変換が可能。
+                      {dict.video_page.audio_desc}
                     </p>
                   </div>
                 </div>
@@ -79,11 +86,10 @@ export default function VideoClient() {
               <div className="relative z-10">
                 <h3 className="text-2xl font-black mb-6 flex items-center gap-3 tracking-tight">
                   < Zap className="w-6 h-6 text-amber-400 fill-amber-400" />
-                  リアルタイムの進捗表示で安心
+                  {dict.video_page.zap_title}
                 </h3>
                 <p className="text-slate-300 text-sm leading-relaxed max-w-2xl font-medium mb-8">
-                  動画変換は時間がかかる作業です。当コンバーターは、独自の並列処理エンジン（FFmpeg.wasm）を搭載し、変換プロセスをパーセンテージで表示します。
-                  ブラウザ内で動作するため、ネットワークの切断でアップロードがやり直しになる心配もありません。
+                  {dict.video_page.zap_desc}
                 </p>
                 <div className="flex gap-4">
                   <div className="px-4 py-2 bg-white/10 rounded-full text-[10px] font-black uppercase tracking-widest border border-white/10">High Performance</div>
@@ -96,19 +102,19 @@ export default function VideoClient() {
             <article className="prose prose-slate max-w-none bg-white/50 border border-slate-100 p-12 rounded-[2.5rem]">
               <h3 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-3">
                 <Info className="w-6 h-6 text-slate-400" /> 
-                TikTok・YouTube投稿者の必須ツール
+                {dict.video_page.info_title}
               </h3>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 <div>
-                  <h4 className="font-bold text-slate-800 mb-2">MP4 MOV 変換の利便性</h4>
+                  <h4 className="font-bold text-slate-800 mb-2">{dict.video_page.mov_title}</h4>
                   <p className="text-sm text-slate-500 leading-relaxed">
-                    スマホで撮影したMOV形式を、互換性の高いMP4に素早く変換。編集ソフトへの読み込みトラブルを未然に防ぎます。
+                    {dict.video_page.mov_desc}
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-bold text-slate-800 mb-2">プライバシーとセキュリティ</h4>
+                  <h4 className="font-bold text-slate-800 mb-2">{dict.video_page.privacy_title}</h4>
                   <p className="text-sm text-slate-500 leading-relaxed">
-                    仕事で扱う機密動画も、外部サーバーを介さずに自分のPCで変換できるため、情報漏洩のリスクをゼロに抑えられます。
+                    {dict.video_page.privacy_desc}
                   </p>
                 </div>
               </div>

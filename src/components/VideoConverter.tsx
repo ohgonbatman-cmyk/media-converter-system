@@ -19,11 +19,13 @@ interface MediaFile {
 interface VideoConverterProps {
   files: File[];
   onReset: () => void;
+  lang: string;
+  dict: any;
 }
 
 type Preset = "none" | "iphone" | "youtube" | "tiktok" | "mp3_extract";
 
-export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset }) => {
+export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, lang, dict }) => {
   const { load, progress, resetProgress } = useFFmpeg();
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
   const [targetFormat, setTargetFormat] = useState<string>("mp4");
@@ -75,7 +77,8 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset }
     }
     
     const sizeBytes = (totalBps * mFile.duration) / 8;
-    return (sizeBytes / (1024 * 1024)).toFixed(1);
+    const sizeMb = (sizeBytes / (1024 * 1024)).toFixed(1);
+    return dict.video.est_size.replace("{size}", sizeMb);
   };
 
   const convertVideo = async (mediaFile: MediaFile) => {
@@ -191,7 +194,7 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset }
       {/* Options Bar */}
       <div className="bg-white border border-slate-200 p-6 rounded-3xl flex flex-wrap items-center gap-6 shadow-sm ring-1 ring-slate-100">
         <div className="flex flex-col gap-2">
-          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left leading-none">基本形式</label>
+          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left leading-none">{dict.video.format_label}</label>
           <select 
             value={targetFormat}
             onChange={(e) => {
@@ -208,24 +211,24 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset }
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left leading-none">最適化プリセット</label>
+          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left leading-none">{dict.video.preset_label}</label>
           <select 
             value={preset}
             onChange={(e) => setPreset(e.target.value as Preset)}
             disabled={isProcessing}
             className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent-video/20 transition-all"
           >
-            <option value="none">なし (基本形式を使用)</option>
-            <option value="iphone">iPhone / iPad 再生用</option>
-            <option value="youtube">YouTube アップロード用 (高画質)</option>
-            <option value="tiktok">TikTok / Shorts 用 (9:16 クロップ)</option>
-            <option value="mp3_extract">音声のみ抽出 (MP3)</option>
+            <option value="none">{dict.video.preset_none}</option>
+            <option value="iphone">{dict.video.preset_iphone}</option>
+            <option value="youtube">{dict.video.preset_youtube}</option>
+            <option value="tiktok">{dict.video.preset_tiktok}</option>
+            <option value="mp3_extract">{dict.video.preset_mp3}</option>
           </select>
         </div>
 
         <div className="ml-auto flex items-center gap-4">
           <button onClick={onReset} className="text-slate-400 hover:text-slate-600 text-sm font-bold px-4 transition-colors">
-            キャンセル
+            {dict.common.cancel}
           </button>
           
           {anyCompleted && (
@@ -235,7 +238,7 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset }
               className="bg-slate-900 hover:bg-slate-800 text-white font-black px-6 py-3.5 rounded-2xl transition-all shadow-lg flex items-center gap-2 text-sm"
             >
               {isZipping ? <Loader2 className="w-5 h-5 animate-spin" /> : <FileArchive className="w-5 h-5" />}
-              すべて保存 (ZIP)
+              {dict.video.download_all}
             </button>
           )}
 
@@ -246,7 +249,7 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset }
                 className="bg-accent-video hover:bg-sky-600 text-white font-black px-10 py-3.5 rounded-2xl transition-all shadow-lg hover:shadow-xl flex items-center gap-2 text-sm"
             >
                 {isProcessing ? <Loader2 className="w-5 h-5 animate-spin" /> : <Play className="w-5 h-5" />}
-                一括変換を実行
+                {dict.video.process_all}
             </button>
           )}
         </div>
@@ -258,7 +261,7 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset }
           <div className="flex items-center justify-between">
             <h4 className="font-bold flex items-center gap-3 text-slate-800">
               <Loader2 className="w-5 h-5 animate-spin text-accent-video" />
-              動画を最適化中...
+              {dict.video.processing_label}
             </h4>
             <span className="text-sm font-black font-mono text-accent-video">{progress}%</span>
           </div>
@@ -303,7 +306,7 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset }
                   <span className="flex items-center gap-2">
                     <span className="text-slate-300">→</span>
                     <span className="text-sky-500 bg-sky-50 px-1.5 py-0.5 rounded border border-sky-100 animate-pulse font-black">
-                      約 {estimateSize(mFile)} MB
+                      {estimateSize(mFile)}
                     </span>
                   </span>
                 )}
@@ -334,7 +337,7 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset }
               {mFile.status === "completed" && (
                 <div className="flex items-center gap-1.5 text-accent-video bg-sky-50 px-4 py-2 rounded-xl border border-sky-100 shadow-sm animate-in zoom-in-95">
                   <CheckCircle className="w-4 h-4" />
-                  <span className="text-[10px] font-black uppercase tracking-widest leading-none">SUCCESS</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest leading-none">{dict.video.success}</span>
                 </div>
               )}
               {mFile.status === "processing" && <Loader2 className="w-4 h-4 animate-spin text-accent-video" />}

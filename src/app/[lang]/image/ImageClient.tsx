@@ -6,7 +6,12 @@ import { FileUploader } from "@/components/FileUploader";
 import { ImageConverter } from "@/components/ImageConverter";
 import { ShieldCheck, Camera, Info } from "lucide-react";
 
-export default function ImageClient() {
+interface ImageClientProps {
+  lang: string;
+  dict: any;
+}
+
+export default function ImageClient({ lang, dict }: ImageClientProps) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const handleFileSelect = (files: File[]) => {
@@ -20,20 +25,22 @@ export default function ImageClient() {
   return (
     <ConverterLayout 
       category="Image Converter"
-      title="画像コンバーター (HEIC/WebP対応)"
-      description="PNG, JPG, WebP への変換と一括リサイズ。iPhoneのHEIC形式もブラウザで即座に変換可能。"
+      title={dict.image_page.title}
+      description={dict.image_page.description}
       color="bg-emerald-500"
+      lang={lang}
+      dict={dict}
     >
       <div className="flex flex-col gap-12 h-full">
         {selectedFiles.length > 0 ? (
-          <ImageConverter files={selectedFiles} onReset={handleReset} />
+          <ImageConverter files={selectedFiles} onReset={handleReset} lang={lang} dict={dict} />
         ) : (
           <>
             <FileUploader 
               onFileSelect={handleFileSelect} 
               accept=".png,.jpg,.jpeg,.webp,.heic,.heif" 
               color="bg-emerald-500" 
-              label="画像変換を開始" 
+              label={dict.image.process_all} 
             />
 
             {/* SEO & Feature Sections */}
@@ -45,10 +52,10 @@ export default function ImageClient() {
                   </div>
                   <div>
                     <h2 className="font-black text-slate-900 mb-3 text-xl tracking-tight">
-                      サーバーへのアップロードなし
+                      {dict.image_page.secure_title}
                     </h2>
                     <p className="text-sm text-slate-500 leading-relaxed font-medium">
-                      写真は個人情報です。当ツールでは、ファイルはサーバーには送信されず、あなたのブラウザ内だけで変換が完結します。機密性の高い写真やプライベートな画像も安心して処理可能です。
+                      {dict.image_page.secure_desc}
                     </p>
                   </div>
                 </div>
@@ -61,10 +68,10 @@ export default function ImageClient() {
                   </div>
                   <div>
                     <h2 className="font-black text-slate-900 mb-3 text-xl tracking-tight">
-                      Exif情報（位置情報）の自動削除
+                      {dict.image_page.exif_title}
                     </h2>
                     <p className="text-sm text-slate-500 leading-relaxed font-medium">
-                      SNSに投稿する前に位置情報を消したい場合も安心。変換プロセスでメタデータを制御し、プライバシーを守ります。「画像 位置情報 削除」を素早く安全に実現。
+                      {dict.image_page.exif_desc}
                     </p>
                   </div>
                 </div>
@@ -75,19 +82,19 @@ export default function ImageClient() {
             <article className="prose prose-slate max-w-none bg-white/50 border border-slate-100 p-12 rounded-[2.5rem]">
               <h3 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-3">
                 <Info className="w-6 h-6 text-slate-400" /> 
-                HEIC JPG 変換・WebP 変換を最速で
+                {dict.image_page.info_title}
               </h3>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 <div>
-                  <h4 className="font-bold text-slate-800 mb-2">iPhoneユーザーに最適</h4>
+                  <h4 className="font-bold text-slate-800 mb-2">{dict.image_page.iphone_title}</h4>
                   <p className="text-sm text-slate-500 leading-relaxed">
-                    最新のiPhoneで保存されるHEIC形式。PCや古いデバイスでは読み取れないことがよくあります。当ツールなら、大量のHEICファイルを一括でJPGやPNGに変換できます。
+                    {dict.image_page.iphone_desc}
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-bold text-slate-800 mb-2">プロのWeb制作にも</h4>
+                  <h4 className="font-bold text-slate-800 mb-2">{dict.image_page.pro_title}</h4>
                   <p className="text-sm text-slate-500 leading-relaxed">
-                    Webサイトの表示速度改善に欠かせない WebP への変換もサポート。一括リサイズ機能と組み合わせることで、ブロガーやWebディレクターの作業効率を劇的に向上させます。
+                    {dict.image_page.pro_desc}
                   </p>
                 </div>
               </div>

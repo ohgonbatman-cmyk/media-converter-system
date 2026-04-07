@@ -26,9 +26,11 @@ interface MediaFile {
 interface PdfConverterProps {
   files: File[];
   onReset: () => void;
+  lang: string;
+  dict: any;
 }
 
-export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset }) => {
+export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang, dict }) => {
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [overallProgress, setOverallProgress] = useState(0);
@@ -86,7 +88,7 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset }) =>
 
         // Add page header/marker as a heading
         docChildren.push(new Paragraph({
-          text: `Page ${i}`,
+          text: dict.pdf.page_label.replace("{page}", i.toString()),
           heading: HeadingLevel.HEADING_2,
           spacing: { before: 400, after: 200 },
         }));
@@ -119,8 +121,6 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset }) =>
 
               if (img && img.data) {
                 // Convert raw image data to a usable format for docx
-                // Note: This is an simplified approach. 
-                // Actual bitmap layout in PDF is complex.
                 const canvas = document.createElement("canvas");
                 canvas.width = img.width;
                 canvas.height = img.height;
@@ -213,16 +213,16 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset }) =>
       {/* Options Bar */}
       <div className="bg-white border border-slate-200 p-6 rounded-3xl flex flex-wrap items-center gap-6 shadow-sm ring-1 ring-slate-100">
         <div className="flex flex-col gap-2">
-          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left leading-none">形式</label>
+          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left leading-none">{dict.pdf.format_label}</label>
           <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 overflow-hidden">
             <FileText className="w-4 h-4 text-sky-500" />
-            PDF &rarr; Word (.docx)
+            {dict.pdf.format_desc}
           </div>
         </div>
 
         <div className="ml-auto flex items-center gap-4">
           <button onClick={onReset} className="text-slate-400 hover:text-slate-600 text-sm font-bold px-4 transition-colors">
-            キャンセル
+            {dict.common.cancel}
           </button>
           
           {!allCompleted && (
@@ -232,7 +232,7 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset }) =>
                 className="bg-accent-video hover:bg-sky-700 text-white font-black px-10 py-3.5 rounded-2xl transition-all shadow-lg hover:shadow-xl flex items-center gap-2 text-sm"
             >
                 {isProcessing ? <Loader2 className="w-5 h-5 animate-spin" /> : <Play className="w-5 h-5" />}
-                Wordへ変換を開始
+                {dict.pdf.process_all}
             </button>
           )}
         </div>
@@ -244,7 +244,7 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset }) =>
           <div className="flex items-center justify-between">
             <h4 className="font-bold flex items-center gap-3 text-slate-800">
               <Loader2 className="w-5 h-5 animate-spin text-sky-500" />
-              PDFを解析・Word生成中...
+              {dict.pdf.processing_label}
             </h4>
             <span className="text-sm font-black font-mono text-sky-500">{overallProgress}%</span>
           </div>
@@ -255,7 +255,7 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset }) =>
             />
           </div>
           <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest text-center mt-1 scale-90">
-            大規模なドキュメントや高画質画像が含まれる場合は時間がかかることがあります
+            {dict.pdf.processing_desc}
           </p>
         </div>
       )}
@@ -283,7 +283,7 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset }) =>
               {mFile.status === "completed" && (
                 <div className="flex items-center gap-1.5 text-sky-600 bg-sky-50 px-4 py-2 rounded-xl border border-sky-100 shadow-sm animate-in zoom-in-95">
                   <CheckCircle className="w-4 h-4" />
-                  <span className="text-[10px] font-black uppercase tracking-widest leading-none">CONVERTED</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest leading-none">{dict.pdf.success}</span>
                 </div>
               )}
               {mFile.status === "processing" && <Loader2 className="w-4 h-4 animate-spin text-sky-500" />}

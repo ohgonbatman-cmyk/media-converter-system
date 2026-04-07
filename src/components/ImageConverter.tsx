@@ -18,9 +18,11 @@ interface ImageFile {
 interface ImageConverterProps {
   files: File[];
   onReset: () => void;
+  lang: string;
+  dict: any;
 }
 
-export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset }) => {
+export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset, lang, dict }) => {
   const [imageFiles, setImageFiles] = useState<ImageFile[]>([]);
   const [targetFormat, setTargetFormat] = useState<string>("webp");
   const [targetWidth, setTargetWidth] = useState<number>(0);
@@ -89,7 +91,8 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset }
     else if (targetFormat === "jpeg") ratio = 0.2;
     
     const sizeBytes = pixels * ratio;
-    return (sizeBytes / 1024).toFixed(1);
+    const sizeKb = (sizeBytes / 1024).toFixed(1);
+    return dict.image.est_size.replace("{size}", sizeKb);
   };
 
   const convertImage = async (imgFile: ImageFile): Promise<{ url: string, size: number }> => {
@@ -196,24 +199,24 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset }
       {/* Options Bar */}
       <div className="bg-white border border-slate-200 p-6 rounded-3xl flex flex-wrap items-center gap-6 shadow-sm ring-1 ring-slate-100">
         <div className="flex flex-col gap-2">
-          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">変換先形式</label>
+          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">{dict.image.format_label}</label>
           <select 
             value={targetFormat}
             onChange={(e) => setTargetFormat(e.target.value)}
             className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent-image/20 transition-all"
           >
-            <option value="webp">WebP (推奨)</option>
+            <option value="webp">WebP (Recommended)</option>
             <option value="png">PNG</option>
             <option value="jpeg">JPG</option>
           </select>
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">リサイズ (幅)</label>
+          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">{dict.image.resize_label}</label>
           <div className="flex items-center gap-2">
             <input 
               type="number" 
-              placeholder="元のサイズ"
+              placeholder={dict.image.placeholder}
               onChange={(e) => setTargetWidth(Number(e.target.value))}
               className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm w-32 font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent-image/20"
             />
@@ -223,7 +226,7 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset }
 
         {/* Exif Option */}
         <div className="flex flex-col gap-2 items-start">
-          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">プライバシー設定</label>
+          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">{dict.image.privacy_label}</label>
           <button 
             onClick={() => setPreserveExif(!preserveExif)}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-xs font-bold transition-all ${
@@ -233,7 +236,7 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset }
             }`}
           >
             <Shield className={`w-3.5 h-3.5 ${!preserveExif ? "fill-emerald-700/10" : ""}`} />
-            {!preserveExif ? "Exif情報を破棄 (安全)" : "Exif情報を保持"}
+            {!preserveExif ? dict.image.exif_strip : dict.image.exif_keep}
           </button>
         </div>
 
@@ -242,7 +245,7 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset }
             onClick={onReset}
             className="text-slate-400 hover:text-slate-600 text-sm font-bold transition-colors px-4"
           >
-            キャンセル
+            {dict.common.cancel}
           </button>
           
           {anyCompleted && (
@@ -252,7 +255,7 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset }
               className="bg-slate-900 hover:bg-slate-800 text-white font-black px-6 py-3.5 rounded-2xl transition-all shadow-lg flex items-center gap-2 text-sm"
             >
               {isZipping ? <Loader2 className="w-5 h-5 animate-spin" /> : <FileArchive className="w-5 h-5" />}
-              すべて保存 (ZIP)
+              {dict.image.download_all}
             </button>
           )}
 
@@ -263,7 +266,7 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset }
               className="bg-accent-image hover:bg-emerald-700 text-white font-black px-10 py-3.5 rounded-2xl disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl flex items-center gap-2 text-sm"
             >
               {isProcessingAll ? <Loader2 className="w-5 h-5 animate-spin" /> : <ImageIcon className="w-5 h-5" />}
-              一括変換を開始
+              {dict.image.process_all}
             </button>
           )}
         </div>
@@ -295,7 +298,7 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset }
                   <span className="flex items-center gap-2">
                     <span className="text-slate-300">→</span>
                     <span className="text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100 animate-pulse font-black">
-                      約 {estimateSize(imgFile)} KB
+                      {estimateSize(imgFile)}
                     </span>
                   </span>
                 )}
@@ -315,7 +318,7 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset }
                 </span>
                 
                 {imgFile.file.name.toLowerCase().endsWith(".heic") && (
-                  <span className="px-1.5 py-0.5 bg-sky-50 text-sky-600 rounded">HEIC 対応</span>
+                  <span className="px-1.5 py-0.5 bg-sky-50 text-sky-600 rounded">{dict.image.heic_support}</span>
                 )}
               </div>
             </div>
@@ -325,7 +328,7 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset }
               {imgFile.status === "completed" && (
                 <div className="flex items-center gap-1.5 text-accent-image bg-emerald-50 px-3 py-2 rounded-xl border border-emerald-100">
                   <CheckCircle className="w-4 h-4" />
-                  <span className="text-[10px] font-black uppercase tracking-widest">SUCCESS</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest">{dict.image.success}</span>
                 </div>
               )}
               {imgFile.status === "processing" && (

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Script from "next/script";
+import { getDictionary, Locale } from "@/lib/get-dictionary";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,21 +14,33 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-import Script from "next/script";
+export async function generateMetadata(
+  props: {
+    params: Promise<{ lang: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
+  const { lang } = params;
+  const dict = await getDictionary(lang as Locale);
+  return {
+    title: dict.metadata.home.title,
+    description: dict.metadata.home.description,
+  };
+}
 
-export const metadata: Metadata = {
-  title: "Media Converter | Browser Based Tool",
-  description: "Secure, client-side media converter for images, videos, and audio. No server uploads.",
-};
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default async function RootLayout(
+  props: {
+    children: React.ReactNode;
+    params: Promise<{ lang: string }>;
+  }
+) {
+  const params = await props.params;
+  const { lang } = params;
+  const { children } = props;
+  
   return (
     <html
-      lang="ja"
+      lang={lang}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >

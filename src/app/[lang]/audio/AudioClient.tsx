@@ -6,7 +6,12 @@ import { FileUploader } from "@/components/FileUploader";
 import { AudioConverter } from "@/components/AudioConverter";
 import { Music, Activity, Archive, Speaker, Info } from "lucide-react";
 
-export default function AudioClient() {
+interface AudioClientProps {
+  lang: string;
+  dict: any;
+}
+
+export default function AudioClient({ lang, dict }: AudioClientProps) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const handleFileSelect = (files: File[]) => {
@@ -20,20 +25,22 @@ export default function AudioClient() {
   return (
     <ConverterLayout 
       category="Audio Converter"
-      title="音声コンバーター (プロ仕様設定)"
-      description="MP3, WAV, AAC, OGG への詳細設定変換。ハイレゾ音源やビットレート固定など、音質重視の処理をブラウザだけで実現。"
+      title={dict.audio_page.title}
+      description={dict.audio_page.description}
       color="bg-indigo-500"
+      lang={lang}
+      dict={dict}
     >
       <div className="flex flex-col gap-12 h-full">
         {selectedFiles.length > 0 ? (
-          <AudioConverter files={selectedFiles} onReset={handleReset} />
+          <AudioConverter files={selectedFiles} onReset={handleReset} lang={lang} dict={dict} />
         ) : (
           <>
             <FileUploader 
               onFileSelect={handleFileSelect} 
               accept=".mp3,.wav,.aac,.ogg,.flac" 
               color="bg-indigo-500" 
-              label="音声変換を開始" 
+              label={dict.common.launch_tool} 
             />
 
             {/* SEO & Feature Sections */}
@@ -45,10 +52,10 @@ export default function AudioClient() {
                   </div>
                   <div>
                     <h2 className="font-black text-slate-900 mb-3 text-xl tracking-tight">
-                      詳細な出力スペック指定
+                      {dict.audio_page.spec_title}
                     </h2>
                     <p className="text-sm text-slate-500 leading-relaxed font-medium">
-                      ビットレート **320kbps**, サンプリングレート **48kHz** といったプロフェッショナル仕様の数値を直接指定可能。オーディオマニアや配信者も納得のクオリティを保証します。
+                      {dict.audio_page.spec_desc}
                     </p>
                   </div>
                 </div>
@@ -61,10 +68,10 @@ export default function AudioClient() {
                   </div>
                   <div>
                     <h2 className="font-black text-slate-900 mb-3 text-xl tracking-tight">
-                      無劣化 (Lossless) 変換対応
+                      {dict.audio_page.lossless_title}
                     </h2>
                     <p className="text-sm text-slate-500 leading-relaxed font-medium">
-                      FLACやWAVへの相互変換において、音質劣化を一切許さないロスレス変換をサポート。大切な「アルバム一括変換」も、音質を維持したままスピーディーに行えます。
+                      {dict.audio_page.lossless_desc}
                     </p>
                   </div>
                 </div>
@@ -78,10 +85,10 @@ export default function AudioClient() {
                   <Archive className="w-4 h-4" /> Batch Workflows
                 </div>
                 <h3 className="text-2xl font-black text-slate-900 mb-4 tracking-tight">
-                  アルバム1枚分を一括変換して、ZIPでまとめてダウンロード
+                  {dict.audio_page.batch_title}
                 </h3>
                 <p className="text-slate-500 text-sm leading-relaxed max-w-xl font-medium">
-                  複数のオーディオファイルを一挙にドラッグ＆ドロップ。個別に変換設定をする手間を省き、最後はJSZipによる一括ダウンロードで作業を完結させることができます。
+                  {dict.audio_page.batch_desc}
                 </p>
               </div>
               <div className="hidden lg:block">
@@ -95,19 +102,19 @@ export default function AudioClient() {
             <article className="prose prose-slate max-w-none bg-white/50 border border-slate-100 p-12 rounded-[2.5rem]">
               <h3 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-3">
                 <Info className="w-6 h-6 text-slate-400" /> 
-                音楽制作・ポッドキャストに最適
+                {dict.audio_page.info_title}
               </h3>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 <div>
-                  <h4 className="font-bold text-slate-800 mb-2">WAV MP3 変換の正確さ</h4>
+                  <h4 className="font-bold text-slate-800 mb-2">{dict.audio_page.wav_title}</h4>
                   <p className="text-sm text-slate-500 leading-relaxed">
-                    最新のエンコードアルゴリズムを使用。WAVからのMP3圧縮も、アーティファクトを最小限に抑え、クリアな音色を維持します。
+                    {dict.audio_page.wav_desc}
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-bold text-slate-800 mb-2">無料、かつ無制限</h4>
+                  <h4 className="font-bold text-slate-800 mb-2">{dict.audio_page.limit_title}</h4>
                   <p className="text-sm text-slate-500 leading-relaxed">
-                    ファイルサイズ制限や回数制限なし。ブラウザリソースを最大限に活用し、ローカル環境のパワーで快適に変換処理が行えます。
+                    {dict.audio_page.limit_desc}
                   </p>
                 </div>
               </div>

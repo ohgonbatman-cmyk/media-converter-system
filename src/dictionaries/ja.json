@@ -1,0 +1,174 @@
+{
+  "common": {
+    "title": "Media Converter",
+    "secure": "SECURE",
+    "fast": "FAST",
+    "launch_tool": "ツールを起動",
+    "cancel": "キャンセル"
+  },
+  "metadata": {
+    "home": {
+      "title": "Media Converter | 完全ローカル処理の次世代メディア変換スイート",
+      "description": "画像、動画、音声、PDFを高精度に変換。プライバシーを第一に考え、すべての処理をブラウザ内で行います。サーバーへのアップロードは一切不要です。"
+    },
+    "image": {
+      "title": "画像変換 | 一括リサイズ & HEIC対応 - Media Converter",
+      "description": "ブラウザ完結で安全な画像変換ツール。HEICからJPGへの変換、WebP対応、一括リサイズも可能。写真はサーバーに送信されず、あなたのデバイス内だけで処理されます。"
+    },
+    "video": {
+      "title": "動画変換・圧縮 | 高画質 & FFmpeg - Media Converter",
+      "description": "ブラウザ上で動画ファイルを高速変換。MP4, WebM, MOV対応。YouTubeやTikTokに最適なプリセット設定、動画からの音声抜き出し（MP3）も。機密動画も安心のローカル処理。"
+    },
+    "audio": {
+      "title": "音声変換 | 高音質 & FLAC・AAC対応 - Media Converter",
+      "description": "音質にこだわる人のためのオーディオコンバーター。WAV, MP3, FLAC, AAC対応。320kbpsなどの高音質設定や、無劣化（Lossless）変換もブラウザのみで完結。一括変換でアルバムも一瞬。"
+    },
+    "pdf": {
+      "title": "PDF Word 変換 | レイアウト維持 & 高精度抽出 - Media Converter",
+      "description": "ブラウザ完結でPDFからWord (.docx) へ高精度変換。レイアウトを崩さず、テキストや画像も抽出可能。機密書類もサーバーに送信せず、安全に処理が完結するビジネス向けツール。"
+    }
+  },
+  "sidebar": {
+    "home": "ホーム",
+    "image": "画像変換",
+    "video": "動画・動画圧縮",
+    "audio": "音声変換",
+    "pdf": "PDF → Word",
+    "sponsored": "Sponsored"
+  },
+  "home": {
+    "hero_badge": "Privacy-First Technology",
+    "hero_title": "あなたのデータを、\nあなたの手の中で。",
+    "hero_description": "Media Converterは、WebAssembly技術を活用した完全ローカル処理ツールです。写真は個人情報。動画は資産。だからこそ、サーバーには一切送りません。",
+    "hero_button": "画像変換を試す",
+    "main_title": "次世代メディア変換スイート",
+    "main_description": "すべての処理をあなたのブラウザ内だけで。サーバー不要の、全く新しい変換体験。",
+    "security_title": "100% Browser-Based Security",
+    "security_description": "当サイトの変換エンジンは「JavaScript」および「WebAssembly」によってあなたのブラウザ上で直接動作します。変換の際にインターネット接続（サーバーへのアップロード）は必要ありません。",
+    "security_no_upload": "No Cloud Uploads",
+    "security_local": "Local Processing",
+    "security_speed": "High-Speed Engines",
+    "tools": {
+      "image": {
+        "title": "画像コンバーター",
+        "description": "HEICからJPGへの変換、WebP対応、一括リサイズ。位置情報（Exif）の削除機能でプライバシーも保護。"
+      },
+      "video": {
+        "title": "動画コンバーター",
+        "description": "MP4/MOV等の相互変換。iPhoneやTikTokに最適化されたプリセットで、誰でもプロ品質の書き出しが可能。"
+      },
+      "audio": {
+        "title": "音声コンバーター",
+        "description": "MP3/WAV/FLAC変換。320kbpsの高音質設定やサンプリングレート変更など、細かな音質調整に対応。"
+      },
+      "pdf": {
+        "title": "PDF → Word 変換",
+        "description": "PDFを編集可能なWord形式へ。ビジネス文書のレイアウトを維持したまま、安全に変換を行います。"
+      }
+    }
+  },
+  "image": {
+    "format_label": "変換先形式",
+    "resize_label": "リサイズ (幅)",
+    "placeholder": "元のサイズ",
+    "privacy_label": "プライバシー設定",
+    "exif_strip": "Exif情報を破棄 (安全)",
+    "exif_keep": "Exif情報を保持",
+    "process_all": "一括変換を開始",
+    "download_all": "すべて保存 (ZIP)",
+    "success": "SUCCESS",
+    "heic_support": "HEIC 対応",
+    "est_size": "約 {size} KB"
+  },
+  "image_page": {
+    "title": "画像コンバーター (HEIC/WebP対応)",
+    "description": "PNG, JPG, WebP への変換と一括リサイズ。iPhoneのHEIC形式もブラウザで即座に変換可能。",
+    "secure_title": "サーバーへのアップロードなし",
+    "secure_desc": "写真は個人情報です。当ツールでは、ファイルはサーバーには送信されず、あなたのブラウザ内だけで変換が完結します。機密性の高い写真やプライベートな画像も安心して処理可能です。",
+    "exif_title": "Exif情報（位置情報）の自動削除",
+    "exif_desc": "SNSに投稿する前に位置情報を消したい場合も安心。変換プロセスでメタデータを制御し、プライバシーを守ります。「画像 位置情報 削除」を素早く安全に実現。",
+    "info_title": "HEIC JPG 変換・WebP 変換を最速で",
+    "iphone_title": "iPhoneユーザーに最適",
+    "iphone_desc": "最新のiPhoneで保存されるHEIC形式。PCや古いデバイスでは読み取れないことがよくあります。当ツールなら、大量のHEICファイルを一括でJPGやPNGに変換できます。",
+    "pro_title": "プロのWeb制作にも",
+    "pro_desc": "Webサイトの表示速度改善に欠かせない WebP への変換もサポート。一括リサイズ機能と組み合わせることで、ブロガーやWebディレクターの作業効率を劇的に向上させます。"
+  },
+  "video": {
+    "success": "SUCCESS",
+    "est_size": "約 {size} MB",
+    "format_label": "基本形式",
+    "preset_label": "最適化プリセット",
+    "preset_none": "なし (基本形式を使用)",
+    "preset_iphone": "iPhone / iPad 再生用",
+    "preset_youtube": "YouTube アップロード用 (高画質)",
+    "preset_tiktok": "TikTok / Shorts 用 (9:16 クロップ)",
+    "preset_mp3": "音声のみ抽出 (MP3)",
+    "processing_label": "動画を最適化中...",
+    "download_all": "すべて保存 (ZIP)",
+    "process_all": "一括変換を実行"
+  },
+  "video_page": {
+    "title": "動画コンバーター & 高速圧縮",
+    "description": "MP4, WebM への変換と、デバイス別の最適化プリセット。ブラウザ上で動作するため、大容量動画のアップロード不要。",
+    "preset_title": "デバイス別プリセット設定",
+    "preset_desc": "「iPhone用」「YouTube用」「TikTok用」など、投稿先に最適な解像度やビットレートを自動で選択。専門知識がなくても、最高品質の動画を手軽に作成できます。",
+    "audio_title": "動画から音声（MP3）を抽出",
+    "audio_desc": "「動画 音声 抜き出し」機能により、動画から音声トラックを高品質に抽出。ポッドキャスト作成や音楽制作の素材作りにも最適です。ワンクリックでMP3変換が可能。",
+    "zap_title": "リアルタイムの進捗表示で安心",
+    "zap_desc": "動画変換は時間がかかる作業です。当コンバーターは、独自の並列処理エンジン（FFmpeg.wasm）を搭載し、変換プロセスをパーセンテージで表示します。ブラウザ内で動作するため、ネットワークの切断でアップロードがやり直しになる心配もありません。",
+    "info_title": "TikTok・YouTube投稿者の必須ツール",
+    "mov_title": "MP4 MOV 変換の利便性",
+    "mov_desc": "スマホで撮影したMOV形式を、互換性の高いMP4に素早く変換。編集ソフトへの読み込みトラブルを未然に防ぎます。",
+    "privacy_title": "プライバシーとセキュリティ",
+    "privacy_desc": "仕事で扱う機密動画も、外部サーバーを介さずに自分のPCで変換できるため、情報漏洩のリスクをゼロに抑えられます。"
+  },
+  "audio": {
+    "success": "SUCCESS",
+    "est_size": "約 {size} MB",
+    "format_label": "出力形式",
+    "bitrate_label": "ビットレート",
+    "samplerate_label": "サンプリングレート",
+    "processing_label": "音声を処理中...",
+    "security_notice": "ブラウザ内で安全に処理しています。外部送信は行われません。",
+    "download_all": "すべて保存 (ZIP)",
+    "process_all": "一括変換を実行"
+  },
+  "audio_page": {
+    "title": "音声コンバーター (プロ仕様設定)",
+    "description": "MP3, WAV, AAC, OGG への詳細設定変換。ハイレゾ音源やビットレート固定など、音質重視の処理をブラウザだけで実現。",
+    "spec_title": "詳細な出力スペック指定",
+    "spec_desc": "ビットレート 320kbps, サンプリングレート 48kHz といったプロフェッショナル仕様の数値を直接指定可能。オーディオマニアや配信者も納得のクオリティを保証します。",
+    "lossless_title": "無劣化 (Lossless) 変換対応",
+    "lossless_desc": "FLACやWAVへの相互変換において、音質劣化を一切許さないロスレス変換をサポート。大切な「アルバム一括変換」も、音質を維持したままスピーディーに行えます。",
+    "batch_title": "アルバム1枚分を一括変換して、ZIPでまとめてダウンロード",
+    "batch_desc": "複数のオーディオファイルを一挙にドラッグ＆ドロップ。個別に変換設定をする手間を省き、最後は一括ダウンロードで作業を完結させることができます。",
+    "info_title": "音楽制作・ポッドキャストに最適",
+    "wav_title": "WAV MP3 変換の正確さ",
+    "wav_desc": "最新のエンコードアルゴリズムを使用。WAVからのMP3圧縮も、アーティファクトを最小限に抑え、クリアな音色を維持します。",
+    "limit_title": "無料、かつ無制限",
+    "limit_desc": "ファイルサイズ制限や回数制限なし。ブラウザリソースを最大限に活用し、ローカル環境のパワーで快適に変換処理が行えます。"
+  },
+  "pdf_page": {
+    "title": "PDFコンバーター (高精度Word変換)",
+    "description": "PDFからWord (.docx) への変換、テキスト・画像抽出。ビジネス文書のレイアウトを維持したまま、編集可能な形式へ。",
+    "loading": "PDFエンジンを読み込んでいます...",
+    "layout_title": "レイアウトが崩れない構造維持",
+    "layout_desc": "「PDF Word 変換」で最も多い不満はレイアウトの崩れ。当ツールでは、独自の解析エンジンにより文書の構造を極力維持。フォントや配置の正確さを徹底追求しています。",
+    "secure_title": "ビジネス用機密書類も安心",
+    "secure_desc": "契約書や企画書など、外部サーバーにアップロードしたくない書類も、ブラウザ内で完結。情報漏洩リスクを物理的に遮断した、最高レベルのセキュリティ環境で処理できます。",
+    "info_title": "あらゆるビジネス・学習シーンで",
+    "word_title": "Wordへの高精度変換",
+    "word_desc": "PDFを編集可能なWord形式へ変換。再入力の手間を省き、既存のドキュメントを即座に再利用できます。事務職や学生の生産性を最大化します。",
+    "extract_title": "画像・テキスト抽出",
+    "extract_desc": "PDF内の画像だけを取り出したい、あるいはテキストだけを抜き出したい、といったニーズにも対応。資料作成の素材集めを強力にバックアップ。"
+  },
+  "pdf": {
+    "format_label": "形式",
+    "format_desc": "PDF → Word (.docx)",
+    "process_all": "Wordへ変換を開始",
+    "processing_label": "PDFを解析・Word生成中...",
+    "processing_desc": "大規模なドキュメントや高画質画像が含まれる場合は時間がかかることがあります",
+    "page_label": "ページ {page}",
+    "success": "CONVERTED"
+  }
+}
