@@ -3,6 +3,8 @@ import VideoClient from "./VideoClient";
 import { getDictionary, Locale } from "@/lib/get-dictionary";
 import { getAlternates } from "@/lib/seo";
 
+export const runtime = "edge";
+
 export async function generateMetadata(
   props: {
     params: Promise<{ lang: string }>;
