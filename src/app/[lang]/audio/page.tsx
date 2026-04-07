@@ -3,6 +3,7 @@ import AudioClient from "./AudioClient";
 import { getDictionary, Locale } from "@/lib/get-dictionary";
 import { getAlternates } from "@/lib/seo";
 
+export const runtime = "edge";
 
 export async function generateMetadata(
   props: {

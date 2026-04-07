@@ -4,6 +4,7 @@ import "./globals.css";
 import Script from "next/script";
 import { getDictionary, Locale } from "@/lib/get-dictionary";
 
+export const runtime = "edge";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
