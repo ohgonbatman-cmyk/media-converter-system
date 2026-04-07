@@ -4,11 +4,7 @@ import "./globals.css";
 import Script from "next/script";
 import { getDictionary, Locale } from "@/lib/get-dictionary";
 
-export async function generateStaticParams() {
-  return [{ lang: "en" }, { lang: "ja" }, { lang: "es" }];
-}
-
-export const dynamicParams = false;
+export const runtime = "edge";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
