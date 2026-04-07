@@ -2,18 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import { Download, X, FileText, CheckCircle, Loader2, PlayCircle, FileArchive, Play, FileDigit } from "lucide-react";
-import { 
-  Document, 
-  Packer, 
-  Paragraph, 
-  TextRun, 
-  ImageRun, 
-  HeadingLevel, 
-  AlignmentType,
-} from "docx";
 
-// pdfjs-dist is loaded dynamically inside the conversion function to avoid SSR/Module init errors
-// import * as pdfjsLib from "pdfjs-dist";
+// pdfjs-dist and docx are loaded dynamically inside the conversion function
+// to avoid Edge Runtime / SSR errors (document is not defined).
+// Do NOT add static imports for these libraries.
 
 interface MediaFile {
   file: File;
@@ -50,8 +42,13 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
     setMediaFiles(prev => prev.map(f => f.id === mediaFile.id ? { ...f, status: "processing" } : f));
 
     try {
+      // Dynamic imports: these libraries reference `document` at module level
+      // and MUST NOT be statically imported to avoid Edge Runtime crashes.
       const pdfjsLib = await import("pdfjs-dist");
-      // Use fixed worker version matching our downgraded package for reliability
+      const docxModule = await import("docx");
+      const { Document, Packer, Paragraph, TextRun, ImageRun, HeadingLevel, AlignmentType } = docxModule;
+
+      // Use fixed worker version matching our package for reliability
       pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs`;
 
       const arrayBuffer = await mediaFile.file.arrayBuffer();

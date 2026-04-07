@@ -24,16 +24,6 @@ interface PdfClientProps {
 export default function PdfClient({ lang, dict }: PdfClientProps) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
-  const PdfConverter = dynamic(() => import("@/components/PdfConverter").then(mod => mod.PdfConverter), {
-    ssr: false,
-    loading: () => (
-      <div className="flex flex-col items-center justify-center p-12 bg-white border border-slate-100 rounded-[2.5rem] shadow-sm">
-        <div className="w-12 h-12 border-4 border-sky-500 border-t-transparent rounded-full animate-spin mb-4" />
-        <p className="text-slate-500 font-bold tracking-tight">{dict.pdf_page.loading}</p>
-      </div>
-    )
-  });
-
   const handleFileSelect = (files: File[]) => {
     setSelectedFiles(files);
   };
