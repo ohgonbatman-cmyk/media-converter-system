@@ -112,6 +112,7 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset, 
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.onload = () => {
+        if (typeof document === "undefined") return reject(new Error("Browser environment required"));
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
         if (!ctx) return reject(new Error("Failed to get canvas context"));
@@ -174,16 +175,18 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset, 
 
     const content = await zip.generateAsync({ type: "blob" });
     const url = URL.createObjectURL(content);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `converted_images_${new Date().getTime()}.zip`;
-    a.click();
+    if (typeof document !== "undefined") {
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `converted_images_${new Date().getTime()}.zip`;
+      a.click();
+    }
     URL.revokeObjectURL(url);
     setIsZipping(false);
   };
 
   const handleDownload = (imgFile: ImageFile) => {
-    if (!imgFile.resultUrl) return;
+    if (!imgFile.resultUrl || typeof document === "undefined") return;
     const a = document.createElement("a");
     const originalName = imgFile.file.name.substring(0, imgFile.file.name.lastIndexOf("."));
     a.href = imgFile.resultUrl;

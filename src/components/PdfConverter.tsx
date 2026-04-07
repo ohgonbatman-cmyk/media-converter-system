@@ -119,7 +119,7 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
                 img = await page.commonObjs.get(imgName);
               }
 
-              if (img && img.data) {
+              if (img && img.data && typeof document !== "undefined") {
                 // Convert raw image data to a usable format for docx
                 const canvas = document.createElement("canvas");
                 canvas.width = img.width;
@@ -197,7 +197,7 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
   };
 
   const handleDownload = (mFile: MediaFile) => {
-    if (!mFile.resultUrl) return;
+    if (!mFile.resultUrl || typeof document === "undefined") return;
     const a = document.createElement("a");
     const originalName = mFile.file.name.substring(0, mFile.file.name.lastIndexOf("."));
     a.href = mFile.resultUrl;

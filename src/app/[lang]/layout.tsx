@@ -6,6 +6,12 @@ import { getDictionary, Locale } from "@/lib/get-dictionary";
 
 export const runtime = "edge";
 
+export async function generateStaticParams() {
+  return [{ lang: "en" }, { lang: "ja" }, { lang: "es" }];
+}
+
+export const dynamicParams = false;
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],

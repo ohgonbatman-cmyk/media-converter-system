@@ -137,16 +137,18 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset, 
 
     const content = await zip.generateAsync({ type: "blob" });
     const url = URL.createObjectURL(content);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `converted_audio_${new Date().getTime()}.zip`;
-    a.click();
+    if (typeof document !== "undefined") {
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `converted_audio_${new Date().getTime()}.zip`;
+      a.click();
+    }
     URL.revokeObjectURL(url);
     setIsZipping(false);
   };
 
   const handleDownload = (mFile: MediaFile) => {
-    if (!mFile.resultUrl) return;
+    if (!mFile.resultUrl || typeof document === "undefined") return;
     const a = document.createElement("a");
     const originalName = mFile.file.name.substring(0, mFile.file.name.lastIndexOf("."));
     a.href = mFile.resultUrl;
