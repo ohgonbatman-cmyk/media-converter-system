@@ -4,8 +4,6 @@ import "./globals.css";
 import Script from "next/script";
 import { getDictionary, Locale } from "@/lib/get-dictionary";
 
-export const runtime = "edge";
-
 export async function generateStaticParams() {
   return [{ lang: "en" }, { lang: "ja" }, { lang: "es" }];
 }
