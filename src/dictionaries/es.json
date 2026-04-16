@@ -1,40 +1,53 @@
 {
   "metadata": {
+    "common": {
+      "site_name": "Sistema Convertidor de Medios",
+      "og_image_alt": "Convertidor de Medios - Procesamiento seguro y en el navegador"
+    },
     "home": {
       "title": "Convertidor de Medios Todo en Uno | Media Converter",
-      "description": "Herramienta gratuita y privada en el navegador para convertir imágenes (HEIC, WebP), video (MP4, MP3) y PDF a Word."
+      "description": "Herramienta gratuita y privada en el navegador para convertir imágenes (HEIC, WebP), video (MP4, MP3) y PDF a Word.",
+      "keywords": ["Conversión de Medios", "Privacidad Primera", "En el Navegador", "Convertidor Local"]
     },
     "image": {
       "title": "Convertidor de Imágenes | HEIC a JPG, WebP a PNG - Media Converter",
-      "description": "Convierte imágenes por lotes localmente. Soporta HEIC, WebP, JPG, PNG y redimensionamiento."
+      "description": "Convierte imágenes por lotes localmente. Soporta HEIC, WebP, JPG, PNG y redimensionamiento.",
+      "keywords": ["Convertidor de Imágenes", "HEIC a JPG", "WebP a PNG", "Redimensionar Imagen", "Local"]
     },
     "video": {
       "title": "Convertidor de Video | MP4, MOV, WebM y Extraer MP3 - Media Converter",
-      "description": "Convierte videos localmente con ajustes para iPhone y redes sociales."
+      "description": "Convierte videos localmente con ajustes para iPhone y redes sociales.",
+      "keywords": ["Convertidor de Video", "MP4 a MOV", "Extraer MP3", "Redimensionar TikTok"]
     },
     "audio": {
       "title": "Convertidor de Audio | MP3, WAV, AAC, FLAC - Media Converter",
-      "description": "Convierte archivos de audio y ajusta el bitrate de forma local y segura."
+      "description": "Convierte archivos de audio y ajusta el bitrate de forma local y segura.",
+      "keywords": ["Convertidor de Audio", "WAV a MP3", "FLAC a MP3", "Alta Calidad", "Privado"]
     },
     "pdf": {
       "title": "Convertir PDF a Word | Alta Precisión - Media Converter",
-      "description": "Conversión precisa de PDF a Word en el navegador. Proceso seguro y local."
+      "description": "Conversión precisa de PDF a Word en el navegador. Proceso seguro y local.",
+      "keywords": ["PDF a Word", "Convertir PDF", "Extraer Texto", "Seguro"]
     },
     "compress_image": {
       "title": "Compresor de Imágenes | Reducir Tamaño sin Perder Calidad - Media Converter",
-      "description": "Optimiza y comprime tus imágenes PNG, JPG y WebP directamente en tu navegador."
+      "description": "Optimiza y comprime tus imágenes PNG, JPG y WebP directamente en tu navegador.",
+      "keywords": ["Comprimir Imagen", "Reducir Tamaño", "Optimizar PNG", "Optimizar JPG"]
     },
     "compress_video": {
       "title": "Compresor de Video | Reducción Rápida de Tamaño - Media Converter",
-      "description": "Comprime archivos de video MP4 y WebM de forma segura y local."
+      "description": "Comprime archivos de video MP4 y WebM de forma segura y local.",
+      "keywords": ["Comprimir Video", "Reducir Tamaño Video", "MP4 Ligero", "Rápido"]
     },
     "compress_audio": {
       "title": "Compresor de Audio | Optimizar MP3 y WAV - Media Converter",
-      "description": "Reduce el tamaño de tus archivos de audio ajustando el bitrate."
+      "description": "Reduce el tamaño de tus archivos de audio ajustando el bitrate.",
+      "keywords": ["Comprimir Audio", "MP3 Ligero", "Reducir Bitrate", "Optimizar"]
     },
     "compress_pdf": {
       "title": "Compresor PDF | Optimizar Documentos - Media Converter",
-      "description": "Reduce el tamaño de tus archivos PDF optimizando imágenes internas."
+      "description": "Reduce el tamaño de tus archivos PDF optimizando imágenes internas.",
+      "keywords": ["Comprimir PDF", "Reducir Tamaño PDF", "Optimizar PDF", "Documentos Ligeros"]
     }
   },
   "sidebar": {
