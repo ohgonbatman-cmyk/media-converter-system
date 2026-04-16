@@ -15,6 +15,7 @@ import {
   Cpu
 } from "lucide-react";
 import { HomeStats } from "@/components/HomeStats";
+import { FAQSection } from "@/components/FAQSection";
 
 interface HomeClientProps {
   lang: string;
@@ -176,6 +177,13 @@ export default function HomeClient({ lang, dict }: HomeClientProps) {
 
         {/* Stats Section */}
         <HomeStats lang={lang} dict={dict} />
+
+        {/* Global FAQ Section */}
+        {dict.home.faq && (
+          <div className="pt-8">
+            <FAQSection items={dict.home.faq} />
+          </div>
+        )}
       </div>
     </ConverterLayout>
   );

@@ -64,6 +64,65 @@
     "compress_pdf": "Comprimir PDF",
     "sponsored": "Patrocinado"
   },
+  "home": {
+    "hero_badge": "Tecnología con Prioridad en la Privacidad",
+    "hero_title": "Tus datos,\nen tus manos.",
+    "hero_description": "Media Converter es una herramienta de procesamiento 100% local que utiliza WebAssembly. Tus fotos son privadas, tus videos son activos. Por eso, nunca los enviamos a un servidor externo.",
+    "hero_button": "Probar imágenes",
+    "main_title": "Suite de Conversión de Siguiente Generación",
+    "main_description": "Todo el procesamiento ocurre exclusivamente en tu navegador. Sin servidores, una experiencia totalmente nueva y segura.",
+    "security_title": "Seguridad 100% Basada en el Navegador",
+    "security_description": "Nuestro motor de conversión funciona mediante JavaScript y WebAssembly directamente en tu navegador. No se requiere conexión a Internet (subida a servidor) para el proceso de conversión.",
+    "security_no_upload": "Sin Subidas a la Nube",
+    "security_local": "Procesamiento Local",
+    "security_speed": "Motores de Alta Velocidad",
+    "tools": {
+      "image": {
+        "title": "Convertidor de Imágenes",
+        "description": "Conversión de HEIC a JPG, soporte WebP y redimensionamiento masivo. Protege tu privacidad eliminando datos de ubicación (Exif)."
+      },
+      "video": {
+        "title": "Convertidor de Video",
+        "description": "Conversión entre MP4/MOV y más. Ajustes optimizados para iPhone o TikTok para obtener resultados de calidad profesional."
+      },
+      "audio": {
+        "title": "Convertidor de Audio",
+        "description": "Conversión MP3/WAV/FLAC. Ajustes de alta calidad a 320kbps y cambios de frecuencia de muestreo de forma local."
+      },
+      "pdf": {
+        "title": "PDF a Word",
+        "description": "Convierte PDF a Word editable manteniendo el diseño del documento de forma segura y privada."
+      }
+    },
+    "stats_section": {
+      "label": "Estadísticas",
+      "today": "Hoy",
+      "total": "Total",
+      "files": "Archivos"
+    },
+    "faq": [
+      {
+        "q": "¿Qué lo diferencia de otros convertidores en línea?",
+        "a": "La mayor diferencia es la 'Privacidad' y el acceso 'Ilimitado'. Mientras que la mayoría de los sitios suben sus archivos a un servidor, nosotros procesamos todo dentro de su navegador. Sus datos físicamente nunca salen de su dispositivo. Además, puede procesar archivos de gigabytes al instante sin esperas de subida."
+      },
+      {
+        "q": "¿Es realmente gratuito para uso ilimitado?",
+        "a": "Sí, 100% gratuito y sin límites. No hay créditos, suscripciones ni muros de pago por tamaño de archivo. Al aprovechar la potencia de su navegador en lugar de servidores costosos, ofrecemos un servicio premium sin costo."
+      },
+      {
+        "q": "¿Cómo convierten archivos sin un servidor?",
+        "a": "Utilizamos WebAssembly (Wasm) para ejecutar 'FFmpeg', el motor estándar mundial, directamente en su navegador. Esto permite que el procesamiento profesional ocurra localmente en su computadora o smartphone."
+      },
+      {
+        "q": "¿Es seguro para documentos confidenciales o fotos privadas?",
+        "a": "Absolutamente. Diseñado específicamente para la privacidad. Ya sean contratos legales (PDF), fotos privadas (HEIC) o videos familiares, sus archivos permanecen bajo su control y nunca llegan a un servidor externo."
+      },
+      {
+        "q": "¿Qué formatos son compatibles?",
+        "a": "Cubrimos lo esencial: Imágenes (HEIC, WebP, PNG, JPG), Video (MP4, MOV, WebM), Audio (MP3, WAV, FLAC, AAC) y PDF a Word. Todas incluyen procesamiento por lotes y descarga en ZIP."
+      }
+    ]
+  },
   "common": {
     "launch_tool": "Iniciar Herramienta",
     "cancel": "Cancelar",

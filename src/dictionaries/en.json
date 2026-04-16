@@ -107,7 +107,29 @@
       "today": "Today",
       "total": "Total",
       "files": "Files"
-    }
+    },
+    "faq": [
+      {
+        "q": "What makes this different from other online converters?",
+        "a": "The biggest advantages are 'Privacy' and 'No Limits.' While most sites upload your files to a server, we process everything inside your browser. Your data physically never leaves your device. This also means you can process gigabyte-sized files instantly without waiting for uploads."
+      },
+      {
+        "q": "Is it really free for unlimited use?",
+        "a": "Yes, 100% free and unlimited. There are no credits, no subscriptions, and no hidden file-size paywalls. By leveraging your browser's power instead of expensive cloud servers, we provide a premium experience at zero cost to you."
+      },
+      {
+        "q": "How do you convert without a server?",
+        "a": "We use cutting-edge WebAssembly (Wasm) to run 'FFmpeg'—the world's standard conversion engine—directly in your browser. This allows professional-grade file processing to happen locally on your computer or smartphone."
+      },
+      {
+        "q": "Is it safe for confidential or private documents?",
+        "a": "Absolutely. This tool was designed specifically for privacy. Whether it's a legal contract (PDF), private photos with location data (HEIC/Exif), or family videos, your files stay under your control and never reach any external server."
+      },
+      {
+        "q": "Which formats are supported?",
+        "a": "We cover all essential formats: Images (HEIC, WebP, PNG, JPG), Video (MP4, MOV, WebM), Audio (MP3, WAV, FLAC, AAC), and PDF to Word conversion. All tools support high-speed batch processing with single ZIP downloads."
+      }
+    ]
   },
   "image": {
     "format_label": "Format",
