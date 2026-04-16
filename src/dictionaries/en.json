@@ -129,6 +129,12 @@
         "q": "Which formats are supported?",
         "a": "We cover all essential formats: Images (HEIC, WebP, PNG, JPG), Video (MP4, MOV, WebM), Audio (MP3, WAV, FLAC, AAC), and PDF to Word conversion. All tools support high-speed batch processing with single ZIP downloads."
       }
+    ],
+    "use_cases_title": "What you can solve with Media Converter",
+    "use_cases": [
+      { "id": "pdf", "title": "Secure PDF to Word Conversion", "description": "Convert sensitive documents like contracts safely in your browser without uploading to a server. Physically block any risk of data leakage." },
+      { "id": "video", "title": "Batch Optimization for Large Videos", "description": "Compress and convert videos larger than 1GB locally. Perfect for saving data and avoiding long upload waits." },
+      { "id": "image", "title": "Solve HEIC Compatibility Issues", "description": "Instantly convert high volumes of iPhone HEIC photos to JPG. Make them viewable on Windows and older devices immediately." }
     ]
   },
   "image": {
@@ -168,6 +174,12 @@
         "q": "Can I batch convert massive amounts of iPhone HEIC photos?",
         "a": "Yes! Just hit 'Process All' and our optimized browser engine will rapidly resize and convert them all to JPG or PNG, bundled neatly in a ZIP download."
       }
+    ],
+    "use_cases_title": "Image Conversion Use Cases",
+    "use_cases": [
+      { "id": "heic", "title": "Batch HEIC to JPG", "description": "Solve compatibility issues by converting iPhone HEIC files to standard JPG/PNG. Viewable on any device instantly." },
+      { "id": "privacy", "title": "Privacy for Social Media", "description": "Remove GPS metadata (Exif) from your photos before posting. Share your life safely without revealing your location." },
+      { "id": "webp", "title": "Web Performance", "description": "Convert images to WebP to drastically improve website loading speeds without sacrificing visual quality. Great for SEO." }
     ]
   },
   "video": {
@@ -182,7 +194,15 @@
     "preset_mp3": "Extract Audio (MP3)",
     "processing_label": "Optimizing video...",
     "download_all": "Download All (ZIP)",
-    "process_all": "Process All"
+    "process_all": "Process All",
+    "tiktok_modes_label": "TikTok Optimization Mode",
+    "tiktok_mode_crop": "Center Crop",
+    "tiktok_mode_letterbox": "Letterbox",
+    "tiktok_mode_blur": "Background Blur",
+    "tiktok_mode_crop_desc": "Crops center 9:16 (best when subject is centered)",
+    "tiktok_mode_letterbox_desc": "Fits entire video with black bars",
+    "tiktok_mode_blur_desc": "Blurred background for a modern look",
+    "tiktok_adjust_hint": "Drag the frame to adjust the position"
   },
   "video_page": {
     "title": "Video Converter & Fast Compression",
@@ -207,6 +227,12 @@
         "q": "Can I extract just the audio in high quality?",
         "a": "Yes. Easily select the 'Extract Audio (MP3)' preset to instantly strip out a pristine 320kbps MP3 track straight from your video file."
       }
+    ],
+    "use_cases_title": "Expand your Video Possibilities",
+    "use_cases": [
+      { "id": "tiktok_crop", "title": "Perfect Vertical Video", "description": "Solve the 'cut-off sides' issue when making horizontal videos vertical. Capture the subject perfectly for TikTok with manual adjustment." },
+      { "id": "tiktok_blur", "title": "Pro-Look TikTok Sizes", "description": "Create modern vertical videos with 'Background Blur' mode. Achieve pro results instantly with minimal quality loss." },
+      { "id": "podcast", "title": "Social Content Repurposing", "description": "Extract high-quality 320kbps MP3 audio from any video. Perfect for turning YouTube content into podcast material." }
     ]
   },
   "audio": {
@@ -243,6 +269,11 @@
         "q": "Can I convert a folder of songs into MP3s and save them as a ZIP?",
         "a": "Yes! Drop multiple WAV or FLAC files at once. Once the batch process finishes, click 'Save All (ZIP)' to download the entire album instantly."
       }
+    ],
+    "use_cases_title": "Master your Audio Workflow",
+    "use_cases": [
+      { "id": "compress", "title": "Efficient File Sharing", "description": "Compress heavy WAV/FLAC files to high-quality 320kbps MP3 without hearing loss. Makes sharing via email or chat smooth." },
+      { "id": "unify", "title": "Consistent Production Assets", "description": "Batch convert miscellaneous recordings into standard bit/sampling rates. Prevents import errors in professional editing software." }
     ]
   },
   "pdf_page": {
@@ -267,6 +298,11 @@
         "q": "Will the PDF lose quality after compression?",
         "a": "Our 'Recommended' setting balances visual fidelity and file size. Text remains sharp, while images are optimized. For extreme size reduction, choose 'Strong', though 'Recommended' is best for most professional needs."
       }
+    ],
+    "use_cases_title": "Optimize your Document Workflow",
+    "use_cases": [
+      { "id": "layout", "title": "Keep your Layout Intact", "description": "Minimize layout issues common in PDF to Word conversion. Save hours of re-typing and get straight to editing." },
+      { "id": "secure", "title": "Confidential Business Tool", "description": "Convert sensitive contracts or internal documents locally. Guarantee your data privacy for corporate security requirements." }
     ]
   },
   "pdf": {

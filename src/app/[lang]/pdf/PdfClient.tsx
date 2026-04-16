@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { ConverterLayout } from "@/components/ConverterLayout";
 import { FileUploader } from "@/components/FileUploader";
 import { FAQSection } from "@/components/FAQSection";
+import { UseCaseSection } from "@/components/UseCaseSection";
 import { Layout, ShieldCheck, Briefcase } from "lucide-react";
 
 const PdfConverter = dynamic(() => import("@/components/PdfConverter").then(mod => mod.PdfConverter), {
@@ -32,6 +33,11 @@ export default function PdfClient({ lang, dict }: PdfClientProps) {
   const handleReset = () => {
     setSelectedFiles([]);
   };
+
+  const pdfUseCases = dict.pdf_page.use_cases?.map((uc: any) => ({
+    ...uc,
+    icon: uc.id === "secure" ? ShieldCheck : Layout
+  })) || [];
 
   return (
     <ConverterLayout 
@@ -110,6 +116,14 @@ export default function PdfClient({ lang, dict }: PdfClientProps) {
                 </div>
               </div>
             </article>
+
+            {/* Use Case Section */}
+            <UseCaseSection 
+              title={dict.pdf_page.use_cases_title}
+              useCases={pdfUseCases}
+              color="text-sky-700"
+              bg="bg-sky-50"
+            />
 
             {/* FAQ Section */}
             {dict.pdf_page.faq && (

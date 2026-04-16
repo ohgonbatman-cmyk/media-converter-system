@@ -5,7 +5,8 @@ import { ConverterLayout } from "@/components/ConverterLayout";
 import { FileUploader } from "@/components/FileUploader";
 import { ImageConverter } from "@/components/ImageConverter";
 import { FAQSection } from "@/components/FAQSection";
-import { ShieldCheck, Camera, Info } from "lucide-react";
+import { UseCaseSection } from "@/components/UseCaseSection";
+import { ShieldCheck, Camera, Info, Image as ImageIcon, Zap } from "lucide-react";
 
 interface ImageClientProps {
   lang: string;
@@ -23,6 +24,11 @@ export default function ImageClient({ lang, dict, mode = "converter" }: ImageCli
   const handleReset = () => {
     setSelectedFiles([]);
   };
+
+  const imageUseCases = dict.image_page.use_cases?.map((uc: any) => ({
+    ...uc,
+    icon: uc.id === "heic" ? ImageIcon : uc.id === "privacy" ? ShieldCheck : Zap
+  })) || [];
 
   return (
     <ConverterLayout 
@@ -101,6 +107,14 @@ export default function ImageClient({ lang, dict, mode = "converter" }: ImageCli
                 </div>
               </div>
             </article>
+
+            {/* Use Case Section */}
+            <UseCaseSection 
+              title={dict.image_page.use_cases_title}
+              useCases={imageUseCases}
+              color="text-emerald-600"
+              bg="bg-emerald-50"
+            />
 
             {/* FAQ Section */}
             {dict.image_page.faq && (

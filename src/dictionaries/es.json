@@ -121,6 +121,12 @@
         "q": "¿Qué formatos son compatibles?",
         "a": "Cubrimos lo esencial: Imágenes (HEIC, WebP, PNG, JPG), Video (MP4, MOV, WebM), Audio (MP3, WAV, FLAC, AAC) y PDF a Word. Todas incluyen procesamiento por lotes y descarga en ZIP."
       }
+    ],
+    "use_cases_title": "Qué puedes resolver con Media Converter",
+    "use_cases": [
+      { "id": "pdf", "title": "Conversión Segura de PDF a Word", "description": "Convierta documentos confidenciales de forma segura en su navegador. Bloquee físicamente cualquier riesgo de filtración de datos." },
+      { "id": "video", "title": "Optimización por Lotes para Videos Grandes", "description": "Comprima y convierta videos de más de 1 GB localmente. Ideal para ahorrar datos y evitar largas esperas de carga." },
+      { "id": "image", "title": "Resuelva Problemas de Compatibilidad HEIC", "description": "Convierta instantáneamente grandes volúmenes de fotos HEIC de iPhone a JPG. Hágalas visibles en cualquier dispositivo de inmediato." }
     ]
   },
   "common": {
@@ -154,7 +160,15 @@
     "download_all": "Descargar Todo (ZIP)",
     "success": "Listo",
     "processing_label": "Procesando Video localmente...",
-    "est_size": "Tamaño est: {size} MB"
+    "est_size": "Tamaño est: {size} MB",
+    "tiktok_modes_label": "Modo de Optimización TikTok",
+    "tiktok_mode_crop": "Recorte Central",
+    "tiktok_mode_letterbox": "Letterbox",
+    "tiktok_mode_blur": "Fondo Desenfocado",
+    "tiktok_mode_crop_desc": "Recorta el centro 9:16 (ideal si el sujeto está centrado)",
+    "tiktok_mode_letterbox_desc": "Ajusta video con barras negras",
+    "tiktok_mode_blur_desc": "Fondo borroso para un estilo moderno",
+    "tiktok_adjust_hint": "Arrastra el marco para ajustar la posición"
   },
   "audio": {
     "format_label": "Formato",
@@ -183,6 +197,12 @@
         "q": "¿Es seguro procesar mis fotos privadas aquí?",
         "a": "Totalmente. El proceso ocurre exclusivamente dentro de tu navegador web. Ningún archivo es subido a nuestros servidores en ningún momento."
       }
+    ],
+    "use_cases_title": "Casos de Uso de Conversión de Imágenes",
+    "use_cases": [
+      { "id": "heic", "title": "Lote de HEIC a JPG", "description": "Resuelva problemas de compatibilidad convirtiendo archivos HEIC a JPG/PNG estándar. Visibles en cualquier dispositivo al instante." },
+      { "id": "privacy", "title": "Privacidad para Redes Sociales", "description": "Elimine metadatos GPS (Exif) de sus fotos antes de publicarlas. Comparta su vida de forma segura sin revelar su ubicación." },
+      { "id": "webp", "title": "Rendimiento Web", "description": "Convierta imágenes a WebP para mejorar drásticamente la velocidad de carga del sitio sin sacrificar calidad visual." }
     ]
   },
   "video_page": {
@@ -204,6 +224,12 @@
         "q": "¿Necesito instalar algún software pesado para videos grandes?",
         "a": "No. Aprovechamos la potencia de tu navegador vía WebAssembly, por lo que actúa como un software nativo pero sin instalación."
       }
+    ],
+    "use_cases_title": "Amplíe sus Posibilidades de Video",
+    "use_cases": [
+      { "id": "tiktok_crop", "title": "Video Vertical Perfecto", "description": "Evite que se corten los bordes importantes al hacer vertical un video horizontal. Capture al sujeto perfectamente para TikTok." },
+      { "id": "tiktok_blur", "title": "Look Profesional en TikTok", "description": "Cree videos verticales modernos con el modo 'Fondo Desenfocado'. Obtenga resultados pro al instante sin pérdida de calidad." },
+      { "id": "podcast", "title": "Reutilización de Contenidos", "description": "Extraiga audio MP3 de alta calidad (320 kbps) de cualquier video. Ideal para convertir contenido de YouTube en material para podcast." }
     ]
   },
   "audio_page": {
@@ -225,6 +251,11 @@
         "q": "¿Mi música perderá calidad al convertirse?",
         "a": "Si eliges convertir FLAC o WAV a MP3, te ofrecemos un tope máximo de calidad de 320kbps previniendo distorsiones graves."
       }
+    ],
+    "use_cases_title": "Domine su Flujo de Audio",
+    "use_cases": [
+      { "id": "compress", "title": "Compartir Archivos de Forma Eficiente", "description": "Comprima archivos WAV/FLAC pesados a MP3 de 320 kbps. Facilita el envío por correo o chat sin perder fidelidad." },
+      { "id": "unify", "title": "Activos de Producción Consistentes", "description": "Convierta grabaciones variadas a tasas de bits/muestreo estándar. Evite errores de importación en software profesional." }
     ]
   },
   "pdf_page": {
@@ -249,6 +280,11 @@
         "q": "¿Se pierde calidad al comprimir un PDF?",
         "a": "Nuestra configuración 'Recomendada' equilibra la fidelidad visual y el tamaño del archivo. El texto permanece nítido mientras se optimizan las imágenes. Para una reducción extrema, elija 'Fuerte'."
       }
+    ],
+    "use_cases_title": "Optimice su Flujo de Documentos",
+    "use_cases": [
+      { "id": "layout", "title": "Mantenga su Diseño Intacto", "description": "Minimice los errores de diseño comunes en PDF a Word. Ahorre horas de re-escritura y comience a editar de inmediato." },
+      { "id": "secure", "title": "Herramienta de Negocio Confidencial", "description": "Convierta contratos sensibles localmente. Garantice la privacidad de sus datos para requisitos de seguridad corporativa." }
     ]
   },
   "pdf": {

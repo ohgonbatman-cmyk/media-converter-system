@@ -5,7 +5,8 @@ import { ConverterLayout } from "@/components/ConverterLayout";
 import { FileUploader } from "@/components/FileUploader";
 import { VideoConverter } from "@/components/VideoConverter";
 import { FAQSection } from "@/components/FAQSection";
-import { Zap, Music, Smartphone, Info } from "lucide-react";
+import { UseCaseSection } from "@/components/UseCaseSection";
+import { Zap, Music, Smartphone, Info, Video } from "lucide-react";
 
 interface VideoClientProps {
   lang: string;
@@ -23,6 +24,11 @@ export default function VideoClient({ lang, dict, mode = "converter" }: VideoCli
   const handleReset = () => {
     setSelectedFiles([]);
   };
+
+  const videoUseCases = dict.video_page.use_cases?.map((uc: any) => ({
+    ...uc,
+    icon: uc.id === "podcast" ? Music : uc.id.startsWith("tiktok") ? Smartphone : Video
+  })) || [];
 
   return (
     <ConverterLayout 
@@ -121,6 +127,14 @@ export default function VideoClient({ lang, dict, mode = "converter" }: VideoCli
                 </div>
               </div>
             </article>
+
+            {/* Use Case Section */}
+            <UseCaseSection 
+              title={dict.video_page.use_cases_title}
+              useCases={videoUseCases}
+              color="text-sky-600"
+              bg="bg-sky-50"
+            />
 
             {/* FAQ Section */}
             {dict.video_page.faq && (

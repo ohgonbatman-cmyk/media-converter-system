@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { HomeStats } from "@/components/HomeStats";
 import { FAQSection } from "@/components/FAQSection";
+import { UseCaseSection } from "@/components/UseCaseSection";
 
 interface HomeClientProps {
   lang: string;
@@ -61,6 +62,11 @@ export default function HomeClient({ lang, dict }: HomeClientProps) {
       border: "border-sky-100"
     }
   ];
+
+  const homeUseCases = dict.home.use_cases?.map((uc: any) => ({
+    ...uc,
+    icon: uc.id === "pdf" ? FileText : uc.id === "video" ? Video : ImageIcon
+  })) || [];
 
   return (
     <ConverterLayout
@@ -174,6 +180,14 @@ export default function HomeClient({ lang, dict }: HomeClientProps) {
             </div>
           </div>
         </section>
+
+        {/* Use Case Section */}
+        <UseCaseSection 
+          title={dict.home.use_cases_title}
+          useCases={homeUseCases}
+          color="text-sky-500"
+          bg="bg-sky-50"
+        />
 
         {/* Stats Section */}
         <HomeStats lang={lang} dict={dict} />

@@ -5,7 +5,8 @@ import { ConverterLayout } from "@/components/ConverterLayout";
 import { FileUploader } from "@/components/FileUploader";
 import { AudioConverter } from "@/components/AudioConverter";
 import { FAQSection } from "@/components/FAQSection";
-import { Music, Activity, Archive, Speaker, Info } from "lucide-react";
+import { UseCaseSection } from "@/components/UseCaseSection";
+import { Music, Activity, Archive, Speaker, Info, Mic } from "lucide-react";
 
 interface AudioClientProps {
   lang: string;
@@ -23,6 +24,11 @@ export default function AudioClient({ lang, dict, mode = "converter" }: AudioCli
   const handleReset = () => {
     setSelectedFiles([]);
   };
+
+  const audioUseCases = dict.audio_page.use_cases?.map((uc: any) => ({
+    ...uc,
+    icon: uc.id === "compress" ? Mic : Music
+  })) || [];
 
   return (
     <ConverterLayout 
@@ -121,6 +127,14 @@ export default function AudioClient({ lang, dict, mode = "converter" }: AudioCli
                 </div>
               </div>
             </article>
+
+            {/* Use Case Section */}
+            <UseCaseSection 
+               title={dict.audio_page.use_cases_title}
+               useCases={audioUseCases}
+               color="text-indigo-600"
+               bg="bg-indigo-50"
+            />
 
             {/* FAQ Section */}
             {dict.audio_page.faq && (

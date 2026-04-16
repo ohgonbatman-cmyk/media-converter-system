@@ -7,6 +7,8 @@ import { fetchFile } from "@ffmpeg/util";
 import JSZip from "jszip";
 import { reportConversionScale } from "@/lib/stats";
 import { trackEvent } from "@/lib/tracking";
+import { TikTokPreview } from "./TikTokPreview";
+import { LayoutGrid, Maximize, Layers } from "lucide-react";
 
 interface MediaFile {
   file: File;
@@ -16,6 +18,8 @@ interface MediaFile {
   progress: number;
   duration?: number;
   resultSize?: number;
+  width?: number;
+  height?: number;
 }
 
 interface VideoConverterProps {
@@ -27,6 +31,7 @@ interface VideoConverterProps {
 }
 
 type Preset = "none" | "iphone" | "youtube" | "tiktok" | "mp3_extract";
+type TikTokMode = "crop" | "letterbox" | "blur";
 
 export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, lang, dict, mode = "converter" }) => {
   const { load, progress, resetProgress } = useFFmpeg();
@@ -37,6 +42,8 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
   const [isProcessingAll, setIsProcessingAll] = useState(false);
   const [isZipping, setIsZipping] = useState(false);
   const [ffmpegInstance, setFfmpegInstance] = useState<any>(null);
+  const [tiktokMode, setTiktokMode] = useState<TikTokMode>("crop");
+  const [tiktokOffset, setTiktokOffset] = useState<number>(50);
 
   useEffect(() => {
     const newFiles = files.map((file) => ({
@@ -54,7 +61,12 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
       video.preload = "metadata";
       video.src = URL.createObjectURL(mFile.file);
       video.onloadedmetadata = () => {
-        setMediaFiles(prev => prev.map(p => p.id === mFile.id ? { ...p, duration: video.duration } : p));
+        setMediaFiles(prev => prev.map(p => p.id === mFile.id ? { 
+          ...p, 
+          duration: video.duration,
+          width: video.videoWidth,
+          height: video.videoHeight
+        } : p));
         URL.revokeObjectURL(video.src);
       };
     });
@@ -122,9 +134,18 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
           case "youtube":
             args.push("-c:v", "libx264", "-crf", "18", "-preset", "fast", "-c:a", "aac", "-b:a", "384k");
             break;
-          case "tiktok":
-            args.push("-vf", "crop='if(gt(a,9/16),ih*9/16,iw)':'if(gt(a,9/16),ih,iw*16/9)':'(iw-ow)/2':'(ih-oh)/2',scale=1080:1920", "-c:v", "libx264", "-crf", "23", "-preset", "fast", "-c:a", "aac", "-b:a", "128k");
+          case "tiktok": {
+            // TikTok Mode Logic
+            if (tiktokMode === "crop") {
+              const offsetVal = tiktokOffset / 100;
+              args.push("-vf", `crop='if(gt(a,9/16),ih*9/16,iw)':'if(gt(a,9/16),ih,iw*16/9)':'if(gt(a,9/16),(iw-ow)*${offsetVal},(iw-ow)/2)':'if(gt(a,9/16),(ih-oh)/2,(ih-oh)*${offsetVal})',scale=1080:1920`, "-c:v", "libx264", "-crf", "23", "-preset", "fast", "-c:a", "aac", "-b:a", "128k");
+            } else if (tiktokMode === "letterbox") {
+              args.push("-vf", "scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:black", "-c:v", "libx264", "-crf", "23", "-preset", "fast", "-c:a", "aac", "-b:a", "128k");
+            } else if (tiktokMode === "blur") {
+              args.push("-vf", "split[a][b];[a]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=20:10[bg];[b]scale=1080:ih*1080/iw[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2", "-c:v", "libx264", "-crf", "23", "-preset", "fast", "-c:a", "aac", "-b:a", "128k");
+            }
             break;
+          }
           case "mp3_extract":
             args.push("-vn", "-c:a", "libmp3lame", "-b:a", "320k");
             break;
@@ -307,6 +328,43 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
           )}
         </div>
 
+        {/* TikTok Mode Selection */}
+        {preset === "tiktok" && (
+          <div className="flex flex-col gap-6 pt-6 border-t border-slate-100 animate-in fade-in slide-in-from-top-2 duration-500">
+            <div className="flex flex-col gap-4">
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">
+                {dict.video.tiktok_modes_label}
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {[
+                  { id: "crop", icon: LayoutGrid, label: dict.video.tiktok_mode_crop, desc: dict.video.tiktok_mode_crop_desc },
+                  { id: "letterbox", icon: Maximize, label: dict.video.tiktok_mode_letterbox, desc: dict.video.tiktok_mode_letterbox_desc },
+                  { id: "blur", icon: Layers, label: dict.video.tiktok_mode_blur, desc: dict.video.tiktok_mode_blur_desc }
+                ].map((m) => (
+                  <button
+                    key={m.id}
+                    onClick={() => setTiktokMode(m.id as TikTokMode)}
+                    disabled={isProcessing}
+                    className={`flex flex-col items-center gap-3 p-4 rounded-2xl border-2 transition-all text-left ${
+                      tiktokMode === m.id 
+                        ? "border-sky-500 bg-sky-50 shadow-inner" 
+                        : "border-slate-100 bg-slate-50 opacity-60 hover:opacity-100"
+                    }`}
+                  >
+                    <div className={`p-2 rounded-lg ${tiktokMode === m.id ? "bg-sky-500 text-white" : "bg-slate-200 text-slate-500"}`}>
+                       <m.icon className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-black uppercase tracking-tight text-slate-900">{m.label}</div>
+                      <div className="text-[8px] font-bold text-slate-400 mt-1 leading-tight">{m.desc}</div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Action Buttons Row */}
         <div className="flex flex-col sm:flex-row items-center gap-4 pt-6 border-t border-slate-100">
           <div className="flex items-center gap-2 text-slate-400 mr-auto">
@@ -366,6 +424,18 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
               style={{ width: `${progress}%` }}
             />
           </div>
+        </div>
+      )}
+
+      {/* TikTok Preview Section */}
+      {preset === "tiktok" && mediaFiles.length > 0 && !isProcessing && (
+        <div className="bg-white border border-slate-100 p-8 rounded-[2.5rem] shadow-xl animate-in fade-in zoom-in-95 duration-700 ring-1 ring-slate-100">
+          <TikTokPreview 
+            file={mediaFiles[0].file} 
+            onOffsetChange={setTiktokOffset} 
+            mode={tiktokMode} 
+            dict={dict}
+          />
         </div>
       )}
 
