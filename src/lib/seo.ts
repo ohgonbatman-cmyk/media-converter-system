@@ -26,7 +26,7 @@ export function getBaseMetadata(path: string, dict: any): Metadata {
       type: "website",
       siteName: "Media Converter System",
       locale: dict.lang || "ja_JP",
-      url: alternates.canonical as string,
+      url: alternates!.canonical as string,
       images: [
         {
           url: "/hero-bg.png",
