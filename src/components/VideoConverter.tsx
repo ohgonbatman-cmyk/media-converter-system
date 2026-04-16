@@ -146,7 +146,7 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
       const data = await ffmpeg.readFile(outputName);
       const size = (data as Uint8Array).length;
       const mimeType = preset === "mp3_extract" ? "audio/mpeg" : `video/${currentOutputFormat}`;
-      const url = URL.createObjectURL(new Blob([(data as any).buffer], { type: mimeType }));
+      const url = URL.createObjectURL(new Blob([data as any], { type: mimeType }));
 
       setMediaFiles(prev => prev.map(f => f.id === mediaFile.id ? { ...f, status: "completed", resultUrl: url, progress: 100, resultSize: size } : f));
       

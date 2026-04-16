@@ -76,7 +76,7 @@ async function compressImageWithCanvas(
 ): Promise<Uint8Array | null> {
   return new Promise((resolve) => {
     try {
-      const blob = new Blob([data], { type: filter?.includes('DCT') ? 'image/jpeg' : 'image/png' });
+      const blob = new Blob([data as any], { type: filter?.includes('DCT') ? 'image/jpeg' : 'image/png' });
       const url = URL.createObjectURL(blob);
       const img = new Image();
       
