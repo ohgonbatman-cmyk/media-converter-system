@@ -44,7 +44,11 @@ export const ConverterLayout: React.FC<ConverterLayoutProps> = ({
             </div>
             <div className="flex items-end justify-between gap-4">
               <div>
-                <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">{title}</h1>
+                {category === "Portal" ? (
+                  <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">{title}</h2>
+                ) : (
+                  <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">{title}</h1>
+                )}
                 <p className="text-slate-500 text-xs sm:text-sm mt-1.5 font-medium">{description}</p>
               </div>
               <div className="hidden md:flex items-center gap-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">

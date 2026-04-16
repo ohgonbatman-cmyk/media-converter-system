@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import AudioClient from "./AudioClient";
 import { getDictionary, Locale } from "@/lib/get-dictionary";
-import { getAlternates } from "@/lib/seo";
+import { getBaseMetadata } from "@/lib/seo";
+import { JsonLd, getToolSchema } from "@/components/JsonLd";
 
 export const runtime = "edge";
 
@@ -14,10 +15,10 @@ export async function generateMetadata(
   const { lang } = params;
   const dict = await getDictionary(lang as Locale);
   return {
+    ...getBaseMetadata("/audio", dict),
     title: dict.metadata.audio.title,
     description: dict.metadata.audio.description,
-    keywords: ["WAV MP3 変換", "ビットレート指定", "ハイレゾ 変換", "音声 一括変換", "無劣化 変換"],
-    alternates: getAlternates("/audio"),
+    keywords: dict.metadata.audio.keywords,
   };
 }
 
@@ -29,5 +30,17 @@ export default async function AudioPage(
   const params = await props.params;
   const { lang } = params;
   const dict = await getDictionary(lang as Locale);
-  return <AudioClient lang={lang} dict={dict} />;
+  const schema = getToolSchema({
+    name: dict.metadata.audio.title,
+    description: dict.metadata.audio.description,
+    url: `${process.env.NEXT_PUBLIC_BASE_URL || "https://media-converter-system.pages.dev"}/${lang}/audio`,
+    applicationCategory: "MultimediaApplication"
+  });
+
+  return (
+    <>
+      <JsonLd data={schema} />
+      <AudioClient lang={lang} dict={dict} />
+    </>
+  );
 }

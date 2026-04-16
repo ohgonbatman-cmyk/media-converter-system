@@ -86,9 +86,9 @@ export default function HomeClient({ lang, dict }: HomeClientProps) {
                  {dict.home.hero_badge}
                </span>
             </div>
-            <h2 className="text-2xl md:text-5xl font-black text-white leading-tight tracking-tight mb-6 md:mb-8 animate-in fade-in slide-in-from-left-6 duration-1000 max-w-lg whitespace-pre-line">
+            <h1 className="text-2xl md:text-5xl font-black text-white leading-tight tracking-tight mb-6 md:mb-8 animate-in fade-in slide-in-from-left-6 duration-1000 max-w-lg whitespace-pre-line">
               {dict.home.hero_title}
-            </h2>
+            </h1>
             <p className="text-sm md:text-lg text-slate-200/80 font-medium leading-relaxed mb-8 md:mb-10 animate-in fade-in slide-in-from-left-8 duration-1000 max-w-md">
               {dict.home.hero_description}
             </p>

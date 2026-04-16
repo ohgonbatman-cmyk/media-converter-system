@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import { getDictionary, Locale } from "@/lib/get-dictionary";
+import { getBaseMetadata } from "@/lib/seo";
 
 export const runtime = "edge";
 
@@ -24,9 +25,17 @@ export async function generateMetadata(
   const params = await props.params;
   const { lang } = params;
   const dict = await getDictionary(lang as Locale);
+  
+  const baseMetadata = getBaseMetadata("/", dict);
+  
   return {
-    title: dict.metadata.home.title,
+    ...baseMetadata,
+    title: {
+      template: `%s | ${dict.metadata.common.site_name}`,
+      default: dict.metadata.home.title,
+    },
     description: dict.metadata.home.description,
+    keywords: dict.metadata.home.keywords,
   };
 }
 

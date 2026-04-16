@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import AudioClient from "../audio/AudioClient";
 import { getDictionary, Locale } from "@/lib/get-dictionary";
-import { getAlternates } from "@/lib/seo";
+import { getBaseMetadata } from "@/lib/seo";
+import { JsonLd, getToolSchema } from "@/components/JsonLd";
 
 export const runtime = "edge";
 
@@ -14,10 +15,10 @@ export async function generateMetadata(
   const { lang } = params;
   const dict = await getDictionary(lang as Locale);
   return {
+    ...getBaseMetadata("/compress-audio", dict),
     title: dict.metadata.compress_audio.title,
     description: dict.metadata.compress_audio.description,
-    keywords: ["音声圧縮", "MP3軽量化", "音声ファイルサイズ削減", "ポッドキャスト圧縮", "ブラウザ完結"],
-    alternates: getAlternates("/compress-audio"),
+    keywords: dict.metadata.compress_audio.keywords,
   };
 }
 
@@ -29,5 +30,17 @@ export default async function CompressAudioPage(
   const params = await props.params;
   const { lang } = params;
   const dict = await getDictionary(lang as Locale);
-  return <AudioClient lang={lang} dict={dict} mode="compressor" />;
+  const schema = getToolSchema({
+    name: dict.metadata.compress_audio.title,
+    description: dict.metadata.compress_audio.description,
+    url: `${process.env.NEXT_PUBLIC_BASE_URL || "https://media-converter-system.pages.dev"}/${lang}/compress-audio`,
+    applicationCategory: "MultimediaApplication"
+  });
+
+  return (
+    <>
+      <JsonLd data={schema} />
+      <AudioClient lang={lang} dict={dict} mode="compressor" />
+    </>
+  );
 }

@@ -8,41 +8,54 @@
     "download": "Download"
   },
   "metadata": {
+    "common": {
+      "site_name": "Media Converter System",
+      "og_image_alt": "Privacy-first media conversion suite with local processing"
+    },
     "home": {
       "title": "Media Converter | Next-Gen Suite with Local Processing",
-      "description": "High-precision conversion for images, videos, audio, and PDF. Privacy-first, with all processing in the browser. No uploads required."
+      "description": "High-precision conversion for images, videos, audio, and PDF. Privacy-first, with all processing in the browser. No uploads required.",
+      "keywords": ["media converter", "privacy-first", "browser-based", "video compression", "image conversion", "PDF to Word", "FFmpeg.wasm", "WebAssembly", "free converter"]
     },
     "image": {
       "title": "Image Converter | Batch Resize & HEIC Support - Media Converter",
-      "description": "Secure image conversion tool. Change HEIC to JPG, support WebP, and batch resize. Photos are processed strictly on your device."
+      "description": "Secure image conversion tool. Change HEIC to JPG, support WebP, and batch resize. Photos are processed strictly on your device.",
+      "keywords": ["image converter", "HEIC to JPG", "WebP converter", "resize images", "batch resize", "remove EXIF", "privacy photos"]
     },
     "video": {
       "title": "Video Converter & Compressor | High Quality & FFmpeg - Media Converter",
-      "description": "Fast video conversion in-browser. Supports MP4, WebM, MOV. Optimized presets for YouTube/TikTok and audio extraction (MP3)."
+      "description": "Fast video conversion in-browser. Supports MP4, WebM, MOV. Optimized presets for YouTube/TikTok and audio extraction (MP3).",
+      "keywords": ["video converter", "MP4 converter", "WebM converter", "MOV to MP4", "extract audio from video", "FFmpeg browser", "local video processing"]
     },
     "audio": {
       "title": "Audio Converter | High Fidelity, FLAC & AAC - Media Converter",
-      "description": "Converter for audiophiles. Supports WAV, MP3, FLAC, AAC. High bitrate settings and lossless conversion, all in-browser."
+      "description": "Converter for audiophiles. Supports WAV, MP3, FLAC, AAC. High bitrate settings and lossless conversion, all in-browser.",
+      "keywords": ["audio converter", "MP3 converter", "WAV to MP3", "FLAC converter", "lossless audio", "audio suite", "batch audio conversion"]
     },
     "pdf": {
       "title": "PDF to Word | Maintain Layout & High Accuracy - Media Converter",
-      "description": "Accurate PDF to Word (.docx) conversion in-browser. Extract text and images without losing layout. Secure for business documents."
+      "description": "Accurate PDF to Word (.docx) conversion in-browser. Extract text and images without losing layout. Secure for business documents.",
+      "keywords": ["PDF to Word", "edit PDF", "extract text from PDF", "extract images from PDF", "convert PDF to docx", "secure PDF tools"]
     },
     "compress_image": {
       "title": "Image Compressor | Reduce File Size & Maintain Quality - Media Converter",
-      "description": "In-browser image compression tool. Dramatically reduce file sizes for PNG, JPG, and WebP. Achieve lightweight images while keeping them beautiful."
+      "description": "In-browser image compression tool. Dramatically reduce file sizes for PNG, JPG, and WebP. Achieve lightweight images while keeping them beautiful.",
+      "keywords": ["image compressor", "shrink image", "PNG compressor", "JPG compressor", "WebP compressor", "optimize images for web"]
     },
     "compress_video": {
       "title": "Video Compressor | Shrink MP4 & WebM with High Speed - Media Converter",
-      "description": "Powerfully compress video files in your browser. Minimize file sizes without losing quality. Create lightweight videos perfect for social media or email in seconds."
+      "description": "Powerfully compress video files in your browser. Minimize file sizes without losing quality. Create lightweight videos perfect for social media or email in seconds.",
+      "keywords": ["video compressor", "shrink MP4", "video resizer", "compress video for email", "reduce video size", "social media optimization"]
     },
     "compress_audio": {
       "title": "Audio Compressor | Optimize MP3 & WAV Bitrate - Media Converter",
-      "description": "Smartly reduce audio file sizes. Cut down data volume significantly via bitrate adjustment and mono conversion. Ideal for sharing podcasts or voice memos."
+      "description": "Smartly reduce audio file sizes. Cut down data volume significantly via bitrate adjustment and mono conversion. Ideal for sharing podcasts or voice memos.",
+      "keywords": ["audio compressor", "shrink MP3", "bitrate reducer", "audio optimizer", "podcast compressor"]
     },
     "compress_pdf": {
       "title": "PDF Compressor | Lightweight PDF via Image Optimization - Media Converter",
-      "description": "Significantly reduce PDF file sizes by re-compressing internal images. Generate lightweight, easy-to-send PDFs while maintaining layout. Secure local processing."
+      "description": "Significantly reduce PDF file sizes by re-compressing internal images. Generate lightweight, easy-to-send PDFs while maintaining layout. Secure local processing.",
+      "keywords": ["PDF compressor", "shrink PDF", "reduce PDF size", "secure PDF compression", "optimization for email"]
     }
   },
   "sidebar": {

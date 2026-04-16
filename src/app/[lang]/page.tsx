@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import HomeClient from "@/components/HomeClient";
 import { getDictionary, Locale } from "@/lib/get-dictionary";
-import { getAlternates } from "@/lib/seo";
+import { getBaseMetadata } from "@/lib/seo";
 
 export const runtime = "edge";
 
@@ -13,11 +13,12 @@ export async function generateMetadata(
   const params = await props.params;
   const { lang } = params;
   const dict = await getDictionary(lang as Locale);
+  
   return {
+    ...getBaseMetadata("/", dict),
     title: dict.metadata.home.title,
     description: dict.metadata.home.description,
-    keywords: ["メディア変換", "プライバシー重視", "ブラウザ完結", "動画圧縮", "画像変換", "PDF変換", "FFmpeg", "WebAssembly"],
-    alternates: getAlternates("/"),
+    keywords: dict.metadata.home.keywords,
   };
 }
 

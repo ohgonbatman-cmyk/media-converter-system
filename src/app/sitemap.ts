@@ -1,18 +1,32 @@
 import type { MetadataRoute } from 'next'
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://media-converter-system.pages.dev";
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://media-converter-system.pages.dev'
-  const languages = ['ja', 'en', 'es']
-  const routes = ['', '/image', '/video', '/audio', '/pdf']
+  const languages = ['ja', 'en', 'es'];
+  const routes = [
+    '',
+    '/image',
+    '/compress-image',
+    '/video',
+    '/compress-video',
+    '/audio',
+    '/compress-audio',
+    '/pdf',
+    '/compress-pdf'
+  ];
 
   const allRoutes = languages.flatMap(lang => 
-    routes.map(route => ({
-      url: `${baseUrl}/${lang}${route}`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: route === '' ? 1 : 0.8,
-    }))
-  )
+    routes.map(route => {
+      const isHome = route === '';
+      return {
+        url: `${BASE_URL}/${lang}${route}`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: isHome ? 1.0 : 0.8,
+      };
+    })
+  );
 
-  return allRoutes
+  return allRoutes;
 }

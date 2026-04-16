@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import VideoClient from "./VideoClient";
 import { getDictionary, Locale } from "@/lib/get-dictionary";
-import { getAlternates } from "@/lib/seo";
+import { getBaseMetadata } from "@/lib/seo";
+import { JsonLd, getToolSchema } from "@/components/JsonLd";
 
 export const runtime = "edge";
 
@@ -14,10 +15,10 @@ export async function generateMetadata(
   const { lang } = params;
   const dict = await getDictionary(lang as Locale);
   return {
+    ...getBaseMetadata("/video", dict),
     title: dict.metadata.video.title,
     description: dict.metadata.video.description,
-    keywords: ["MP4 MOV 変換", "動画 MP3 抽出", "TikTok 動画サイズ 変換", "動画 一括変換"],
-    alternates: getAlternates("/video"),
+    keywords: dict.metadata.video.keywords,
   };
 }
 
@@ -29,5 +30,17 @@ export default async function VideoPage(
   const params = await props.params;
   const { lang } = params;
   const dict = await getDictionary(lang as Locale);
-  return <VideoClient lang={lang} dict={dict} />;
+  const schema = getToolSchema({
+    name: dict.metadata.video.title,
+    description: dict.metadata.video.description,
+    url: `${process.env.NEXT_PUBLIC_BASE_URL || "https://media-converter-system.pages.dev"}/${lang}/video`,
+    applicationCategory: "MultimediaApplication"
+  });
+
+  return (
+    <>
+      <JsonLd data={schema} />
+      <VideoClient lang={lang} dict={dict} />
+    </>
+  );
 }
