@@ -356,23 +356,3 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, dict
     </div>
   );
 };
-
-// Helper function to group and sort PDF text items
-function groupAndSortItems(items: any[]) {
-  items.sort((a, b) => b.transform[5] - a.transform[5] || a.transform[4] - b.transform[4]);
-  const lines: { y: number; items: any[] }[] = [];
-  let currentY = -1;
-  let currentLineItems: any[] = [];
-
-  for (const item of items) {
-    const y = Math.round(item.transform[5]);
-    if (Math.abs(currentY - y) > 5 && currentLineItems.length > 0) {
-      lines.push({ y: currentY, items: currentLineItems });
-      currentLineItems = [];
-    }
-    currentY = y;
-    currentLineItems.push(item);
-  }
-  if (currentLineItems.length > 0) lines.push({ y: currentY, items: currentLineItems });
-  return lines;
-}
