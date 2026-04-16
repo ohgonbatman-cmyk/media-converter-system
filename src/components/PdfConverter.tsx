@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Download, X, FileText, CheckCircle, Loader2, PlayCircle, FileArchive, Play, FileDigit } from "lucide-react";
 import { reportConversionScale } from "@/lib/stats";
+import { trackEvent } from "@/lib/tracking";
 
 // pdfjs-dist and docx are loaded dynamically inside the conversion function
 // to avoid Edge Runtime / SSR errors (document is not defined).
@@ -199,6 +200,11 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
     const pendingFiles = mediaFiles.filter(f => f.status === "pending");
     if (pendingFiles.length === 0) return;
 
+    trackEvent("start_conversion", {
+      media_type: "pdf",
+      count: pendingFiles.length
+    });
+
     setIsProcessingAll(true);
     for (const mFile of pendingFiles) {
       await convertPdfToDocx(mFile);
@@ -253,7 +259,10 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
           </div>
 
           <button 
-            onClick={onReset} 
+            onClick={() => {
+              trackEvent("cancel_operation", { media_type: "pdf" });
+              onReset();
+            }} 
             className="text-slate-400 hover:text-slate-600 text-xs sm:text-sm font-bold px-6 py-2 transition-colors uppercase tracking-tight"
           >
             {dict.common.cancel}
@@ -324,14 +333,20 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
               
               {mFile.status === "completed" ? (
                 <button 
-                  onClick={() => handleDownload(mFile)}
+                  onClick={() => {
+                    trackEvent("download_result", { media_type: "pdf", is_zip: false, count: 1 });
+                    handleDownload(mFile);
+                  }}
                   className="bg-slate-900 hover:bg-slate-800 text-white p-3 rounded-xl border border-slate-800 transition-all shadow-md group/dl active:scale-95"
                 >
                   <Download className="w-5 h-5 group-hover/dl:scale-110 transition-transform" />
                 </button>
               ) : (
                 <button 
-                  onClick={() => convertPdfToDocx(mFile)}
+                  onClick={() => {
+                    trackEvent("start_conversion", { media_type: "pdf", count: 1 });
+                    convertPdfToDocx(mFile);
+                  }}
                   disabled={isProcessing}
                   className="bg-slate-100 hover:bg-slate-200 text-slate-600 p-3 rounded-xl border border-slate-200 transition-all disabled:opacity-30 active:scale-95"
                   title="Convert"

@@ -6,6 +6,7 @@ import { useFFmpeg } from "@/hooks/useFFmpeg";
 import { fetchFile } from "@ffmpeg/util";
 import JSZip from "jszip";
 import { reportConversionScale } from "@/lib/stats";
+import { trackEvent } from "@/lib/tracking";
 
 interface MediaFile {
   file: File;
@@ -129,6 +130,13 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset, 
     const pendingFiles = mediaFiles.filter(f => f.status === "pending");
     if (pendingFiles.length === 0) return;
 
+    trackEvent(mode === "compressor" ? "start_compression" : "start_conversion", {
+      media_type: "audio",
+      count: pendingFiles.length,
+      target_format: targetFormat,
+      target_bitrate: targetBitrate
+    });
+
     setIsProcessingAll(true);
     for (const mFile of pendingFiles) {
         await convertAudio(mFile);
@@ -152,6 +160,12 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset, 
   const handleDownloadAll = async () => {
     const completedFiles = mediaFiles.filter(f => f.status === "completed" && f.resultUrl);
     if (completedFiles.length === 0) return;
+
+    trackEvent("download_result", {
+      media_type: "audio",
+      is_zip: completedFiles.length > 1,
+      count: completedFiles.length
+    });
 
     if (completedFiles.length === 1) {
       handleDownload(completedFiles[0]);
@@ -182,6 +196,17 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset, 
 
   const handleDownload = (mFile: MediaFile) => {
     if (!mFile.resultUrl || typeof document === "undefined") return;
+    
+    // Prevent double tracking if called from handleDownloadAll for single file
+    const completedFiles = mediaFiles.filter(f => f.status === "completed" && f.resultUrl);
+    if (completedFiles.length !== 1 || !isProcessingAll) {
+       trackEvent("download_result", {
+         media_type: "audio",
+         is_zip: false,
+         count: 1
+       });
+    }
+
     const a = document.createElement("a");
     const originalName = mFile.file.name.substring(0, mFile.file.name.lastIndexOf("."));
     a.href = mFile.resultUrl;
@@ -276,7 +301,10 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset, 
           </div>
 
           <button 
-            onClick={onReset} 
+            onClick={() => {
+              trackEvent("cancel_operation", { media_type: "audio" });
+              onReset();
+            }} 
             className="text-slate-400 hover:text-slate-600 text-xs sm:text-sm font-bold px-6 py-2 transition-colors uppercase tracking-tight"
           >
             {dict.common.cancel}
@@ -387,14 +415,24 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset, 
               
               {mFile.status === "completed" ? (
                 <button 
-                  onClick={() => handleDownload(mFile)}
+                  onClick={() => {
+                    trackEvent("download_result", { media_type: "audio", is_zip: false, count: 1 });
+                    handleDownload(mFile);
+                  }}
                   className="bg-slate-900 hover:bg-slate-800 text-white p-2.5 md:p-3 rounded-lg md:rounded-xl border border-slate-800 transition-all shadow-md group/dl active:scale-95"
                 >
                   <Download className="w-4 h-4 md:w-5 md:h-5 group-hover/dl:scale-110 transition-transform" />
                 </button>
               ) : (
                 <button 
-                  onClick={() => convertAudio(mFile)}
+                  onClick={() => {
+                    trackEvent(mode === "compressor" ? "start_compression" : "start_conversion", {
+                      media_type: "audio",
+                      count: 1,
+                      target_format: targetFormat
+                    });
+                    convertAudio(mFile);
+                  }}
                   disabled={isProcessing}
                   className="bg-slate-100 hover:bg-slate-200 text-slate-600 p-2.5 md:p-3 rounded-lg md:rounded-xl border border-slate-200 transition-all disabled:opacity-30 active:scale-95"
                   title="Convert"

@@ -41,7 +41,10 @@ export default function PdfCompressClient({ lang, dict }: PdfCompressClientProps
                 Implementing high-performance image optimization for PDF. Coming shortly to keep your documents lightweight.
              </p>
              <button 
-               onClick={handleReset}
+               onClick={() => {
+                 import("@/lib/tracking").then(m => m.trackEvent("cancel_operation", { media_type: "compress_pdf" }));
+                 handleReset();
+               }}
                className="bg-slate-900 text-white font-black px-10 py-4 rounded-2xl hover:bg-slate-800 transition-all shadow-lg"
              >
                 {dict.common.cancel}

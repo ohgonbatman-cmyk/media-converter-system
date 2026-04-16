@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Download, X, ImageIcon, CheckCircle, Loader2, FileArchive, Shield } from "lucide-react";
 import JSZip from "jszip";
 import { reportConversionScale } from "@/lib/stats";
+import { trackEvent } from "@/lib/tracking";
 
 interface ImageFile {
   file: File;
@@ -143,6 +144,14 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset, 
   const handleProcessAll = async () => {
     setIsProcessingAll(true);
     const updatedFiles = [...imageFiles];
+    
+    trackEvent(mode === "compressor" ? "start_compression" : "start_conversion", {
+      media_type: "image",
+      count: updatedFiles.filter(f => f.status === "pending").length,
+      target_format: targetFormat,
+      target_width: targetWidth,
+      quality: quality
+    });
 
     for (let i = 0; i < updatedFiles.length; i++) {
         if (updatedFiles[i].status === "completed") continue;
@@ -174,6 +183,12 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset, 
     const completedFiles = imageFiles.filter(f => f.status === "completed" && f.resultUrl);
     if (completedFiles.length === 0) return;
 
+    trackEvent("download_result", {
+      media_type: "image",
+      is_zip: completedFiles.length > 1,
+      count: completedFiles.length
+    });
+
     if (completedFiles.length === 1) {
       handleDownload(completedFiles[0]);
       return;
@@ -203,6 +218,16 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset, 
 
   const handleDownload = (imgFile: ImageFile) => {
     if (!imgFile.resultUrl || typeof document === "undefined") return;
+
+    const completedFiles = imageFiles.filter(f => f.status === "completed" && f.resultUrl);
+    if (completedFiles.length !== 1 || !isProcessingAll) {
+       trackEvent("download_result", {
+         media_type: "image",
+         is_zip: false,
+         count: 1
+       });
+    }
+
     const a = document.createElement("a");
     const originalName = imgFile.file.name.substring(0, imgFile.file.name.lastIndexOf("."));
     a.href = imgFile.resultUrl;
@@ -290,7 +315,10 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset, 
           </div>
 
           <button 
-            onClick={onReset}
+            onClick={() => {
+              trackEvent("cancel_operation", { media_type: "image" });
+              onReset();
+            }}
             className="text-slate-400 hover:text-slate-600 text-xs sm:text-sm font-bold px-6 py-2 transition-colors uppercase tracking-tight"
           >
             {dict.common.cancel}
@@ -394,7 +422,10 @@ export const ImageConverter: React.FC<ImageConverterProps> = ({ files, onReset, 
               
               {imgFile.status === "completed" ? (
                 <button 
-                  onClick={() => handleDownload(imgFile)}
+                  onClick={() => {
+                    trackEvent("download_result", { media_type: "image", is_zip: false, count: 1 });
+                    handleDownload(imgFile);
+                  }}
                   className="bg-slate-900 hover:bg-slate-800 text-white p-2.5 md:p-3 rounded-lg md:rounded-xl border border-slate-800 transition-all shadow-md active:scale-95 group/dl"
                   title="Download"
                 >

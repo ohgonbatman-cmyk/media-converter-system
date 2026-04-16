@@ -66,6 +66,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ lang, dict }) => {
         <div>
            <Link
               href={`/${lang}`}
+              onClick={() => {
+                import("@/lib/tracking").then(m => m.trackEvent("navigate_tool", { destination_tool: "home" }));
+              }}
               className={`flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group relative ${
                 pathname === `/${lang}`
                   ? "bg-white text-slate-900 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] ring-1 ring-slate-100"
@@ -97,6 +100,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ lang, dict }) => {
                 <Link
                   key={item.id}
                   href={item.href}
+                  onClick={() => {
+                    import("@/lib/tracking").then(m => m.trackEvent("navigate_tool", { destination_tool: item.id }));
+                  }}
                   className={`flex items-center gap-3 px-4 py-2 rounded-2xl transition-all duration-300 group relative ${
                     isActive
                       ? "bg-white text-slate-900 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] ring-1 ring-slate-100"

@@ -95,6 +95,9 @@ export default function HomeClient({ lang, dict }: HomeClientProps) {
             <div className="flex items-center gap-6 animate-in fade-in slide-in-from-left-10 duration-1000">
                <Link 
                 href={`/${lang}/image`} 
+                onClick={() => {
+                  import("@/lib/tracking").then(m => m.trackEvent("click_hero_cta"));
+                }}
                 className="bg-sky-500 hover:bg-sky-400 text-white font-black px-8 md:px-10 py-3 md:py-4 rounded-2xl shadow-xl hover:shadow-sky-500/20 hover:-translate-y-0.5 transition-all flex items-center gap-2 text-xs md:text-sm"
                >
                  {dict.home.hero_button}
