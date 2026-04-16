@@ -18,24 +18,24 @@
       "keywords": ["media converter", "privacy-first", "browser-based", "video compression", "image conversion", "PDF to Word", "FFmpeg.wasm", "WebAssembly", "free converter"]
     },
     "image": {
-      "title": "Image Converter | Batch Resize & HEIC Support - Media Converter",
-      "description": "Secure image conversion tool. Change HEIC to JPG, support WebP, and batch resize. Photos are processed strictly on your device.",
-      "keywords": ["image converter", "HEIC to JPG", "WebP converter", "resize images", "batch resize", "remove EXIF", "privacy photos"]
+      "title": "Batch Convert HEIC to JPG Safely | Image Converter",
+      "description": "Secure in-browser image conversion tool. Convert HEIC to JPG, WebP to PNG while keeping transparency, and batch resize securely.",
+      "keywords": ["batch convert HEIC to JPG safely", "WebP to PNG keep transparency", "remove EXIF metadata online", "browser-based", "free converter"]
     },
     "video": {
-      "title": "Video Converter & Compressor | High Quality & FFmpeg - Media Converter",
-      "description": "Fast video conversion in-browser. Supports MP4, WebM, MOV. Optimized presets for YouTube/TikTok and audio extraction (MP3).",
-      "keywords": ["video converter", "MP4 converter", "WebM converter", "MOV to MP4", "extract audio from video", "FFmpeg browser", "local video processing"]
+      "title": "Ultra-Fast MOV to MP4 Browser Converter | Media Converter",
+      "description": "High-speed in-browser video conversion. MP4, WebM, MOV support. Preset iPhone/TikTok sizing, and extract 320kbps high-quality MP3 audio from videos.",
+      "keywords": ["fast MOV to MP4 browser converter", "iPhone TikTok video original size", "extract 320kbps MP3 from video", "FFmpeg", "local processing", "secure"]
     },
     "audio": {
-      "title": "Audio Converter | High Fidelity, FLAC & AAC - Media Converter",
-      "description": "Converter for audiophiles. Supports WAV, MP3, FLAC, AAC. High bitrate settings and lossless conversion, all in-browser.",
-      "keywords": ["audio converter", "MP3 converter", "WAV to MP3", "FLAC converter", "lossless audio", "audio suite", "batch audio conversion"]
+      "title": "WAV to MP3 Lossless High-Res Converter | Media Converter",
+      "description": "Audiophile converter. WAV, MP3, FLAC, AAC. Lossless processing & 320kbps bitrate all inside your browser. Download albums in a ZIP.",
+      "keywords": ["WAV to MP3 lossless", "batch convert FLAC to MP3 ZIP", "secure audio converter", "browser-only conversion"]
     },
     "pdf": {
-      "title": "PDF to Word | Maintain Layout & High Accuracy - Media Converter",
-      "description": "Accurate PDF to Word (.docx) conversion in-browser. Extract text and images without losing layout. Secure for business documents.",
-      "keywords": ["PDF to Word", "edit PDF", "extract text from PDF", "extract images from PDF", "convert PDF to docx", "secure PDF tools"]
+      "title": "Secure PDF to Word Browser Converter | Media Converter",
+      "description": "Accurate, fully in-browser PDF to Word (.docx) conversion. Extract text and images accurately. Safe for business and confidential files.",
+      "keywords": ["secure PDF to Word converter", "PDF to docx browser-only", "extract text from PDF securely", "confidential PDF processing"]
     },
     "compress_image": {
       "title": "Image Compressor | Reduce File Size & Maintain Quality - Media Converter",
@@ -126,17 +126,27 @@
     "optimized": "Optimized"
   },
   "image_page": {
-    "title": "Image Converter (HEIC/WebP Support)",
-    "description": "Convert to PNG, JPG, WebP and batch resize. Convert iPhone HEIC format instantly in your browser.",
-    "secure_title": "No Server Uploads",
-    "secure_desc": "Photos are private. With our tool, files are never sent to a server; conversion is completed entirely within your browser. Safe for sensitive or private images.",
-    "exif_title": "Automatic Exif (Location) Removal",
-    "exif_desc": "Peace of mind when you want to remove location data before posting to SNS. Control metadata during conversion to protect privacy.",
-    "info_title": "Fastest HEIC to JPG & WebP Conversion",
-    "iphone_title": "Perfect for iPhone Users",
-    "iphone_desc": "HEIC format used by modern iPhones often can't be read on PCs or older devices. Our tool lets you batch convert HEIC to JPG or PNG in seconds.",
-    "pro_title": "For Professional Web Dev",
-    "pro_desc": "Supports conversion to WebP, essential for improving website speed. Combined with batch resizing, it dramatically boosts efficiency for bloggers and directors."
+    "title": "Image Converter (HEIC/WebP Supported)",
+    "description": "Batch convert and resize to PNG, JPG, and WebP. Convert iPhone HEIC securely in your browser.",
+    "secure_title": "How to convert HEIC to JPG safely? (No Server Upload)",
+    "secure_desc": "Photos contain personal data. Our tool never sends your files to a server—conversion happens entirely in your browser. Process highly sensitive or private photos with absolute peace of mind.",
+    "exif_title": "How to strip GPS EXIF data? (Auto Privacy)",
+    "exif_desc": "Remove location metadata quickly before sharing on social media. Our process drops EXIF data automatically, protecting your privacy completely inside the browser.",
+    "info_title": "Blazing Fast HEIC to JPG & WebP Tools",
+    "iphone_title": "Struggling to send iPhone HEIC files?",
+    "iphone_desc": "Modern iPhones save images in HEIC, which many websites and older PCs cannot read. Seamlessly drop batches of HEIC files here and convert them to JPG effortlessly.",
+    "pro_title": "WebP & PNG Batch Conversion Keeping Transparency",
+    "pro_desc": "Vital for web developers: convert to modern WebP formats in seconds. Coupled with our batch resizing, drastically improve your site speed and workflow.",
+    "faq": [
+      {
+        "q": "Is it safe to upload my files to your server?",
+        "a": "Yes, absolutely safe. Our system operates entirely in your browser—meaning your image data is never sent to any server. Process your private HEIC photos with complete peace of mind."
+      },
+      {
+        "q": "Can I batch convert massive amounts of iPhone HEIC photos?",
+        "a": "Yes! Just hit 'Process All' and our optimized browser engine will rapidly resize and convert them all to JPG or PNG, bundled neatly in a ZIP download."
+      }
+    ]
   },
   "video": {
     "success": "SUCCESS",
@@ -153,19 +163,29 @@
     "process_all": "Process All"
   },
   "video_page": {
-    "title": "Video Converter & High-Speed Compression",
-    "description": "Convert to MP4, WebM and optimize with device-specific presets. Process directly in your browser, no multi-GB uploads needed.",
-    "preset_title": "Device-Specific Presets",
-    "preset_desc": "Automatically choose the best resolution and bitrate for iPhone, YouTube, TikTok, and more. Create high-quality videos without technical expertise.",
-    "audio_title": "Extract Audio (MP3) from Video",
-    "audio_desc": "High-quality audio track extraction. Perfect for podcasts or music production material. Convert to MP3 with a single click.",
-    "zap_title": "Real-time Progress Indicator",
-    "zap_desc": "Video conversion takes time. Our converter uses FFmpeg.wasm for parallel processing and shows real-time progress. Since it runs in the browser, you don't have to worry about network drops.",
-    "info_title": "Essential Tool for TikTok & YouTube",
-    "mov_title": "Convenient MP4/MOV Conversion",
-    "mov_desc": "Quickly convert MOV shot on smartphones to highly compatible MP4. Prevent editing software import issues before they happen.",
-    "privacy_title": "Privacy & Security",
-    "privacy_desc": "Convert confidential business videos on your own PC without using external servers, ensuring zero risk of data leaks."
+    "title": "Video Converter & Fast Compression",
+    "description": "Convert to MP4 or WebM with device-specific presets. Zero large uploads since it runs entirely in your browser.",
+    "preset_title": "One-Click iPhone, TikTok Video Sizing",
+    "preset_desc": "We automatically select the best resolution and bitrates for specific targets like YouTube or TikTok. Create maximum quality outputs without complex knowledge.",
+    "audio_title": "Extract High-Quality 320kbps MP3 from Videos",
+    "audio_desc": "Need an audio track from a video? Easily strip out the audio cleanly into a high-res MP3 file for podcasting or remixing in a single click.",
+    "zap_title": "Real-Time Local Progress Tracking",
+    "zap_desc": "Video rendering takes time. Our converter features an exclusive parallel engine (FFmpeg.wasm) showing precise progress percentages, with no risk of network timeouts.",
+    "info_title": "The Essential Tool for Content Creators",
+    "mov_title": "Ultra-Fast Browser Engine for MOV to MP4",
+    "mov_desc": "Quickly convert smartphone-recorded MOVs into highly compatible MP4s. Prevent frustrating import errors in video editing software.",
+    "privacy_title": "Privacy & Business Security",
+    "privacy_desc": "By converting confidential videos locally instead of using an external server, you effectively reduce the risk of information leaks to zero.",
+    "faq": [
+      {
+        "q": "Do I need to install software for large video conversions?",
+        "a": "No installation is required. Thanks to WebAssembly, your browser acts as a powerful conversion engine. Even massive video files begin processing instantly without waiting for slow server uploads."
+      },
+      {
+        "q": "Can I extract just the audio in high quality?",
+        "a": "Yes. Easily select the 'Extract Audio (MP3)' preset to instantly strip out a pristine 320kbps MP3 track straight from your video file."
+      }
+    ]
   },
   "audio": {
     "success": "SUCCESS",
@@ -180,32 +200,48 @@
   },
   "audio_page": {
     "title": "Audio Converter (Pro Settings)",
-    "description": "Advanced conversion to MP3, WAV, AAC, OGG. High-res audio and fixed bitrate controls, all in-browser.",
-    "spec_title": "Detailed Output Specs",
-    "spec_desc": "Specify professional values like **320kbps** and **48kHz** directly. Guaranteed quality for audiophiles and streamers.",
-    "lossless_title": "Lossless Conversion Support",
-    "lossless_desc": "Zero-quality-loss conversion for FLAC and WAV. Batch convert entire albums quickly while maintaining fidelity.",
-    "batch_title": "Batch Convert Albums to ZIP",
-    "batch_desc": "Drag and drop multiple audio files at once. Skip individual settings and finish work with a single ZIP download.",
-    "info_title": "Ideal for Production & Podcasts",
-    "wav_title": "Accurate WAV/MP3 Conversion",
-    "wav_desc": "Uses the latest encoding algorithms. MP3 compression from WAV keeps artifacts to a minimum for clear tone.",
-    "limit_title": "Free & Unlimited",
-    "limit_desc": "No file size or frequency limits. Maximize browser resources for smooth local processing."
+    "description": "Convert MP3, WAV, AAC, and OGG with full control over bitrate and sample rate locally in your browser.",
+    "spec_title": "Detailed Output Specs & High-Res",
+    "spec_desc": "Target true professional specs like 320kbps bitrate and 48kHz sampling rate. Guaranteed quality for audiophiles and streamers alike.",
+    "lossless_title": "WAV to MP3 Lossless Accuracy",
+    "lossless_desc": "Convert high fidelity audio seamlessly. Our engine protects frequency ranges for flawless playback when transforming between complex formats.",
+    "batch_title": "Batch convert FLAC to MP3 and ZIP",
+    "batch_desc": "Drop an entire album of FLAC or WAV files. Skip manual configuration and seamlessly download everything wrapped in a neat ZIP archive at the end.",
+    "info_title": "Perfect for Music Production & Podcasts",
+    "wav_title": "Accurate WAV to MP3 Output",
+    "wav_desc": "Using modern encoding algorithms, our WAV to MP3 compression minimizes artifacts and preserves high-end clarity perfectly.",
+    "limit_title": "Free, Unlimited Access",
+    "limit_desc": "No file size limitations or usage caps. Take full advantage of your local system's power to process massive albums effortlessly.",
+    "faq": [
+      {
+        "q": "Will my high-res audio quality be degraded?",
+        "a": "Not unless you want it to. We offer lossless compression conversion between FLAC/WAV as well as high fidelity 320kbps MP3 outputs, all configurable without sneaky quality drops."
+      },
+      {
+        "q": "Can I convert a folder of songs into MP3s and save them as a ZIP?",
+        "a": "Yes! Drop multiple WAV or FLAC files at once. Once the batch process finishes, click 'Save All (ZIP)' to download the entire album instantly."
+      }
+    ]
   },
   "pdf_page": {
     "title": "PDF Converter (High-Accuracy Word)",
-    "description": "Convert PDF to Word (.docx), extract text and images. Maintain layout while creating editable documents.",
-    "loading": "Loading PDF engine...",
-    "layout_title": "Structure-Preserving Layout",
-    "layout_desc": "The most common complaint with PDF-to-Word is layout breakage. Our tool uses a unique analysis engine to maintain structure, font, and placement accuracy.",
-    "secure_title": "Secure for Business Documents",
-    "secure_desc": "Keep contracts and proposals off external servers. Process entirely in-browser for the highest level of information security.",
-    "info_title": "For Business & Learning",
-    "word_title": "High-Accuracy Word Conversion",
-    "word_desc": "Convert PDF to editable Word. Re-use existing documents instantly and boost productivity for professionals and students.",
+    "description": "Extract text, images, or convert PDF to Word (.docx) while securely maintaining formatting layouts.",
+    "loading": "Loading PDF Engine...",
+    "layout_title": "Maintain Structural Layout Intact",
+    "layout_desc": "The biggest frustration in PDF to Word conversions is broken layouts. Our tool relies on advanced parsing to maintain fonts and placement rigorously.",
+    "secure_title": "Secure Enough for Confidential Docs",
+    "secure_desc": "Process contracts and proposals locally in the browser. Zero server uploads mean physical exclusion from external data breach risks.",
+    "info_title": "For Any Business or Study Scenario",
+    "word_title": "Highly Accurate Word Conversions",
+    "word_desc": "Transform static PDFs into editable Word formats automatically. Cut back on re-typing and boost overall productivity instantly.",
     "extract_title": "Image & Text Extraction",
-    "extract_desc": "Extract only images or text from your PDFs. Powerful support for gathering materials and creating presentations."
+    "extract_desc": "Need just the images from a PDF? Or pure text? We can pull out raw data flawlessly to aid your content creation workflows.",
+    "faq": [
+      {
+        "q": "Is my confidential PDF safe from information leaks when generating a Word file?",
+        "a": "Absolutely. The PDF parsing and Word (.docx) generation occur entirely within your browser runtime. Zero data is transmitted across the internet, ensuring maximum security for your sensitive documents."
+      }
+    ]
   },
   "pdf": {
     "format_label": "Format",

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { ConverterLayout } from "@/components/ConverterLayout";
 import { FileUploader } from "@/components/FileUploader";
 import { ImageConverter } from "@/components/ImageConverter";
+import { FAQSection } from "@/components/FAQSection";
 import { ShieldCheck, Camera, Info } from "lucide-react";
 
 interface ImageClientProps {
@@ -100,6 +101,11 @@ export default function ImageClient({ lang, dict, mode = "converter" }: ImageCli
                 </div>
               </div>
             </article>
+
+            {/* FAQ Section */}
+            {dict.image_page.faq && (
+              <FAQSection items={dict.image_page.faq} />
+            )}
           </>
         )}
       </div>

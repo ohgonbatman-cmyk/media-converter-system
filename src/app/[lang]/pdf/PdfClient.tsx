@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import { ConverterLayout } from "@/components/ConverterLayout";
 import { FileUploader } from "@/components/FileUploader";
+import { FAQSection } from "@/components/FAQSection";
 import { Layout, ShieldCheck, Briefcase } from "lucide-react";
 
 const PdfConverter = dynamic(() => import("@/components/PdfConverter").then(mod => mod.PdfConverter), {
@@ -109,6 +110,11 @@ export default function PdfClient({ lang, dict }: PdfClientProps) {
                 </div>
               </div>
             </article>
+
+            {/* FAQ Section */}
+            {dict.pdf_page.faq && (
+              <FAQSection items={dict.pdf_page.faq} />
+            )}
           </>
         )}
       </div>

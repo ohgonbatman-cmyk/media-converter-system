@@ -10,24 +10,24 @@
       "keywords": ["Conversión de Medios", "Privacidad Primera", "En el Navegador", "Convertidor Local"]
     },
     "image": {
-      "title": "Convertidor de Imágenes | HEIC a JPG, WebP a PNG - Media Converter",
-      "description": "Convierte imágenes por lotes localmente. Soporta HEIC, WebP, JPG, PNG y redimensionamiento.",
-      "keywords": ["Convertidor de Imágenes", "HEIC a JPG", "WebP a PNG", "Redimensionar Imagen", "Local"]
+      "title": "Convertir HEIC a JPG Seguro | Convertidor de Imágenes",
+      "description": "Convierte imágenes y HEIC a JPG. Eliminar ubicación y redimensionar. Proceso 100% privado en tu navegador sin subidas.",
+      "keywords": ["convertir HEIC a JPG seguro", "WebP a PNG transparente", "eliminar datos EXIF", "sin instalar", "privacidad"]
     },
     "video": {
-      "title": "Convertidor de Video | MP4, MOV, WebM y Extraer MP3 - Media Converter",
-      "description": "Convierte videos localmente con ajustes para iPhone y redes sociales.",
-      "keywords": ["Convertidor de Video", "MP4 a MOV", "Extraer MP3", "Redimensionar TikTok"]
+      "title": "Convertidor MOV a MP4 Rápido | Convertidor de Video",
+      "description": "Convierte videos localmente con ajustes para iPhone/TikTok. Extraer MP3 320kbps de manera segura.",
+      "keywords": ["convertir MOV a MP4 rápido", "video tamaño TikTok", "extraer MP3 320kbps de video", "FFmpeg local"]
     },
     "audio": {
-      "title": "Convertidor de Audio | MP3, WAV, AAC, FLAC - Media Converter",
-      "description": "Convierte archivos de audio y ajusta el bitrate de forma local y segura.",
-      "keywords": ["Convertidor de Audio", "WAV a MP3", "FLAC a MP3", "Alta Calidad", "Privado"]
+      "title": "Convertidor WAV a MP3 Sin Pérdida | Convertidor de Audio",
+      "description": "Convierte archivos de audio FLAC y WAV a MP3 320kbps de forma local y segura. Compresión en ZIP.",
+      "keywords": ["WAV a MP3 sin pérdida", "convertir FLAC a MP3 lote", "MP3 320kbps", "procesamiento privado"]
     },
     "pdf": {
-      "title": "Convertir PDF a Word | Alta Precisión - Media Converter",
-      "description": "Conversión precisa de PDF a Word en el navegador. Proceso seguro y local.",
-      "keywords": ["PDF a Word", "Convertir PDF", "Extraer Texto", "Seguro"]
+      "title": "PDF a Word Seguro en Navegador | Media Converter",
+      "description": "Conversión precisa de PDF a docx en el navegador. Proceso seguro y local para documentos confidenciales.",
+      "keywords": ["PDF a Word seguro", "convertir PDF a docx privado", "extraer texto PDF seguro"]
     },
     "compress_image": {
       "title": "Compresor de Imágenes | Reducir Tamaño sin Perder Calidad - Media Converter",
@@ -106,5 +106,86 @@
     "success": "Listo",
     "processing_label": "Procesando Audio...",
     "security_notice": "Tus datos nunca salen de este dispositivo"
+  },
+  "image_page": {
+    "title": "Convertidor de Imágenes (HEIC/WebP)",
+    "description": "Convierte y redimensiona PNG, JPG y WebP de forma privada y masiva.",
+    "secure_title": "¿Cómo convertir HEIC a JPG de forma segura? (Sin subidas al servidor)",
+    "secure_desc": "Las fotos contienen datos personales. Nuestra herramienta nunca expone sus archivos a Internet. Mantén tus imágenes confidenciales a salvo.",
+    "exif_title": "¿Cómo eliminar la ubicación de las fotos? (Borrado automático EXIF)",
+    "exif_desc": "Borre rápidamente los metadatos de ubicación para proteger tu privacidad antes de compartir en las redes sociales.",
+    "info_title": "Conversiones WebP instantáneas",
+    "iphone_title": "¿Problemas para compartir archivos HEIC del iPhone?",
+    "iphone_desc": "La mayoría de los sistemas antiguos no pueden leer fotos HEIC. Aquí puedes convertir lotes enteros instantáneamente en tu navegador.",
+    "pro_title": "Conversiones WebP que mantienen la transparencia",
+    "pro_desc": "Esencial para desarrolladores web. Optimice el tamaño y formato de sus imágenes de forma masiva.",
+    "faq": [
+      {
+        "q": "¿Es seguro procesar mis fotos privadas aquí?",
+        "a": "Totalmente. El proceso ocurre exclusivamente dentro de tu navegador web. Ningún archivo es subido a nuestros servidores en ningún momento."
+      }
+    ]
+  },
+  "video_page": {
+    "title": "Convertidor y Compresor de Video",
+    "description": "Formatos MP4 y WebM sin límite de tamaño con procesamiento local.",
+    "preset_title": "Video de iPhone a TikTok en 1 Clic",
+    "preset_desc": "Nuestro sistema aplica el formato exacto para la plataforma que selecciones automáticamente.",
+    "audio_title": "Extraer Audio Alta Calidad (MP3 a 320kbps)",
+    "audio_desc": "Extrae audio de video para uso profesional (ej. podcasting) de forma súper rápida.",
+    "zap_title": "Seguimiento en Tiempo Real Sin Red",
+    "zap_desc": "Motor paralelo basado en WebAssembly que no se ve afectado por cortes de Internet.",
+    "info_title": "Herramienta Esencial para Creadores",
+    "mov_title": "Rápido de MOV a MP4",
+    "mov_desc": "Resuelve instantáneamente problemas de compatibilidad convirtiendo archivos MOV a MP4 de manera local e inmediata.",
+    "privacy_title": "Seguridad Empresarial para Videos",
+    "privacy_desc": "Evite riesgos de filtraciones no subiendo videos sensibles a páginas externas.",
+    "faq": [
+      {
+        "q": "¿Necesito instalar algún software pesado para videos grandes?",
+        "a": "No. Aprovechamos la potencia de tu navegador vía WebAssembly, por lo que actúa como un software nativo pero sin instalación."
+      }
+    ]
+  },
+  "audio_page": {
+    "title": "Convertidor de Audio Profesional",
+    "description": "Soporte MP3, WAV, AAC, y OGG de alta resolución.",
+    "spec_title": "Control Total de Especificaciones",
+    "spec_desc": "Precisión máxima usando resoluciones profesionales (ej. 320kbps / 48kHz).",
+    "lossless_title": "Conversión Sin Pérdidas (WAV/FLAC)",
+    "lossless_desc": "Garantiza fidelidad de audio impecable para música.",
+    "batch_title": "Convertir Todo por Lotes (Descarga ZIP)",
+    "batch_desc": "Ahorra horas procesando discografías completas con un solo clic.",
+    "info_title": "Optimización Segura",
+    "wav_title": "Exactitud WAV a MP3",
+    "wav_desc": "Minimiza la pérdida percibida utilizando lo último en algoritmos de codificación de audio.",
+    "limit_title": "Sin Límites de Uso",
+    "limit_desc": "No te limitamos en tamaño de archivo, convierte GB enteros localmente.",
+    "faq": [
+      {
+        "q": "¿Mi música perderá calidad al convertirse?",
+        "a": "Si eliges convertir FLAC o WAV a MP3, te ofrecemos un tope máximo de calidad de 320kbps previniendo distorsiones graves."
+      }
+    ]
+  },
+  "pdf_page": {
+    "title": "Convertidor PDF a Word Seguro",
+    "description": "Extrae contenido o recrea un DOCX preservando márgenes y estructura.",
+    "loading": "Iniciando motor PDF...",
+    "layout_title": "Estructuras Precisas en Word",
+    "layout_desc": "Resolvemos la rotura de bloques de texto comunes durante el proceso de Word.",
+    "secure_title": "Ideal para Documentos Confidenciales",
+    "secure_desc": "Los contratos nunca dejan su PC al procesar de forma local.",
+    "info_title": "La Solución a Tareas Repetitivas",
+    "word_title": "Conversiones con Precisión DOCX",
+    "word_desc": "Archivos 100% editables para ofimática moderna.",
+    "extract_title": "Extracción de Textos e Imágenes",
+    "extract_desc": "Obtén los recursos internos sin la molestia de copiar manualmente.",
+    "faq": [
+      {
+        "q": "¿Dónde se guarda mi PDF después de pasarlo a Word?",
+        "a": "En ningún lugar de la red. Nosotros nunca tocamos tus documentos, la lectura del PDF y escritura del archivo docx pasa 100% en la máquina local (tu PC o teléfono)."
+      }
+    ]
   }
 }

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { ConverterLayout } from "@/components/ConverterLayout";
 import { FileUploader } from "@/components/FileUploader";
 import { VideoConverter } from "@/components/VideoConverter";
+import { FAQSection } from "@/components/FAQSection";
 import { Zap, Music, Smartphone, Info } from "lucide-react";
 
 interface VideoClientProps {
@@ -120,6 +121,11 @@ export default function VideoClient({ lang, dict, mode = "converter" }: VideoCli
                 </div>
               </div>
             </article>
+
+            {/* FAQ Section */}
+            {dict.video_page.faq && (
+              <FAQSection items={dict.video_page.faq} />
+            )}
           </>
         )}
       </div>

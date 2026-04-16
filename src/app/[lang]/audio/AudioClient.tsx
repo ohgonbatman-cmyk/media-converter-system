@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { ConverterLayout } from "@/components/ConverterLayout";
 import { FileUploader } from "@/components/FileUploader";
 import { AudioConverter } from "@/components/AudioConverter";
+import { FAQSection } from "@/components/FAQSection";
 import { Music, Activity, Archive, Speaker, Info } from "lucide-react";
 
 interface AudioClientProps {
@@ -120,6 +121,11 @@ export default function AudioClient({ lang, dict, mode = "converter" }: AudioCli
                 </div>
               </div>
             </article>
+
+            {/* FAQ Section */}
+            {dict.audio_page.faq && (
+              <FAQSection items={dict.audio_page.faq} />
+            )}
           </>
         )}
       </div>

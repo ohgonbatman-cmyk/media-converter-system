@@ -78,7 +78,7 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
               totalBps = 4500000; // ~4.5Mbps
               break;
             case "mp3_extract":
-              totalBps = 192000; // 192kbps
+              totalBps = 320000; // 320kbps
               break;
             default:
               totalBps = 2000000; // ~2Mbps standard
@@ -126,7 +126,7 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
             args.push("-vf", "crop='if(gt(a,9/16),ih*9/16,iw)':'if(gt(a,9/16),ih,iw*16/9)':'(iw-ow)/2':'(ih-oh)/2',scale=1080:1920", "-c:v", "libx264", "-crf", "23", "-preset", "fast", "-c:a", "aac", "-b:a", "128k");
             break;
           case "mp3_extract":
-            args.push("-vn", "-c:a", "libmp3lame", "-b:a", "192k");
+            args.push("-vn", "-c:a", "libmp3lame", "-b:a", "320k");
             break;
           default:
             if (targetFormat === "mp4") {
