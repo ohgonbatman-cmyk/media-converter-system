@@ -269,11 +269,13 @@
       }
     ]
   },
-  "pdf": {
-    "format_label": "形式",
-    "format_desc": "PDF → Word (.docx)",
-    "process_all": "Wordへ変換を開始",
-    "processing_label": "PDFを解析・Word生成中...",
+    "format_label": "変換形式",
+    "format_desc": "PDF → Word / MD / JSON",
+    "format_word": "Word (.docx)",
+    "format_markdown": "Markdown (.md)",
+    "format_json": "JSON (.json)",
+    "process_all": "変換を開始",
+    "processing_label": "PDFを解析・変換中...",
     "processing_desc": "大規模なドキュメントや高画質画像が含まれる場合は時間がかかることがあります",
     "page_label": "ページ {page}",
     "success": "SUCCESS",

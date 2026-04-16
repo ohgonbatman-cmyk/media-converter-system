@@ -270,10 +270,13 @@
     ]
   },
   "pdf": {
-    "format_label": "Format",
-    "format_desc": "PDF → Word (.docx)",
-    "process_all": "Start Word Conversion",
-    "processing_label": "Analyzing PDF & Generating Word...",
+    "format_label": "Target Format",
+    "format_desc": "PDF → Word / MD / JSON",
+    "format_word": "Word (.docx)",
+    "format_markdown": "Markdown (.md)",
+    "format_json": "JSON (.json)",
+    "process_all": "Start Conversion",
+    "processing_label": "Analyzing & Converting PDF...",
     "processing_desc": "Large documents or high-quality images may take longer to process.",
     "page_label": "Page {page}",
     "success": "SUCCESS",

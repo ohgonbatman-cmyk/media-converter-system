@@ -252,10 +252,13 @@
     ]
   },
   "pdf": {
-    "format_label": "Formato",
-    "format_desc": "PDF → Word (.docx)",
-    "process_all": "Iniciar Conversión a Word",
-    "processing_label": "Analizando PDF y Generando Word...",
+    "format_label": "Formato de Salida",
+    "format_desc": "PDF → Word / MD / JSON",
+    "format_word": "Word (.docx)",
+    "format_markdown": "Markdown (.md)",
+    "format_json": "JSON (.json)",
+    "process_all": "Iniciar Conversión",
+    "processing_label": "Analizando y Convirtiendo PDF...",
     "processing_desc": "Los documentos grandes o imágenes de alta calidad pueden tardar más tiempo.",
     "page_label": "Página {page}",
     "success": "SUCCESS",

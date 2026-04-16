@@ -27,6 +27,7 @@ interface PdfConverterProps {
 
 export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang, dict }) => {
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
+  const [targetFormat, setTargetFormat] = useState<"docx" | "md" | "json">("docx");
   const [isProcessing, setIsProcessing] = useState(false);
   const [isProcessingAll, setIsProcessingAll] = useState(false);
   const [overallProgress, setOverallProgress] = useState(0);
@@ -59,129 +60,96 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
       const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
       const pdf = await loadingTask.promise;
       
-      const docChildren: any[] = [];
       const numPages = pdf.numPages;
+      let resultBlob: Blob;
 
-      for (let i = 1; i <= numPages; i++) {
-        const page = await pdf.getPage(i);
-        const textContent = await page.getTextContent();
-        
-        // --- 1. Text Extraction & Basic Paragraph Construction ---
-        // Group text items by their vertical position (y coordinate)
-        const items = textContent.items as any[];
-        const lines: { y: number, text: string }[] = [];
-        
-        items.sort((a, b) => b.transform[5] - a.transform[5] || a.transform[4] - b.transform[4]);
+      if (targetFormat === "docx") {
+        const docxModule = await import("docx");
+        const { Document, Packer, Paragraph, TextRun, ImageRun, HeadingLevel, AlignmentType } = docxModule;
+        const docChildren: any[] = [];
 
-        let currentY = -1;
-        let currentLine = "";
+        for (let i = 1; i <= numPages; i++) {
+          const page = await pdf.getPage(i);
+          const textContent = await page.getTextContent();
+          const items = textContent.items as any[];
+          const lines = groupAndSortItems(items);
 
-        for (const item of items) {
-          const y = Math.round(item.transform[5]);
-          if (currentY !== y && currentLine !== "") {
-            lines.push({ y: currentY, text: currentLine.trim() });
-            currentLine = "";
+          docChildren.push(new Paragraph({
+            text: dict.pdf.page_label.replace("{page}", i.toString()),
+            heading: HeadingLevel.HEADING_2,
+            spacing: { before: 400, after: 200 },
+          }));
+
+          for (const line of lines) {
+            const children: any[] = [];
+            for (const item of line.items) {
+              const isBold = item.fontName?.toLowerCase().includes("bold");
+              children.push(new TextRun({
+                text: item.str + " ",
+                bold: isBold,
+              }));
+            }
+            docChildren.push(new Paragraph({ children, spacing: { after: 120 } }));
           }
-          currentY = y;
-          currentLine += item.str + " ";
+          setOverallProgress(Math.round((i / numPages) * 100));
         }
-        if (currentLine !== "") lines.push({ y: currentY, text: currentLine.trim() });
 
-        // Add page header/marker as a heading
-        docChildren.push(new Paragraph({
-          text: dict.pdf.page_label.replace("{page}", i.toString()),
-          heading: HeadingLevel.HEADING_2,
-          spacing: { before: 400, after: 200 },
-        }));
+        const doc = new Document({ sections: [{ children: docChildren }] });
+        resultBlob = await Packer.toBlob(doc);
+      } else if (targetFormat === "md") {
+        let mdContent = `# ${mediaFile.file.name}\n\n`;
+        for (let i = 1; i <= numPages; i++) {
+          const page = await pdf.getPage(i);
+          const textContent = await page.getTextContent();
+          const items = textContent.items as any[];
+          const lines = groupAndSortItems(items);
 
-        // Process lines into paragraphs
-        lines.forEach(line => {
-          if (line.text.length > 0) {
-            docChildren.push(new Paragraph({
-              children: [new TextRun(line.text)],
-              spacing: { after: 120 }
-            }));
-          }
-        });
-
-        // --- 2. Image Extraction ---
-        try {
-          const operatorList = await page.getOperatorList();
-          const { OPS } = pdfjsLib as any;
-
-          for (let j = 0; j < operatorList.fnArray.length; j++) {
-            const fn = operatorList.fnArray[j];
-            if (fn === OPS.paintJpegXObject || fn === OPS.paintImageXObject) {
-              const imgName = operatorList.argsArray[j][0];
-              let img: any;
-              try {
-                img = await page.objs.get(imgName);
-              } catch (e) {
-                img = await page.commonObjs.get(imgName);
-              }
-
-              if (img && img.data && typeof document !== "undefined") {
-                // Convert raw image data to a usable format for docx
-                const canvas = document.createElement("canvas");
-                canvas.width = img.width;
-                canvas.height = img.height;
-                const ctx = canvas.getContext("2d");
-                if (ctx) {
-                  const imageData = ctx.createImageData(img.width, img.height);
-                  // pdf.js raw data handling (RGBA/RGB)
-                  if (img.data.length === img.width * img.height * 4) {
-                    imageData.data.set(img.data);
-                  } else {
-                    // RGB to RGBA conversion if necessary
-                    for (let k = 0, l = 0; k < img.data.length; k += 3, l += 4) {
-                        imageData.data[l] = img.data[k];
-                        imageData.data[l+1] = img.data[k+1];
-                        imageData.data[l+2] = img.data[k+2];
-                        imageData.data[l+3] = 255;
-                    }
-                  }
-                  ctx.putImageData(imageData, 0, 0);
-                  
-                  const imageBase64 = canvas.toDataURL("image/png").split(",")[1];
-                  const imageBuffer = Uint8Array.from(atob(imageBase64), c => c.charCodeAt(0));
-
-                  docChildren.push(new Paragraph({
-                    alignment: AlignmentType.CENTER,
-                    children: [
-                      new ImageRun({
-                        data: imageBuffer,
-                        transformation: {
-                          width: Math.min(img.width, 500), 
-                          height: (Math.min(img.width, 500) / img.width) * img.height,
-                        },
-                        type: "png"
-                      } as any),
-                    ],
-                    spacing: { before: 200, after: 200 },
-                  }));
-                }
+          mdContent += `## ${dict.pdf.page_label.replace("{page}", i.toString())}\n\n`;
+          for (const line of lines) {
+            let lineText = "";
+            for (const item of line.items) {
+              const isBold = item.fontName?.toLowerCase().includes("bold") || item.transform[0] > 12;
+              const text = item.str.trim();
+              if (text) {
+                lineText += isBold ? ` **${text}** ` : ` ${text} `;
               }
             }
+            if (lineText.trim()) mdContent += lineText.trim() + "\n\n";
           }
-        } catch (e) {
-          console.warn("Failed to extract images from page", i, e);
+          setOverallProgress(Math.round((i / numPages) * 100));
         }
+        resultBlob = new Blob([mdContent], { type: "text/markdown" });
+      } else {
+        // JSON Format
+        const jsonData: any = { filename: mediaFile.file.name, pages: [] };
+        for (let i = 1; i <= numPages; i++) {
+          const page = await pdf.getPage(i);
+          const textContent = await page.getTextContent();
+          const items = textContent.items as any[];
+          const lines = groupAndSortItems(items);
 
-        setOverallProgress(Math.round((i / numPages) * 100));
+          jsonData.pages.push({
+            pageNumber: i,
+            lines: lines.map(line => ({
+              text: line.items.map((it: any) => it.str).join(" "),
+              items: line.items.map((it: any) => ({
+                text: it.str,
+                font: it.fontName,
+                size: it.transform[0],
+                isBold: it.fontName?.toLowerCase().includes("bold")
+              }))
+            }))
+          });
+          setOverallProgress(Math.round((i / numPages) * 100));
+        }
+        resultBlob = new Blob([JSON.stringify(jsonData, null, 2)], { type: "application/json" });
       }
 
-      const doc = new Document({
-        sections: [{
-          properties: {},
-          children: docChildren,
-        }],
-      });
-
-      const blob = await Packer.toBlob(doc);
-      const url = URL.createObjectURL(blob);
-      const size = blob.size;
+      const url = URL.createObjectURL(resultBlob);
+      const size = resultBlob.size;
 
       setMediaFiles(prev => prev.map(f => f.id === mediaFile.id ? { ...f, status: "completed", resultUrl: url, progress: 100, resultSize: size } : f));
+
       
       // 個別報告
       if (!isProcessingAll) {
@@ -230,7 +198,7 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
     const a = document.createElement("a");
     const originalName = mFile.file.name.substring(0, mFile.file.name.lastIndexOf("."));
     a.href = mFile.resultUrl;
-    a.download = `${originalName}.docx`;
+    a.download = `${originalName}.${targetFormat === "docx" ? "docx" : targetFormat === "md" ? "md" : "json"}`;
     a.click();
   };
 
@@ -241,12 +209,30 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
     <div className="flex flex-col gap-6 h-full">
       {/* Options Bar */}
       <div className="bg-white border border-slate-200 p-6 md:p-8 rounded-[2.5rem] md:rounded-[2.5rem] flex flex-col gap-8 shadow-sm ring-1 ring-slate-100 font-sans">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="flex flex-col gap-2 text-left">
-            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">{dict.pdf.format_label}</label>
-            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 overflow-hidden h-[46px]">
-              <FileText className="w-4 h-4 text-sky-500" />
-              {dict.pdf.format_desc}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="flex flex-col gap-3 text-left">
+            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">
+              {dict.pdf.format_label}
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { id: "docx", label: dict.pdf.format_word, icon: FileText },
+                { id: "md", label: dict.pdf.format_markdown, icon: FileText },
+                { id: "json", label: dict.pdf.format_json, icon: FileText },
+              ].map((fmt) => (
+                <button
+                  key={fmt.id}
+                  onClick={() => setTargetFormat(fmt.id as any)}
+                  className={`flex items-center gap-2 px-4 py-2 text-[11px] font-black uppercase tracking-tight rounded-xl border transition-all ${
+                    targetFormat === fmt.id
+                      ? "bg-slate-900 border-slate-900 text-white shadow-md shadow-slate-200"
+                      : "bg-white border-slate-200 text-slate-500 hover:border-slate-300"
+                  }`}
+                >
+                  <fmt.icon className="w-3.5 h-3.5" />
+                  {fmt.label}
+                </button>
+              ))}
             </div>
           </div>
         </div>
@@ -369,3 +355,23 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
     </div>
   );
 };
+
+// Helper function to group and sort PDF text items
+function groupAndSortItems(items: any[]) {
+  items.sort((a, b) => b.transform[5] - a.transform[5] || a.transform[4] - b.transform[4]);
+  const lines: { y: number; items: any[] }[] = [];
+  let currentY = -1;
+  let currentLineItems: any[] = [];
+
+  for (const item of items) {
+    const y = Math.round(item.transform[5]);
+    if (Math.abs(currentY - y) > 5 && currentLineItems.length > 0) {
+      lines.push({ y: currentY, items: currentLineItems });
+      currentLineItems = [];
+    }
+    currentY = y;
+    currentLineItems.push(item);
+  }
+  if (currentLineItems.length > 0) lines.push({ y: currentY, items: currentLineItems });
+  return lines;
+}
