@@ -240,11 +240,24 @@
     "word_desc": "Archivos 100% editables para ofimática moderna.",
     "extract_title": "Extracción de Textos e Imágenes",
     "extract_desc": "Obtén los recursos internos sin la molestia de copiar manualmente.",
-    "faq": [
-      {
-        "q": "¿Dónde se guarda mi PDF después de pasarlo a Word?",
-        "a": "En ningún lugar de la red. Nosotros nunca tocamos tus documentos, la lectura del PDF y escritura del archivo docx pasa 100% en la máquina local (tu PC o teléfono)."
-      }
     ]
+  },
+  "pdf": {
+    "format_label": "Formato",
+    "format_desc": "PDF → Word (.docx)",
+    "process_all": "Iniciar Conversión a Word",
+    "processing_label": "Analizando PDF y Generando Word...",
+    "processing_desc": "Los documentos grandes o imágenes de alta calidad pueden tardar más tiempo.",
+    "page_label": "Página {page}",
+    "success": "SUCCESS",
+    "compress_title": "Compresión PDF (Ligero)",
+    "quality_label": "Nivel de Compresión",
+    "quality_strong": "Fuerte (Tamaño Primero)",
+    "quality_recommended": "Recomendado (Equilibrado)",
+    "quality_low": "Bajo (Calidad Primero)",
+    "compress_process": "Ejecutar Compresión",
+    "saving_label": "Reconstruyendo y Comprimiendo PDF...",
+    "original_size": "Original",
+    "compressed_size": "Reducido"
   }
 }

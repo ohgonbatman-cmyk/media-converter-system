@@ -262,6 +262,10 @@
       {
         "q": "機密文書のPDFをWordに変換しても情報漏洩しませんか？",
         "a": "PDFの読み込みおよびWord（docx）生成エンジンは完全にあなたのブラウザ内で動作します。処理のためにデータが外部ネットワークへ送信されることはないため、非常に安全です。"
+      },
+      {
+        "q": "PDF圧縮で画質は落ちませんか？",
+        "a": "「推奨」設定では、文字の鮮明さを維持しつつ画像データのサイズを最適化します。極端な軽量化が必要な場合は「強力」を選択できますが、通常のビジネス利用には推奨設定が最適です。"
       }
     ]
   },
@@ -272,6 +276,15 @@
     "processing_label": "PDFを解析・Word生成中...",
     "processing_desc": "大規模なドキュメントや高画質画像が含まれる場合は時間がかかることがあります",
     "page_label": "ページ {page}",
-    "success": "CONVERTED"
+    "success": "SUCCESS",
+    "compress_title": "PDF圧縮 (軽量化)",
+    "quality_label": "圧縮レベル",
+    "quality_strong": "強力 (サイズ最優先)",
+    "quality_recommended": "推奨 (バランス)",
+    "quality_low": "低 (画質重視)",
+    "compress_process": "PDF圧縮を実行",
+    "saving_label": "PDFを再構成・圧縮中...",
+    "original_size": "元サイズ",
+    "compressed_size": "圧縮後"
   }
 }

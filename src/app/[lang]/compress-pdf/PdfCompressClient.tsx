@@ -3,7 +3,9 @@
 import React, { useState } from "react";
 import { ConverterLayout } from "@/components/ConverterLayout";
 import { FileUploader } from "@/components/FileUploader";
-import { ShieldCheck, Info, FileDown } from "lucide-react";
+import { PdfCompressor } from "@/components/PdfCompressor";
+import { FAQSection } from "@/components/FAQSection";
+import { ShieldCheck, Info } from "lucide-react";
 
 interface PdfCompressClientProps {
   lang: string;
@@ -24,7 +26,7 @@ export default function PdfCompressClient({ lang, dict }: PdfCompressClientProps
   return (
     <ConverterLayout 
       category="PDF Compressor"
-      title={dict.metadata.compress_pdf.title}
+      title={dict.pdf.compress_title}
       description={dict.metadata.compress_pdf.description}
       color="bg-red-500"
       lang={lang}
@@ -32,24 +34,7 @@ export default function PdfCompressClient({ lang, dict }: PdfCompressClientProps
     >
       <div className="flex flex-col gap-12 h-full">
         {selectedFiles.length > 0 ? (
-          <div className="bg-white p-12 rounded-[3rem] text-center border border-slate-100 shadow-xl">
-             <div className="p-6 bg-red-50 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                <FileDown className="w-10 h-10 text-red-500" />
-             </div>
-             <h3 className="text-2xl font-black text-slate-800 mb-4">PDF Compression Engine</h3>
-             <p className="text-slate-500 max-w-md mx-auto mb-8 font-medium">
-                Implementing high-performance image optimization for PDF. Coming shortly to keep your documents lightweight.
-             </p>
-             <button 
-               onClick={() => {
-                 import("@/lib/tracking").then(m => m.trackEvent("cancel_operation", { media_type: "compress_pdf" }));
-                 handleReset();
-               }}
-               className="bg-slate-900 text-white font-black px-10 py-4 rounded-2xl hover:bg-slate-800 transition-all shadow-lg"
-             >
-                {dict.common.cancel}
-             </button>
-          </div>
+          <PdfCompressor files={selectedFiles} onReset={handleReset} lang={lang} dict={dict} />
         ) : (
           <>
             <FileUploader 
@@ -88,6 +73,11 @@ export default function PdfCompressClient({ lang, dict }: PdfCompressClientProps
                 </div>
               </div>
             </div>
+
+            {/* FAQ Section */}
+            {dict.pdf_page.faq && (
+              <FAQSection items={dict.pdf_page.faq} />
+            )}
           </>
         )}
       </div>

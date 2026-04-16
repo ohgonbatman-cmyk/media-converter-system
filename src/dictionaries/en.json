@@ -262,6 +262,10 @@
       {
         "q": "Is my confidential PDF safe from information leaks when generating a Word file?",
         "a": "Absolutely. The PDF parsing and Word (.docx) generation occur entirely within your browser runtime. Zero data is transmitted across the internet, ensuring maximum security for your sensitive documents."
+      },
+      {
+        "q": "Will the PDF lose quality after compression?",
+        "a": "Our 'Recommended' setting balances visual fidelity and file size. Text remains sharp, while images are optimized. For extreme size reduction, choose 'Strong', though 'Recommended' is best for most professional needs."
       }
     ]
   },
@@ -272,6 +276,15 @@
     "processing_label": "Analyzing PDF & Generating Word...",
     "processing_desc": "Large documents or high-quality images may take longer to process.",
     "page_label": "Page {page}",
-    "success": "CONVERTED"
+    "success": "SUCCESS",
+    "compress_title": "PDF Compression (Lightweight)",
+    "quality_label": "Compression Level",
+    "quality_strong": "Strong (Size First)",
+    "quality_recommended": "Recommended (Balanced)",
+    "quality_low": "Low (Quality First)",
+    "compress_process": "Apply Compression",
+    "saving_label": "Reconstructing & Compressing PDF...",
+    "original_size": "Original",
+    "compressed_size": "Reduced"
   }
 }
