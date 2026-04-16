@@ -21,16 +21,28 @@ interface MediaFile {
 interface PdfConverterProps {
   files: File[];
   onReset: () => void;
-  lang: string;
   dict: any;
 }
 
-export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang, dict }) => {
+const groupAndSortItems = (items: any[]) => {
+  const lines: { y: number; items: any[] }[] = [];
+  items.forEach((item) => {
+    const y = Math.round(item.transform[5] / 5) * 5;
+    const existingLine = lines.find((l) => Math.abs(l.y - y) < 5);
+    if (existingLine) {
+      existingLine.items.push(item);
+    } else {
+      lines.push({ y, items: [item] });
+    }
+  });
+  return lines.sort((a, b) => b.y - a.y);
+};
+
+export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, dict }) => {
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
   const [targetFormat, setTargetFormat] = useState<"docx" | "md" | "json">("docx");
   const [isProcessing, setIsProcessing] = useState(false);
   const [isProcessingAll, setIsProcessingAll] = useState(false);
-  const [overallProgress, setOverallProgress] = useState(0);
 
   useEffect(() => {
     const newFiles = files.map((file) => ({
@@ -47,13 +59,7 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
     setMediaFiles(prev => prev.map(f => f.id === mediaFile.id ? { ...f, status: "processing" } : f));
 
     try {
-      // Dynamic imports: these libraries reference `document` at module level
-      // and MUST NOT be statically imported to avoid Edge Runtime crashes.
       const pdfjsLib = await import("pdfjs-dist");
-      const docxModule = await import("docx");
-      const { Document, Packer, Paragraph, TextRun, ImageRun, HeadingLevel, AlignmentType } = docxModule;
-
-      // Use fixed worker version matching our package for reliability
       pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs`;
 
       const arrayBuffer = await mediaFile.file.arrayBuffer();
@@ -64,8 +70,7 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
       let resultBlob: Blob;
 
       if (targetFormat === "docx") {
-        const docxModule = await import("docx");
-        const { Document, Packer, Paragraph, TextRun, ImageRun, HeadingLevel, AlignmentType } = docxModule;
+        const { Document, Packer, Paragraph, TextRun, HeadingLevel } = await import("docx");
         const docChildren: any[] = [];
 
         for (let i = 1; i <= numPages; i++) {
@@ -91,7 +96,6 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
             }
             docChildren.push(new Paragraph({ children, spacing: { after: 120 } }));
           }
-          setOverallProgress(Math.round((i / numPages) * 100));
         }
 
         const doc = new Document({ sections: [{ children: docChildren }] });
@@ -116,7 +120,6 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
             }
             if (lineText.trim()) mdContent += lineText.trim() + "\n\n";
           }
-          setOverallProgress(Math.round((i / numPages) * 100));
         }
         resultBlob = new Blob([mdContent], { type: "text/markdown" });
       } else {
@@ -140,7 +143,6 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
               }))
             }))
           });
-          setOverallProgress(Math.round((i / numPages) * 100));
         }
         resultBlob = new Blob([JSON.stringify(jsonData, null, 2)], { type: "application/json" });
       }
@@ -160,7 +162,6 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
       setMediaFiles(prev => prev.map(f => f.id === mediaFile.id ? { ...f, status: "error" } : f));
     } finally {
       setIsProcessing(false);
-      setOverallProgress(0);
     }
   };
 

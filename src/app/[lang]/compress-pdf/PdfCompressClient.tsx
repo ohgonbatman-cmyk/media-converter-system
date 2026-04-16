@@ -34,7 +34,7 @@ export default function PdfCompressClient({ lang, dict }: PdfCompressClientProps
     >
       <div className="flex flex-col gap-12 h-full">
         {selectedFiles.length > 0 ? (
-          <PdfCompressor files={selectedFiles} onReset={handleReset} lang={lang} dict={dict} />
+          <PdfCompressor files={selectedFiles} onReset={handleReset} dict={dict} />
         ) : (
           <>
             <FileUploader 

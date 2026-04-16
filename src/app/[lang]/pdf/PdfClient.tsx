@@ -44,7 +44,7 @@ export default function PdfClient({ lang, dict }: PdfClientProps) {
     >
       <div className="flex flex-col gap-12 h-full">
         {selectedFiles.length > 0 ? (
-          <PdfConverter files={selectedFiles} onReset={handleReset} lang={lang} dict={dict} />
+          <PdfConverter files={selectedFiles} onReset={handleReset} dict={dict} />
         ) : (
           <>
             <FileUploader 

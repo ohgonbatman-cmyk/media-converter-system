@@ -1,4 +1,4 @@
-import { PDFDocument, PDFName, PDFRawStream, PDFDict } from 'pdf-lib';
+import { PDFDocument, PDFName, PDFRawStream } from 'pdf-lib';
 
 export async function compressPdf(
   fileBuffer: ArrayBuffer,
@@ -6,12 +6,9 @@ export async function compressPdf(
   onProgress?: (progress: number) => void
 ): Promise<Uint8Array> {
   const pdfDoc = await PDFDocument.load(fileBuffer);
-  const pages = pdfDoc.getPages();
-  const totalPages = pages.length;
 
   // We iterate through all objects to find images
   const enumerateObjects = (pdfDoc as any).context.enumerateIndirectObjects();
-  let processedImages = 0;
   const imageObjects: any[] = [];
 
   for (const [ref, obj] of enumerateObjects) {

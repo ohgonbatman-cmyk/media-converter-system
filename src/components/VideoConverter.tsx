@@ -106,7 +106,7 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
 
       await ffmpeg.writeFile(inputName, await fetchFile(mediaFile.file));
       
-      let args: string[] = ["-i", inputName];
+      const args: string[] = ["-i", inputName];
       
       if (mode === "compressor") {
         if (targetFormat === "mp4" || targetFormat === "mov") {

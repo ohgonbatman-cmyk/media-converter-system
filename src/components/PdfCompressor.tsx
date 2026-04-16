@@ -18,15 +18,13 @@ interface MediaFile {
 interface PdfCompressorProps {
   files: File[];
   onReset: () => void;
-  lang: string;
   dict: any;
 }
 
-export const PdfCompressor: React.FC<PdfCompressorProps> = ({ files, onReset, lang, dict }) => {
+export const PdfCompressor: React.FC<PdfCompressorProps> = ({ files, onReset, dict }) => {
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [quality, setQuality] = useState(0.75); // Default Recommended
-  const [overallProgress, setOverallProgress] = useState(0);
 
   useEffect(() => {
     const newFiles = files.map((file) => ({
@@ -48,7 +46,8 @@ export const PdfCompressor: React.FC<PdfCompressorProps> = ({ files, onReset, la
         setMediaFiles(prev => prev.map(f => f.id === mFile.id ? { ...f, progress: p } : f));
       });
 
-      const blob = new Blob([resultUint8], { type: "application/pdf" });
+      // Fix TS error: cast to any to satisfy BlobPart requirement in some environments
+      const blob = new Blob([resultUint8 as any], { type: "application/pdf" });
       const size = blob.size;
 
       setMediaFiles(prev => prev.map(f => f.id === mFile.id ? { 
