@@ -269,6 +269,7 @@
       }
     ]
   },
+  "pdf": {
     "format_label": "変換形式",
     "format_desc": "PDF → Word / MD / JSON",
     "format_word": "Word (.docx)",
