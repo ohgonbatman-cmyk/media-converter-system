@@ -61,7 +61,10 @@ export default async function RootLayout(
           `}
         </Script>
       </head>
-      <body className="min-h-screen bg-background text-foreground flex flex-col font-sans">
+      <body 
+        className={`${geistSans.className} min-h-screen bg-background text-foreground flex flex-col font-sans`}
+        suppressHydrationWarning
+      >
         {children}
       </body>
     </html>

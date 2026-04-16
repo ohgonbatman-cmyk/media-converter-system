@@ -21,14 +21,16 @@ interface AudioConverterProps {
   onReset: () => void;
   lang: string;
   dict: any;
+  mode?: "converter" | "compressor";
 }
 
-export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset, lang, dict }) => {
+export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset, lang, dict, mode = "converter" }) => {
   const { load, progress, resetProgress } = useFFmpeg();
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
   const [targetFormat, setTargetFormat] = useState<string>("mp3");
-  const [targetBitrate, setTargetBitrate] = useState<string>("192k");
+  const [targetBitrate, setTargetBitrate] = useState<string>(mode === "compressor" ? "96k" : "192k");
   const [targetSampleRate, setTargetSampleRate] = useState<string>("44100");
+  const [isMono, setIsMono] = useState<boolean>(mode === "compressor");
   const [isProcessing, setIsProcessing] = useState(false);
   const [isProcessingAll, setIsProcessingAll] = useState(false);
   const [isZipping, setIsZipping] = useState(false);
@@ -64,8 +66,9 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset, 
       // FLAC: Roughly 60% of WAV
       bps = parseInt(targetSampleRate) * 16 * 2 * 0.6;
     } else {
-      // Lossy: Bitrate
+      // Lossy: Bitrate (Approximate for mono/stereo)
       bps = parseInt(targetBitrate.replace("k", "")) * 1000;
+      if (isMono) bps = bps * 0.8; // Rough adjustment for mono perception/overhead
     }
     
     const sizeBytes = (bps * mFile.duration) / 8;
@@ -91,6 +94,9 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset, 
       const args = ["-i", inputName];
       if (["mp3", "aac", "ogg"].includes(targetFormat)) {
         args.push("-b:a", targetBitrate);
+      }
+      if (isMono) {
+        args.push("-ac", "1");
       }
       args.push("-ar", targetSampleRate);
       args.push(outputName);
@@ -147,6 +153,11 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset, 
     const completedFiles = mediaFiles.filter(f => f.status === "completed" && f.resultUrl);
     if (completedFiles.length === 0) return;
 
+    if (completedFiles.length === 1) {
+      handleDownload(completedFiles[0]);
+      return;
+    }
+
     setIsZipping(true);
     const zip = new JSZip();
     
@@ -180,59 +191,94 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset, 
 
   const anyCompleted = mediaFiles.some(f => f.status === "completed");
   const allCompleted = mediaFiles.length > 0 && mediaFiles.every(f => f.status === "completed");
+  const completedCount = mediaFiles.filter(f => f.status === "completed").length;
 
   return (
-    <div className="flex flex-col gap-8 h-full">
+    <div className="flex flex-col gap-6 h-full">
       {/* Options Bar */}
-      <div className="bg-white border border-slate-200 p-4 md:p-6 rounded-[2rem] md:rounded-3xl grid grid-cols-1 md:flex md:flex-row md:items-center gap-4 md:gap-6 shadow-sm ring-1 ring-slate-100">
-        <div className="flex flex-col gap-2">
-          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left leading-none">{dict.audio.format_label}</label>
-          <select 
-            value={targetFormat}
-            onChange={(e) => setTargetFormat(e.target.value)}
-            disabled={isProcessing}
-            className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent-audio/20 transition-all"
-          >
-            <option value="mp3">MP3</option>
-            <option value="wav">WAV (高音質)</option>
-            <option value="flac">FLAC (無劣化)</option>
-            <option value="aac">AAC</option>
-            <option value="ogg">OGG</option>
-          </select>
-        </div>
-
-        {["mp3", "aac", "ogg"].includes(targetFormat) && (
-          <div className="flex flex-col gap-2">
-            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left leading-none">{dict.audio.bitrate_label}</label>
+      <div className="bg-white border border-slate-200 p-6 md:p-8 rounded-[2.5rem] md:rounded-[2.5rem] flex flex-col gap-8 shadow-sm ring-1 ring-slate-100 font-sans">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="flex flex-col gap-2 text-left">
+            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">{dict.audio.format_label}</label>
             <select 
-              value={targetBitrate}
-              onChange={(e) => setTargetBitrate(e.target.value)}
+              value={targetFormat}
+              onChange={(e) => setTargetFormat(e.target.value)}
               disabled={isProcessing}
-              className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent-audio/20 transition-all"
+              className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent-audio/20 transition-all"
             >
-              <option value="128k">128 kbps</option>
-              <option value="192k">192 kbps</option>
-              <option value="256k">256 kbps</option>
-              <option value="320k">320 kbps (最高)</option>
+              <option value="mp3">MP3</option>
+              <option value="wav">WAV (高音質)</option>
+              <option value="flac">FLAC (無劣化)</option>
+              <option value="aac">AAC</option>
+              <option value="ogg">OGG</option>
             </select>
           </div>
-        )}
 
-        <div className="flex flex-col gap-2">
-          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left leading-none">{dict.audio.samplerate_label}</label>
-          <select 
-            value={targetSampleRate}
-            onChange={(e) => setTargetSampleRate(e.target.value)}
-            disabled={isProcessing}
-            className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent-audio/20 transition-all"
-          >
-            <option value="44100">44.1 kHz (標準)</option>
-            <option value="48000">48 kHz (映像制作向け)</option>
-          </select>
+          {["mp3", "aac", "ogg"].includes(targetFormat) && (
+            <div className="flex flex-col gap-2 text-left">
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">{dict.audio.bitrate_label}</label>
+              <select 
+                value={targetBitrate}
+                onChange={(e) => setTargetBitrate(e.target.value)}
+                disabled={isProcessing}
+                className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent-audio/20 transition-all"
+              >
+                <option value="128k">128 kbps</option>
+                <option value="192k">192 kbps</option>
+                <option value="256k">256 kbps</option>
+                <option value="320k">320 kbps (最高)</option>
+                {mode === "compressor" && (
+                  <>
+                    <option value="96k">96 kbps (Economy)</option>
+                    <option value="64k">64 kbps (Max Compression)</option>
+                  </>
+                )}
+              </select>
+            </div>
+          )}
+
+          {mode === "compressor" && (
+            <div className="flex flex-col gap-2 text-left">
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Channels</label>
+              <button 
+                onClick={() => setIsMono(!isMono)}
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-xs font-bold transition-all h-[46px] ${
+                  isMono 
+                  ? "bg-amber-50 border-amber-200 text-amber-700" 
+                  : "bg-slate-50 border-slate-200 text-slate-600"
+                }`}
+              >
+                <Settings2 className="w-3.5 h-3.5" />
+                {isMono ? "Mono (Smallest)" : "Stereo"}
+              </button>
+            </div>
+          )}
+
+          <div className="flex flex-col gap-2 text-left">
+            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">{dict.audio.samplerate_label}</label>
+            <select 
+              value={targetSampleRate}
+              onChange={(e) => setTargetSampleRate(e.target.value)}
+              disabled={isProcessing}
+              className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent-audio/20 transition-all"
+            >
+              <option value="44100">44.1 kHz (標準)</option>
+              <option value="48000">48 kHz (映像制作向け)</option>
+            </select>
+          </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row md:ml-auto items-stretch sm:items-center gap-3 sm:gap-4 w-full md:w-auto mt-2 md:mt-0">
-          <button onClick={onReset} className="text-slate-400 hover:text-slate-600 text-xs sm:text-sm font-bold px-4 py-2 transition-colors text-center">
+        {/* Action Buttons Row */}
+        <div className="flex flex-col sm:flex-row items-center gap-4 pt-6 border-t border-slate-100">
+          <div className="flex items-center gap-2 text-slate-400 mr-auto">
+            <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+            <span className="text-[10px] font-black uppercase tracking-widest">{dict.common.local_process}</span>
+          </div>
+
+          <button 
+            onClick={onReset} 
+            className="text-slate-400 hover:text-slate-600 text-xs sm:text-sm font-bold px-6 py-2 transition-colors uppercase tracking-tight"
+          >
             {dict.common.cancel}
           </button>
           
@@ -240,10 +286,12 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset, 
             <button 
               onClick={handleDownloadAll}
               disabled={isZipping || isProcessing}
-              className="bg-slate-900 hover:bg-slate-800 text-white font-black px-4 sm:px-6 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2 text-xs sm:text-sm flex-1 md:flex-none"
+              className="bg-slate-900 hover:bg-slate-800 text-white font-black px-6 py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2 text-xs sm:text-sm flex-1 sm:flex-none min-w-[160px]"
             >
-              {isZipping ? <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" /> : <FileArchive className="w-4 h-4 sm:w-5 sm:h-5" />}
-              {dict.audio.download_all}
+              {isZipping ? <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" /> : (
+                completedCount === 1 ? <Download className="w-4 h-4 sm:w-5 sm:h-5" /> : <FileArchive className="w-4 h-4 sm:w-5 sm:h-5" />
+              )}
+              {completedCount === 1 ? dict.common.download : dict.audio.download_all}
             </button>
           )}
 
@@ -251,10 +299,10 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset, 
             <button 
                 onClick={handleProcessAll}
                 disabled={isProcessing || mediaFiles.length === 0}
-                className="bg-accent-audio hover:bg-indigo-700 text-white font-black px-6 sm:px-10 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-xs sm:text-sm flex-1 md:flex-none"
+                className="bg-accent-audio hover:bg-indigo-700 text-white font-black px-8 py-4 rounded-2xl transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-xs sm:text-sm flex-1 sm:flex-none min-w-[200px]"
             >
-                {isProcessing ? <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" /> : <Play className="w-4 h-4 sm:w-5 sm:h-5" />}
-                {dict.audio.process_all}
+                {isProcessing ? <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" /> : <Music className="w-4 h-4 sm:w-5 sm:h-5" />}
+                {mode === "compressor" ? (dict.video.process_compress || "Start Compression") : dict.audio.process_all}
             </button>
           )}
         </div>
@@ -310,8 +358,13 @@ export const AudioConverter: React.FC<AudioConverterProps> = ({ files, onReset, 
                 {mFile.status === "completed" && mFile.resultSize && (
                   <span className="flex items-center gap-2">
                     <span className="text-slate-300">→</span>
-                    <span className="text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100 font-black">
+                    <span className="text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100 font-black flex items-center gap-1.5 animate-in slide-in-from-left-1 duration-500">
                       {(mFile.resultSize / (1024 * 1024)).toFixed(2)} MB
+                      {mFile.file.size > mFile.resultSize && (
+                        <span className="text-[8px] bg-emerald-500 text-white px-1 rounded-sm scale-90 origin-right animate-pulse">
+                          -{Math.round((1 - mFile.resultSize / mFile.file.size) * 100)}%
+                        </span>
+                      )}
                     </span>
                   </span>
                 )}

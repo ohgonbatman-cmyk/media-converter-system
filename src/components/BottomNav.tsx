@@ -7,15 +7,7 @@ import { Image as ImageIcon, Video, Music, FileText, LayoutGrid } from "lucide-r
 
 interface BottomNavProps {
   lang: string;
-  dict: {
-    sidebar: {
-      home: string;
-      image: string;
-      video: string;
-      audio: string;
-      pdf: string;
-    };
-  };
+  dict: any;
 }
 
 export const BottomNav: React.FC<BottomNavProps> = ({ lang, dict }) => {
@@ -23,17 +15,17 @@ export const BottomNav: React.FC<BottomNavProps> = ({ lang, dict }) => {
 
   const menuItems = [
     { id: "home", href: `/${lang}`, icon: LayoutGrid, label: dict.sidebar.home, color: "text-slate-900", bg: "bg-slate-900/10" },
-    { id: "image", href: `/${lang}/image`, icon: ImageIcon, label: dict.sidebar.image, color: "text-emerald-500", bg: "bg-emerald-500/10" },
-    { id: "video", href: `/${lang}/video`, icon: Video, label: dict.sidebar.video, color: "text-sky-500", bg: "bg-sky-500/10" },
-    { id: "audio", href: `/${lang}/audio`, icon: Music, label: dict.sidebar.audio, color: "text-indigo-500", bg: "bg-indigo-500/10" },
-    { id: "pdf", href: `/${lang}/pdf`, icon: FileText, label: dict.sidebar.pdf, color: "text-sky-500", bg: "bg-sky-500/10" },
+    { id: "image", href: `/${lang}/image`, altHref: `/${lang}/compress-image`, icon: ImageIcon, label: dict.sidebar.image, color: "text-emerald-500", bg: "bg-emerald-500/10" },
+    { id: "video", href: `/${lang}/video`, altHref: `/${lang}/compress-video`, icon: Video, label: dict.sidebar.video, color: "text-sky-500", bg: "bg-sky-500/10" },
+    { id: "audio", href: `/${lang}/audio`, altHref: `/${lang}/compress-audio`, icon: Music, label: dict.sidebar.audio, color: "text-indigo-500", bg: "bg-indigo-500/10" },
+    { id: "pdf", href: `/${lang}/pdf`, altHref: `/${lang}/compress-pdf`, icon: FileText, label: dict.sidebar.pdf, color: "text-red-500", bg: "bg-red-500/10" },
   ] as const;
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-[10000] bg-white border-t border-slate-200 lg:hidden safe-area-inset-bottom pointer-events-auto shadow-[0_-8px_30px_rgb(0,0,0,0.08)]">
       <div className="flex items-center justify-around h-16 w-full max-w-lg mx-auto">
         {menuItems.map((item) => {
-          const isActive = pathname === item.href || (item.id !== 'home' && pathname.startsWith(item.href));
+          const isActive = pathname === item.href || (item.altHref && pathname === item.altHref);
           return (
             <Link
               key={item.id}

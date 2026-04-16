@@ -4,7 +4,8 @@
     "secure": "SECURE",
     "fast": "FAST",
     "launch_tool": "Launch Tool",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "download": "Download"
   },
   "metadata": {
     "home": {
@@ -26,14 +27,36 @@
     "pdf": {
       "title": "PDF to Word | Maintain Layout & High Accuracy - Media Converter",
       "description": "Accurate PDF to Word (.docx) conversion in-browser. Extract text and images without losing layout. Secure for business documents."
+    },
+    "compress_image": {
+      "title": "Image Compressor | Reduce File Size & Maintain Quality - Media Converter",
+      "description": "In-browser image compression tool. Dramatically reduce file sizes for PNG, JPG, and WebP. Achieve lightweight images while keeping them beautiful."
+    },
+    "compress_video": {
+      "title": "Video Compressor | Shrink MP4 & WebM with High Speed - Media Converter",
+      "description": "Powerfully compress video files in your browser. Minimize file sizes without losing quality. Create lightweight videos perfect for social media or email in seconds."
+    },
+    "compress_audio": {
+      "title": "Audio Compressor | Optimize MP3 & WAV Bitrate - Media Converter",
+      "description": "Smartly reduce audio file sizes. Cut down data volume significantly via bitrate adjustment and mono conversion. Ideal for sharing podcasts or voice memos."
+    },
+    "compress_pdf": {
+      "title": "PDF Compressor | Lightweight PDF via Image Optimization - Media Converter",
+      "description": "Significantly reduce PDF file sizes by re-compressing internal images. Generate lightweight, easy-to-send PDFs while maintaining layout. Secure local processing."
     }
   },
   "sidebar": {
     "home": "Home",
-    "image": "Images",
-    "video": "Video & Compress",
-    "audio": "Audio",
+    "convert_group": "CONVERT",
+    "compress_group": "COMPRESS",
+    "image": "Image Converter",
+    "video": "Video Converter",
+    "audio": "Audio Converter",
     "pdf": "PDF to Word",
+    "compress_image": "Image Compressor",
+    "compress_video": "Video Compressor",
+    "compress_audio": "Audio Compressor",
+    "compress_pdf": "PDF Compressor",
     "sponsored": "Sponsored"
   },
   "home": {
@@ -84,7 +107,10 @@
     "download_all": "Save All (ZIP)",
     "success": "SUCCESS",
     "heic_support": "HEIC Support",
-    "est_size": "Est. {size} KB"
+    "est_size": "Est. {size} KB",
+    "quality_label": "Compression Quality",
+    "reduction_label": "Reduction",
+    "optimized": "Optimized"
   },
   "image_page": {
     "title": "Image Converter (HEIC/WebP Support)",

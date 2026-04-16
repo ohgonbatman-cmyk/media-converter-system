@@ -9,9 +9,10 @@ import { Music, Activity, Archive, Speaker, Info } from "lucide-react";
 interface AudioClientProps {
   lang: string;
   dict: any;
+  mode?: "converter" | "compressor";
 }
 
-export default function AudioClient({ lang, dict }: AudioClientProps) {
+export default function AudioClient({ lang, dict, mode = "converter" }: AudioClientProps) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const handleFileSelect = (files: File[]) => {
@@ -24,16 +25,16 @@ export default function AudioClient({ lang, dict }: AudioClientProps) {
 
   return (
     <ConverterLayout 
-      category="Audio Converter"
-      title={dict.audio_page.title}
-      description={dict.audio_page.description}
+      category={mode === "compressor" ? "Audio Compressor" : "Audio Converter"}
+      title={mode === "compressor" ? dict.metadata.compress_audio.title : dict.audio_page.title}
+      description={mode === "compressor" ? dict.metadata.compress_audio.description : dict.audio_page.description}
       color="bg-indigo-500"
       lang={lang}
       dict={dict}
     >
       <div className="flex flex-col gap-12 h-full">
         {selectedFiles.length > 0 ? (
-          <AudioConverter files={selectedFiles} onReset={handleReset} lang={lang} dict={dict} />
+          <AudioConverter files={selectedFiles} onReset={handleReset} lang={lang} dict={dict} mode={mode} />
         ) : (
           <>
             <FileUploader 

@@ -232,19 +232,30 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
   const allCompleted = mediaFiles.length > 0 && mediaFiles.every(f => f.status === "completed");
 
   return (
-    <div className="flex flex-col gap-8 h-full">
+    <div className="flex flex-col gap-6 h-full">
       {/* Options Bar */}
-      <div className="bg-white border border-slate-200 p-4 md:p-6 rounded-[2rem] md:rounded-3xl grid grid-cols-1 md:flex md:flex-row md:items-center gap-4 md:gap-6 shadow-sm ring-1 ring-slate-100">
-        <div className="flex flex-col gap-2">
-          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left leading-none">{dict.pdf.format_label}</label>
-          <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 overflow-hidden">
-            <FileText className="w-4 h-4 text-sky-500" />
-            {dict.pdf.format_desc}
+      <div className="bg-white border border-slate-200 p-6 md:p-8 rounded-[2.5rem] md:rounded-[2.5rem] flex flex-col gap-8 shadow-sm ring-1 ring-slate-100 font-sans">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="flex flex-col gap-2 text-left">
+            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">{dict.pdf.format_label}</label>
+            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 overflow-hidden h-[46px]">
+              <FileText className="w-4 h-4 text-sky-500" />
+              {dict.pdf.format_desc}
+            </div>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row md:ml-auto items-stretch sm:items-center gap-3 sm:gap-4 w-full md:w-auto mt-2 md:mt-0">
-          <button onClick={onReset} className="text-slate-400 hover:text-slate-600 text-xs sm:text-sm font-bold px-4 py-2 transition-colors text-center">
+        {/* Action Buttons Row */}
+        <div className="flex flex-col sm:flex-row items-center gap-4 pt-6 border-t border-slate-100">
+          <div className="flex items-center gap-2 text-slate-400 mr-auto">
+            <div className="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse" />
+            <span className="text-[10px] font-black uppercase tracking-widest">{dict.common.local_process}</span>
+          </div>
+
+          <button 
+            onClick={onReset} 
+            className="text-slate-400 hover:text-slate-600 text-xs sm:text-sm font-bold px-6 py-2 transition-colors uppercase tracking-tight"
+          >
             {dict.common.cancel}
           </button>
           
@@ -252,7 +263,7 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, lang
             <button 
                 onClick={handleProcessAll}
                 disabled={isProcessing || mediaFiles.length === 0}
-                className="bg-accent-video hover:bg-sky-700 text-white font-black px-6 sm:px-10 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-xs sm:text-sm flex-1 md:flex-none"
+                className="bg-accent-video hover:bg-sky-700 text-white font-black px-8 py-4 rounded-2xl transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-xs sm:text-sm flex-1 sm:flex-none min-w-[200px]"
             >
                 {isProcessing ? <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" /> : <Play className="w-4 h-4 sm:w-5 sm:h-5" />}
                 {dict.pdf.process_all}

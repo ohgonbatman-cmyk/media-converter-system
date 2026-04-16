@@ -22,15 +22,16 @@ interface VideoConverterProps {
   onReset: () => void;
   lang: string;
   dict: any;
+  mode?: "converter" | "compressor";
 }
 
 type Preset = "none" | "iphone" | "youtube" | "tiktok" | "mp3_extract";
 
-export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, lang, dict }) => {
+export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, lang, dict, mode = "converter" }) => {
   const { load, progress, resetProgress } = useFFmpeg();
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>([]);
   const [targetFormat, setTargetFormat] = useState<string>("mp4");
-  const [preset, setPreset] = useState<Preset>("none");
+  const [preset, setPreset] = useState<Preset>(mode === "compressor" ? "iphone" : "none");
   const [isProcessing, setIsProcessing] = useState(false);
   const [isProcessingAll, setIsProcessingAll] = useState(false);
   const [isZipping, setIsZipping] = useState(false);
@@ -62,21 +63,25 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
     if (!mFile.duration) return null;
     
     let totalBps = 0;
-    switch (preset) {
-      case "iphone":
-        totalBps = 2500000; // ~2.5Mbps
-        break;
-      case "youtube":
-        totalBps = 8500000; // ~8.5Mbps (High Quality)
-        break;
-      case "tiktok":
-        totalBps = 4500000; // ~4.5Mbps
-        break;
-      case "mp3_extract":
-        totalBps = 192000; // 192kbps
-        break;
-      default:
-        totalBps = 2000000; // ~2Mbps standard
+    if (mode === "compressor") {
+        totalBps = 1500000; // ~1.5Mbps for optimized compression
+    } else {
+        switch (preset) {
+            case "iphone":
+              totalBps = 2500000; // ~2.5Mbps
+              break;
+            case "youtube":
+              totalBps = 8500000; // ~8.5Mbps (High Quality)
+              break;
+            case "tiktok":
+              totalBps = 4500000; // ~4.5Mbps
+              break;
+            case "mp3_extract":
+              totalBps = 192000; // 192kbps
+              break;
+            default:
+              totalBps = 2000000; // ~2Mbps standard
+          }
     }
     
     const sizeBytes = (totalBps * mFile.duration) / 8;
@@ -101,27 +106,36 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
       await ffmpeg.writeFile(inputName, await fetchFile(mediaFile.file));
       
       let args: string[] = ["-i", inputName];
-      switch (preset) {
-        case "iphone":
-          args.push("-c:v", "libx264", "-crf", "23", "-preset", "fast", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart");
-          break;
-        case "youtube":
-          args.push("-c:v", "libx264", "-crf", "18", "-preset", "fast", "-c:a", "aac", "-b:a", "384k");
-          break;
-        case "tiktok":
-          args.push("-vf", "crop='if(gt(a,9/16),ih*9/16,iw)':'if(gt(a,9/16),ih,iw*16/9)':'(iw-ow)/2':'(ih-oh)/2',scale=1080:1920", "-c:v", "libx264", "-crf", "23", "-preset", "fast", "-c:a", "aac", "-b:a", "128k");
-          break;
-        case "mp3_extract":
-          args.push("-vn", "-c:a", "libmp3lame", "-b:a", "192k");
-          break;
-        default:
-          if (targetFormat === "mp4") {
-            args.push("-c:v", "libx264", "-preset", "fast", "-c:a", "aac");
-          } else if (targetFormat === "webm") {
-            args.push("-c:v", "libvpx-vp9", "-crf", "30", "-b:v", "0", "-c:a", "libopus");
-          } else if (targetFormat === "mov") {
-            args.push("-c:v", "libx264", "-preset", "fast", "-c:a", "aac");
-          }
+      
+      if (mode === "compressor") {
+        if (targetFormat === "mp4" || targetFormat === "mov") {
+          args.push("-c:v", "libx264", "-crf", "28", "-preset", "fast", "-c:a", "aac", "-b:a", "96k");
+        } else if (targetFormat === "webm") {
+          args.push("-c:v", "libvpx-vp9", "-crf", "35", "-b:v", "0", "-c:a", "libopus");
+        }
+      } else {
+        switch (preset) {
+          case "iphone":
+            args.push("-c:v", "libx264", "-crf", "23", "-preset", "fast", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart");
+            break;
+          case "youtube":
+            args.push("-c:v", "libx264", "-crf", "18", "-preset", "fast", "-c:a", "aac", "-b:a", "384k");
+            break;
+          case "tiktok":
+            args.push("-vf", "crop='if(gt(a,9/16),ih*9/16,iw)':'if(gt(a,9/16),ih,iw*16/9)':'(iw-ow)/2':'(ih-oh)/2',scale=1080:1920", "-c:v", "libx264", "-crf", "23", "-preset", "fast", "-c:a", "aac", "-b:a", "128k");
+            break;
+          case "mp3_extract":
+            args.push("-vn", "-c:a", "libmp3lame", "-b:a", "192k");
+            break;
+          default:
+            if (targetFormat === "mp4") {
+              args.push("-c:v", "libx264", "-preset", "fast", "-c:a", "aac");
+            } else if (targetFormat === "webm") {
+              args.push("-c:v", "libvpx-vp9", "-crf", "30", "-b:v", "0", "-c:a", "libopus");
+            } else if (targetFormat === "mov") {
+              args.push("-c:v", "libx264", "-preset", "fast", "-c:a", "aac");
+            }
+        }
       }
 
       args.push(outputName);
@@ -135,7 +149,7 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
 
       setMediaFiles(prev => prev.map(f => f.id === mediaFile.id ? { ...f, status: "completed", resultUrl: url, progress: 100, resultSize: size } : f));
       
-      // 個別変換時の統計報告
+      // 統計報告
       if (!isProcessingAll) {
         reportConversionScale(1, size);
       }
@@ -159,7 +173,6 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
         await convertVideo(mFile);
     }
 
-    // 全体の統計をまとめて報告
     const results = await new Promise<MediaFile[]>(resolve => {
       setMediaFiles(prev => {
         resolve(prev);
@@ -177,6 +190,11 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
   const handleDownloadAll = async () => {
     const completedFiles = mediaFiles.filter(f => f.status === "completed" && f.resultUrl);
     if (completedFiles.length === 0) return;
+
+    if (completedFiles.length === 1) {
+      handleDownload(completedFiles[0]);
+      return;
+    }
 
     setIsZipping(true);
     const zip = new JSZip();
@@ -213,46 +231,69 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
 
   const anyCompleted = mediaFiles.some(f => f.status === "completed");
   const allCompleted = mediaFiles.length > 0 && mediaFiles.every(f => f.status === "completed");
+  const completedCount = mediaFiles.filter(f => f.status === "completed").length;
 
   return (
-    <div className="flex flex-col gap-8 h-full">
+    <div className="flex flex-col gap-6 h-full">
       {/* Options Bar */}
-      <div className="bg-white border border-slate-200 p-4 md:p-6 rounded-[2rem] md:rounded-3xl grid grid-cols-1 md:flex md:flex-row md:items-center gap-4 md:gap-6 shadow-sm ring-1 ring-slate-100">
-        <div className="flex flex-col gap-2">
-          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left leading-none">{dict.video.format_label}</label>
-          <select 
-            value={targetFormat}
-            onChange={(e) => {
-              setTargetFormat(e.target.value);
-              if (preset === "mp3_extract") setPreset("none");
-            }}
-            disabled={isProcessing || preset === "mp3_extract"}
-            className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent-video/20 transition-all disabled:opacity-50"
-          >
-            <option value="mp4">MP4 (H.264)</option>
-            <option value="webm">WebM (VP9)</option>
-            <option value="mov">MOV (QuickTime)</option>
-          </select>
+      <div className="bg-white border border-slate-200 p-6 md:p-8 rounded-[2.5rem] md:rounded-[2.5rem] flex flex-col gap-8 shadow-sm ring-1 ring-slate-100 font-sans">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="flex flex-col gap-2 text-left">
+            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">{dict.video.format_label}</label>
+            <select 
+              value={targetFormat}
+              onChange={(e) => {
+                setTargetFormat(e.target.value);
+                if (preset === "mp3_extract") setPreset("none");
+              }}
+              disabled={isProcessing || preset === "mp3_extract"}
+              className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent-video/20 transition-all disabled:opacity-50"
+            >
+              <option value="mp4">MP4 (H.264)</option>
+              <option value="webm">WebM (VP9)</option>
+              <option value="mov">MOV (QuickTime)</option>
+            </select>
+          </div>
+
+          {mode === "converter" && (
+            <div className="flex flex-col gap-2 text-left">
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">{dict.video.preset_label}</label>
+              <select 
+                value={preset}
+                onChange={(e) => setPreset(e.target.value as Preset)}
+                disabled={isProcessing}
+                className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent-video/20 transition-all"
+              >
+                <option value="none">{dict.video.preset_none}</option>
+                <option value="iphone">{dict.video.preset_iphone}</option>
+                <option value="youtube">{dict.video.preset_youtube}</option>
+                <option value="tiktok">{dict.video.preset_tiktok}</option>
+                <option value="mp3_extract">{dict.video.preset_mp3}</option>
+              </select>
+            </div>
+          )}
+
+          {mode === "compressor" && (
+            <div className="flex flex-col gap-2 text-left">
+              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">{dict.image.reduction_label || "Compression Level"}</label>
+              <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-black text-sky-600 flex items-center gap-2 h-[46px]">
+                <Smartphone className="w-3.5 h-3.5" /> High Efficiency
+              </div>
+            </div>
+          )}
         </div>
 
-        <div className="flex flex-col gap-2">
-          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-left leading-none">{dict.video.preset_label}</label>
-          <select 
-            value={preset}
-            onChange={(e) => setPreset(e.target.value as Preset)}
-            disabled={isProcessing}
-            className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent-video/20 transition-all"
-          >
-            <option value="none">{dict.video.preset_none}</option>
-            <option value="iphone">{dict.video.preset_iphone}</option>
-            <option value="youtube">{dict.video.preset_youtube}</option>
-            <option value="tiktok">{dict.video.preset_tiktok}</option>
-            <option value="mp3_extract">{dict.video.preset_mp3}</option>
-          </select>
-        </div>
+        {/* Action Buttons Row */}
+        <div className="flex flex-col sm:flex-row items-center gap-4 pt-6 border-t border-slate-100">
+          <div className="flex items-center gap-2 text-slate-400 mr-auto">
+            <div className="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse" />
+            <span className="text-[10px] font-black uppercase tracking-widest">{dict.common.local_process}</span>
+          </div>
 
-        <div className="flex flex-col sm:flex-row md:ml-auto items-stretch sm:items-center gap-3 sm:gap-4 w-full md:w-auto mt-2 md:mt-0">
-          <button onClick={onReset} className="text-slate-400 hover:text-slate-600 text-xs sm:text-sm font-bold px-4 py-2 transition-colors">
+          <button 
+            onClick={onReset} 
+            className="text-slate-400 hover:text-slate-600 text-xs sm:text-sm font-bold px-6 py-2 transition-colors uppercase tracking-tight"
+          >
             {dict.common.cancel}
           </button>
           
@@ -260,10 +301,12 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
             <button 
               onClick={handleDownloadAll}
               disabled={isZipping || isProcessing}
-              className="bg-slate-900 hover:bg-slate-800 text-white font-black px-4 sm:px-6 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2 text-xs sm:text-sm flex-1 md:flex-none"
+              className="bg-slate-900 hover:bg-slate-800 text-white font-black px-6 py-4 rounded-2xl transition-all shadow-lg flex items-center justify-center gap-2 text-xs sm:text-sm flex-1 sm:flex-none min-w-[160px]"
             >
-              {isZipping ? <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" /> : <FileArchive className="w-4 h-4 sm:w-5 sm:h-5" />}
-              {dict.video.download_all}
+              {isZipping ? <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" /> : (
+                completedCount === 1 ? <Download className="w-4 h-4 sm:w-5 sm:h-5" /> : <FileArchive className="w-4 h-4 sm:w-5 sm:h-5" />
+              )}
+              {completedCount === 1 ? dict.common.download : dict.video.download_all}
             </button>
           )}
 
@@ -271,16 +314,16 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
             <button 
                 onClick={handleProcessAll}
                 disabled={isProcessing || mediaFiles.length === 0}
-                className="bg-accent-video hover:bg-sky-600 text-white font-black px-6 sm:px-10 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-xs sm:text-sm flex-1 md:flex-none"
+                className="bg-accent-video hover:bg-sky-600 text-white font-black px-8 py-4 rounded-2xl transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-xs sm:text-sm flex-1 sm:flex-none min-w-[200px]"
             >
-                {isProcessing ? <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" /> : <Play className="w-4 h-4 sm:w-5 sm:h-5" />}
-                {dict.video.process_all}
+                {isProcessing ? <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" /> : <Video className="w-4 h-4 sm:w-5 sm:h-5" />}
+                {mode === "compressor" ? (dict.video.process_compress || "Start Compression") : dict.video.process_all}
             </button>
           )}
         </div>
       </div>
 
-      {/* Progress & Processing Info */}
+      {/* Progress Info */}
       {isProcessing && (
         <div className="bg-white border border-slate-100 p-6 md:p-8 rounded-[2rem] md:rounded-3xl flex flex-col gap-5 shadow-lg animate-in fade-in slide-in-from-bottom-2">
           <div className="flex items-center justify-between">
@@ -295,14 +338,6 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
               className="h-full bg-accent-video transition-all duration-300 ease-out shadow-[0_0_8px_rgba(2,132,199,0.3)]" 
               style={{ width: `${progress}%` }}
             />
-          </div>
-          <div className="flex justify-center gap-8 py-2">
-            <div className="flex items-center gap-2 text-[9px] font-black text-slate-400 uppercase tracking-widest">
-              <Smartphone className="w-3 h-3" /> Mobile Optimized
-            </div>
-            <div className="flex items-center gap-2 text-[9px] font-black text-slate-400 uppercase tracking-widest">
-              <Music className="w-3 h-3" /> High Quality Audio
-            </div>
           </div>
         </div>
       )}
@@ -339,8 +374,13 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
                 {mFile.status === "completed" && mFile.resultSize && (
                   <span className="flex items-center gap-2">
                     <span className="text-slate-300">→</span>
-                    <span className="text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100 font-black">
+                    <span className="text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100 font-black flex items-center gap-1.5 animate-in slide-in-from-left-1 duration-500">
                       {(mFile.resultSize / (1024 * 1024)).toFixed(2)} MB
+                      {mFile.file.size > mFile.resultSize && (
+                        <span className="text-[8px] bg-emerald-500 text-white px-1 rounded-sm scale-90 origin-right animate-pulse">
+                          -{Math.round((1 - mFile.resultSize / mFile.file.size) * 100)}%
+                        </span>
+                      )}
                     </span>
                   </span>
                 )}
@@ -349,12 +389,6 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
                   {mFile.file.type.split("/")[1] || "video"}
                   {mFile.duration && ` (${Math.floor(mFile.duration / 60)}:${Math.floor(mFile.duration % 60).toString().padStart(2, '0')})`}
                 </span>
-                
-                {preset !== "none" && (
-                   <span className="text-accent-video font-black uppercase tracking-tighter opacity-70">
-                    Preset: {preset.replace("_", " ").toUpperCase()}
-                   </span>
-                )}
               </div>
             </div>
 
@@ -371,7 +405,6 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
                 <button 
                   onClick={() => handleDownload(mFile)}
                   className="bg-slate-900 hover:bg-slate-800 text-white p-2.5 md:p-3 rounded-lg md:rounded-xl border border-slate-800 transition-all shadow-md group/dl active:scale-95"
-                  title="Download"
                 >
                   <Download className="w-4 h-4 md:w-5 md:h-5 group-hover/dl:scale-110 transition-transform" />
                 </button>
@@ -380,7 +413,6 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
                   onClick={() => convertVideo(mFile)}
                   disabled={isProcessing}
                   className="bg-slate-100 hover:bg-slate-200 text-slate-600 p-2.5 md:p-3 rounded-lg md:rounded-xl border border-slate-200 transition-all disabled:opacity-30 active:scale-95"
-                  title="Convert"
                 >
                   <PlayCircle className="w-4 h-4 md:w-5 md:h-5" />
                 </button>
@@ -390,7 +422,6 @@ export const VideoConverter: React.FC<VideoConverterProps> = ({ files, onReset, 
                 onClick={() => setMediaFiles(prev => prev.filter(f => f.id !== mFile.id))}
                 className="text-slate-300 hover:text-red-500 p-2 transition-colors disabled:opacity-0"
                 disabled={isProcessing}
-                title="Remove"
               >
                 <X className="w-4 h-4" />
               </button>

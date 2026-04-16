@@ -9,9 +9,10 @@ import { ShieldCheck, Camera, Info } from "lucide-react";
 interface ImageClientProps {
   lang: string;
   dict: any;
+  mode?: "converter" | "compressor";
 }
 
-export default function ImageClient({ lang, dict }: ImageClientProps) {
+export default function ImageClient({ lang, dict, mode = "converter" }: ImageClientProps) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const handleFileSelect = (files: File[]) => {
@@ -24,16 +25,16 @@ export default function ImageClient({ lang, dict }: ImageClientProps) {
 
   return (
     <ConverterLayout 
-      category="Image Converter"
-      title={dict.image_page.title}
-      description={dict.image_page.description}
+      category={mode === "compressor" ? "Image Compressor" : "Image Converter"}
+      title={mode === "compressor" ? dict.metadata.compress_image.title : dict.image_page.title}
+      description={mode === "compressor" ? dict.metadata.compress_image.description : dict.image_page.description}
       color="bg-emerald-500"
       lang={lang}
       dict={dict}
     >
       <div className="flex flex-col gap-12 h-full">
         {selectedFiles.length > 0 ? (
-          <ImageConverter files={selectedFiles} onReset={handleReset} lang={lang} dict={dict} />
+          <ImageConverter files={selectedFiles} onReset={handleReset} lang={lang} dict={dict} mode={mode} />
         ) : (
           <>
             <FileUploader 

@@ -1,180 +1,97 @@
 {
-  "common": {
-    "title": "Convertidor de Medios",
-    "secure": "SEGURO",
-    "fast": "RÁPIDO",
-    "launch_tool": "Iniciar Herramienta",
-    "cancel": "Cancelar"
-  },
   "metadata": {
     "home": {
-      "title": "Convertidor de Medios | Suite de Nueva Generación con Procesamiento Local",
-      "description": "Conversión de alta precisión para imágenes, videos, audio y PDF. Privacidad ante todo, con todo el procesamiento en el navegador."
+      "title": "Convertidor de Medios Todo en Uno | Media Converter",
+      "description": "Herramienta gratuita y privada en el navegador para convertir imágenes (HEIC, WebP), video (MP4, MP3) y PDF a Word."
     },
     "image": {
-      "title": "Convertidor de Imágenes | Redimensión por Lote y Soporte HEIC",
-      "description": "Herramienta segura de conversión de imágenes. Cambie HEIC a JPG, soporte WebP y redimensión por lote."
+      "title": "Convertidor de Imágenes | HEIC a JPG, WebP a PNG - Media Converter",
+      "description": "Convierte imágenes por lotes localmente. Soporta HEIC, WebP, JPG, PNG y redimensionamiento."
     },
     "video": {
-      "title": "Convertidor y Compresor de Video | Alta Calidad y FFmpeg",
-      "description": "Conversión rápida de video en el navegador. Soporta MP4, WebM, MOV. Ajustes optimizados para YouTube/TikTok."
+      "title": "Convertidor de Video | MP4, MOV, WebM y Extraer MP3 - Media Converter",
+      "description": "Convierte videos localmente con ajustes para iPhone y redes sociales."
     },
     "audio": {
-      "title": "Convertidor de Audio | Alta Fidelidad, FLAC y AAC",
-      "description": "Convertidor para audiófilos. Soporta WAV, MP3, FLAC, AAC. Ajustes de alta tasa de bits, todo en el navegador."
+      "title": "Convertidor de Audio | MP3, WAV, AAC, FLAC - Media Converter",
+      "description": "Convierte archivos de audio y ajusta el bitrate de forma local y segura."
     },
     "pdf": {
-      "title": "PDF a Word | Mantener Diseño y Alta Precisión",
-      "description": "Conversión precisa de PDF a Word (.docx) en el navegador. Extraiga texto e imágenes sin perder el diseño."
+      "title": "Convertir PDF a Word | Alta Precisión - Media Converter",
+      "description": "Conversión precisa de PDF a Word en el navegador. Proceso seguro y local."
+    },
+    "compress_image": {
+      "title": "Compresor de Imágenes | Reducir Tamaño sin Perder Calidad - Media Converter",
+      "description": "Optimiza y comprime tus imágenes PNG, JPG y WebP directamente en tu navegador."
+    },
+    "compress_video": {
+      "title": "Compresor de Video | Reducción Rápida de Tamaño - Media Converter",
+      "description": "Comprime archivos de video MP4 y WebM de forma segura y local."
+    },
+    "compress_audio": {
+      "title": "Compresor de Audio | Optimizar MP3 y WAV - Media Converter",
+      "description": "Reduce el tamaño de tus archivos de audio ajustando el bitrate."
+    },
+    "compress_pdf": {
+      "title": "Compresor PDF | Optimizar Documentos - Media Converter",
+      "description": "Reduce el tamaño de tus archivos PDF optimizando imágenes internas."
     }
   },
   "sidebar": {
     "home": "Inicio",
+    "convert_group": "CONVERTIR",
+    "compress_group": "COMPRIMIR",
     "image": "Imágenes",
-    "video": "Video y Compresión",
+    "video": "Video",
     "audio": "Audio",
     "pdf": "PDF a Word",
+    "compress_image": "Comprimir Imagen",
+    "compress_video": "Comprimir Video",
+    "compress_audio": "Comprimir Audio",
+    "compress_pdf": "Comprimir PDF",
     "sponsored": "Patrocinado"
   },
-  "home": {
-    "hero_badge": "Tecnología de Privacidad Primero",
-    "hero_title": "Tus Datos,\nEn Tus Manos.",
-    "hero_description": "Media Converter utiliza WebAssembly para un procesamiento local completo. Las fotos son personales. Nunca las enviamos a un servidor.",
-    "hero_button": "Probar Convertidor de Imágenes",
-    "main_title": "Suite de Medios de Nueva Generación",
-    "main_description": "Todo procesado directamente en su navegador. Una nueva experiencia de conversión sin servidores.",
-    "security_title": "Seguridad 100% Basada en el Navegador",
-    "security_description": "Nuestro motor de conversión funciona directamente en su navegador a través de JavaScript y WebAssembly. Sin necesidad de conexión a internet.",
-    "security_no_upload": "Sin Cargas en la Nube",
-    "security_local": "Procesamiento Local",
-    "security_speed": "Motores de Alta Velocidad",
-    "tools": {
-      "image": {
-        "title": "Convertidor de Imágenes",
-        "description": "HEIC a JPG, soporte WebP, redimensión por lote. Proteja su privacidad eliminando datos de ubicación (Exif)."
-      },
-      "video": {
-        "title": "Convertidor de Video",
-        "description": "Conversión MP4/MOV. Ajustes profesionales para iPhone y TikTok para una exportación fácil y de alta calidad."
-      },
-      "audio": {
-        "title": "Convertidor de Audio",
-        "description": "Conversión MP3/WAV/FLAC. Ajuste la tasa de bits (hasta 320kbps) y las tasas de muestreo con facilidad."
-      },
-      "pdf": {
-        "title": "PDF a Word",
-        "description": "Convierta PDF a Word editable. Mantenga los diseños de documentos comerciales de forma segura y rápida."
-      }
-    },
-    "stats_section": {
-      "label": "Estadísticas",
-      "today": "Hoy",
-      "total": "Total",
-      "files": "Archivos"
-    }
+  "common": {
+    "launch_tool": "Iniciar Herramienta",
+    "cancel": "Cancelar",
+    "download": "Descargar",
+    "reset": "Reiniciar",
+    "drag_drop": "Arrastra y suelta archivos aquí o haz clic para subir",
+    "local_process": "Procesamiento 100% en el navegador - Privacidad garantizada"
   },
   "image": {
-    "format_label": "Formato",
-    "resize_label": "Redimensionar (Ancho)",
-    "placeholder": "Tamaño original",
-    "privacy_label": "Ajustes de Privacidad",
-    "exif_strip": "Eliminar Exif (Seguro)",
-    "exif_keep": "Mantener Exif",
-    "process_all": "Iniciar Conversión",
-    "download_all": "Guardar Todo (ZIP)",
-    "success": "ÉXITO",
-    "heic_support": "Soporte HEIC",
-    "est_size": "Est. {size} KB"
-  },
-  "image_page": {
-    "title": "Convertidor de Imágenes (Soporte HEIC/WebP)",
-    "description": "Conversión a PNG, JPG, WebP y redimensión por lote. Convierta el formato HEIC de iPhone al instante en su navegador.",
-    "secure_title": "Sin Cargas al Servidor",
-    "secure_desc": "Las fotos son privadas. Con nuestra herramienta, los archivos nunca se envían a un servidor; la conversión se completa en su navegador. Seguro para imágenes privadas.",
-    "exif_title": "Eliminación Automática de Exif (Ubicación)",
-    "exif_desc": "Tranquilidad cuando desee eliminar los datos de ubicación antes de publicar en redes sociales. Controle los metadatos para proteger su privacidad.",
-    "info_title": "Conversión más rápida de HEIC a JPG y WebP",
-    "iphone_title": "Ideal para Usuarios de iPhone",
-    "iphone_desc": "El formato HEIC de los iPhones modernos a menudo no se puede leer en PC. Convierta lotes de HEIC a JPG o PNG en segundos.",
-    "pro_title": "Para Desarrollo Web Profesional",
-    "pro_desc": "Soporta la conversión a WebP, esencial para la velocidad del sitio. Combine con la redimensión por lote para aumentar su eficiencia."
+    "format_label": "Formato de Salida",
+    "quality_label": "Calidad (Calidad de Imagen)",
+    "reduction_label": "Nivel de Compresión",
+    "process_all": "Convertir Todo",
+    "process_compress": "Comprimir Todo",
+    "download_all": "Descargar Todo (ZIP)",
+    "success": "Éxito",
+    "est_size": "Tamaño est: {size} MB"
   },
   "video": {
-    "success": "ÉXITO",
-    "est_size": "Est. {size} MB",
-    "format_label": "Formato Base",
-    "preset_label": "Ajuste de Optimización",
-    "preset_none": "Ninguno (Formato Base)",
-    "preset_iphone": "Para iPhone / iPad",
-    "preset_youtube": "Para YouTube (Alta Calidad)",
-    "preset_tiktok": "Para TikTok / Shorts (9:16)",
+    "format_label": "Formato de Salida",
+    "preset_label": "Ajuste de Dispositivo",
+    "preset_none": "Ninguno (Calidad Estándar)",
+    "preset_iphone": "Optimizado para iPhone",
+    "preset_youtube": "YouTube (Alta Calidad)",
+    "preset_tiktok": "Formato Vertical (TikTok/Reels)",
     "preset_mp3": "Extraer Audio (MP3)",
-    "processing_label": "Optimizando video...",
+    "process_all": "Iniciar Conversión",
+    "process_compress": "Iniciar Compresión",
     "download_all": "Descargar Todo (ZIP)",
-    "process_all": "Procesar Todo"
-  },
-  "video_page": {
-    "title": "Convertidor de Video y Compresión Rápida",
-    "description": "Convierta a MP4, WebM y optimice con ajustes preestablecidos por dispositivo. Procesamiento directo en el navegador, sin cargas pesadas.",
-    "preset_title": "Ajustes Preestablecidos por Dispositivo",
-    "preset_desc": "Elija automáticamente la mejor resolución y tasa de bits para iPhone, YouTube, TikTok y más. Cree videos de alta calidad sin conocimientos técnicos.",
-    "audio_title": "Extraer Audio (MP3) de Video",
-    "audio_desc": "Extracción de pistas de audio de alta calidad. Ideal para podcasts o materiales de producción musical. Convierta a MP3 con un solo clic.",
-    "zap_title": "Indicador de Progreso en Tiempo Real",
-    "zap_desc": "La conversión de video lleva tiempo. Nuestro convertidor utiliza FFmpeg.wasm para procesamiento paralelo y muestra el progreso en tiempo real.",
-    "info_title": "Herramienta Esencial para TikTok y YouTube",
-    "mov_title": "Conversión Conveniente de MP4/MOV",
-    "mov_desc": "Convierta rápidamente MOV grabados en smartphones a MP4 altamente compatible.",
-    "privacy_title": "Privacidad y Seguridad",
-    "privacy_desc": "Convierta videos comerciales confidenciales en su propia PC sin usar servidores externos, garantizando un riesgo cero de filtraciones."
+    "success": "Listo",
+    "processing_label": "Procesando Video localmente...",
+    "est_size": "Tamaño est: {size} MB"
   },
   "audio": {
-    "success": "ÉXITO",
-    "est_size": "Est. {size} MB",
-    "format_label": "Formato de Salida",
-    "bitrate_label": "Tasa de Bits",
-    "samplerate_label": "Frecuencia de Muestreo",
-    "processing_label": "Procesando audio...",
-    "security_notice": "Procesado de forma segura en su navegador. Sin cargas externas.",
-    "download_all": "Descargar Todo (ZIP)",
-    "process_all": "Procesar Todo"
-  },
-  "audio_page": {
-    "title": "Convertidor de Audio (Ajustes Pro)",
-    "description": "Conversión avanzada a MP3, WAV, AAC, OGG. Control de audio de alta resolución y tasa de bits fija en su navegador.",
-    "spec_title": "Especificaciones de Salida Detalladas",
-    "spec_desc": "Especifique valores profesionales como **320kbps** y **48kHz** directamente. Calidad garantizada para audiófilos y streamers.",
-    "lossless_title": "Soporte de Conversión Sin Pérdida",
-    "lossless_desc": "Conversión sin pérdida de calidad para FLAC y WAV. Convierta álbumes completos rápidamente manteniendo la fidelidad.",
-    "batch_title": "Conversión de Álbumes por Lote a ZIP",
-    "batch_desc": "Arrastre y suelte múltiples archivos de audio. Ahorre tiempo y descargue todo en un solo archivo ZIP.",
-    "info_title": "Ideal para Producción y Podcasts",
-    "wav_title": "Conversión Precisa de WAV/MP3",
-    "wav_desc": "Utiliza los últimos algoritmos de codificación para mantener un tono claro.",
-    "limit_title": "Gratis e Ilimitado",
-    "limit_desc": "Sin límites de tamaño de archivo o frecuencia. Aproveche los recursos del navegador para un procesamiento local fluido."
-  },
-  "pdf_page": {
-    "title": "Convertidor de PDF (Word de Alta Precisión)",
-    "description": "Convierta PDF a Word (.docx), extraiga texto e imágenes. Mantenga el diseño mientras crea documentos editables.",
-    "loading": "Cargando motor PDF...",
-    "layout_title": "Diseño que Preserva la Estructura",
-    "layout_desc": "La queja más común es la pérdida de diseño. Nuestra herramienta utiliza un motor único para mantener la estructura, fuente y precisión de ubicación.",
-    "secure_title": "Seguro para Documentos Comerciales",
-    "secure_desc": "Mantenga contratos y propuestas fuera de servidores externos. Procese íntegramente en el navegador para la mayor seguridad.",
-    "info_title": "Para Negocios y Aprendizaje",
-    "word_title": "Conversión a Word de Alta Precisión",
-    "word_desc": "Convierta PDF a Word editable. Reutilice documentos al instante y aumente la productividad.",
-    "extract_title": "Extracción de Imágenes y Texto",
-    "extract_desc": "Extraiga imágenes o texto de sus PDF. Soporte potente para recopilar materiales y presentaciones."
-  },
-  "pdf": {
     "format_label": "Formato",
-    "format_desc": "PDF → Word (.docx)",
-    "process_all": "Iniciar Conversión a Word",
-    "processing_label": "Analizando PDF y Generando Word...",
-    "processing_desc": "Documentos grandes o imágenes de alta calidad pueden tardar más.",
-    "page_label": "Página {page}",
-    "success": "CONVERTIDO"
+    "bitrate_label": "Bitrate",
+    "samplerate_label": "Frecuencia de Muestreo",
+    "process_all": "Iniciar Conversión",
+    "download_all": "Descargar Todo (ZIP)",
+    "success": "Listo",
+    "processing_label": "Procesando Audio...",
+    "security_notice": "Tus datos nunca salen de este dispositivo"
   }
 }

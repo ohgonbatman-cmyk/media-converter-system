@@ -9,9 +9,10 @@ import { Zap, Music, Smartphone, Info } from "lucide-react";
 interface VideoClientProps {
   lang: string;
   dict: any;
+  mode?: "converter" | "compressor";
 }
 
-export default function VideoClient({ lang, dict }: VideoClientProps) {
+export default function VideoClient({ lang, dict, mode = "converter" }: VideoClientProps) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const handleFileSelect = (files: File[]) => {
@@ -24,16 +25,16 @@ export default function VideoClient({ lang, dict }: VideoClientProps) {
 
   return (
     <ConverterLayout 
-      category="Video Converter"
-      title={dict.video_page.title}
-      description={dict.video_page.description}
+      category={mode === "compressor" ? "Video Compressor" : "Video Converter"}
+      title={mode === "compressor" ? dict.metadata.compress_video.title : dict.video_page.title}
+      description={mode === "compressor" ? dict.metadata.compress_video.description : dict.video_page.description}
       color="bg-sky-500"
       lang={lang}
       dict={dict}
     >
       <div className="flex flex-col gap-12 h-full">
         {selectedFiles.length > 0 ? (
-          <VideoConverter files={selectedFiles} onReset={handleReset} lang={lang} dict={dict} />
+          <VideoConverter files={selectedFiles} onReset={handleReset} lang={lang} dict={dict} mode={mode} />
         ) : (
           <>
             <FileUploader 

@@ -4,7 +4,8 @@
     "secure": "SECURE",
     "fast": "FAST",
     "launch_tool": "ツールを起動",
-    "cancel": "キャンセル"
+    "cancel": "キャンセル",
+    "download": "ダウンロード"
   },
   "metadata": {
     "home": {
@@ -26,14 +27,36 @@
     "pdf": {
       "title": "PDF Word 変換 | レイアウト維持 & 高精度抽出 - Media Converter",
       "description": "ブラウザ完結でPDFからWord (.docx) へ高精度変換。レイアウトを崩さず、テキストや画像も抽出可能。機密書類もサーバーに送信せず、安全に処理が完結するビジネス向けツール。"
+    },
+    "compress_image": {
+      "title": "画像圧縮 | 画質を維持してファイルサイズを軽量化 - Media Converter",
+      "description": "ブラウザ完結の画像圧縮ツール。PNG, JPG, WebPのファイルサイズを劇的に削減。高度な圧縮アルゴリズムにより、見た目の美しさを保ったまま軽量化を実現します。"
+    },
+    "compress_video": {
+      "title": "動画圧縮 | MP4・WebMサイズ削減 & 高速処理 - Media Converter",
+      "description": "動画ファイルをブラウザ上で強力に圧縮。画質を落とさずファイルサイズを最小限に。SNS投稿やメール送信に最適な軽量動画を数秒で作成できます。"
+    },
+    "compress_audio": {
+      "title": "音声圧縮 | MP3・WAVビットレート最適化 - Media Converter",
+      "description": "音声ファイルのサイズをスマートに削減。ビットレート調整やモノラル化により、音質を保ちつつデータ量を大幅にカット。ポッドキャストや音声メモの共有に最適です。"
+    },
+    "compress_pdf": {
+      "title": "PDF圧縮 | 画像最適化によるファイル軽量化 - Media Converter",
+      "description": "PDF内の画像を再圧縮し、ファイルサイズを大幅に削減。レイアウトはそのままに、送信しやすい軽量PDFを生成。機密文書も安全なローカル処理。"
     }
   },
   "sidebar": {
     "home": "ホーム",
+    "convert_group": "変換ツール",
+    "compress_group": "圧縮ツール",
     "image": "画像変換",
-    "video": "動画・動画圧縮",
+    "video": "動画変換",
     "audio": "音声変換",
     "pdf": "PDF → Word",
+    "compress_image": "画像圧縮",
+    "compress_video": "動画圧縮",
+    "compress_audio": "音声圧縮",
+    "compress_pdf": "PDF圧縮",
     "sponsored": "Sponsored"
   },
   "home": {
@@ -84,7 +107,10 @@
     "download_all": "すべて保存 (ZIP)",
     "success": "SUCCESS",
     "heic_support": "HEIC 対応",
-    "est_size": "約 {size} KB"
+    "est_size": "約 {size} KB",
+    "quality_label": "圧縮品質",
+    "reduction_label": "削減率",
+    "optimized": "最適化済み"
   },
   "image_page": {
     "title": "画像コンバーター (HEIC/WebP対応)",
