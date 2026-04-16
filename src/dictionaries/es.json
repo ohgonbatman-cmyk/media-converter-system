@@ -240,6 +240,15 @@
     "word_desc": "Archivos 100% editables para ofimática moderna.",
     "extract_title": "Extracción de Textos e Imágenes",
     "extract_desc": "Obtén los recursos internos sin la molestia de copiar manualmente.",
+    "faq": [
+      {
+        "q": "¿Dónde se guarda mi PDF después de pasarlo a Word?",
+        "a": "En ningún lugar de la red. Nosotros nunca tocamos tus documentos, la lectura del PDF y escritura del archivo docx pasa 100% en la máquina local (tu PC o teléfono)."
+      },
+      {
+        "q": "¿Se pierde calidad al comprimir un PDF?",
+        "a": "Nuestra configuración 'Recomendada' equilibra la fidelidad visual y el tamaño del archivo. El texto permanece nítido mientras se optimizan las imágenes. Para una reducción extrema, elija 'Fuerte'."
+      }
     ]
   },
   "pdf": {
