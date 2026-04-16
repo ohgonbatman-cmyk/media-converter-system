@@ -276,12 +276,11 @@ export const PdfConverter: React.FC<PdfConverterProps> = ({ files, onReset, dict
               <Loader2 className="w-4 h-4 md:w-5 md:h-5 animate-spin text-sky-500" />
               {dict.pdf.processing_label}
             </h4>
-            <span className="text-xs md:text-sm font-black font-mono text-sky-500">{overallProgress}%</span>
           </div>
           <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden border border-slate-50">
             <div 
-              className="h-full bg-sky-500 transition-all duration-300 shadow-[0_0_8px_rgba(14,165,233,0.3)]" 
-              style={{ width: `${overallProgress}%` }}
+              className="h-full bg-sky-500 animate-pulse shadow-[0_0_8px_rgba(14,165,233,0.3)]" 
+              style={{ width: "100%" }}
             />
           </div>
           <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest text-center mt-1 scale-90">
